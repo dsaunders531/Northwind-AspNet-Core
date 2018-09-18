@@ -1,0 +1,45 @@
+﻿@model CategoryViewModel
+
+@{
+    // Setup some basic defaults for the page.
+    Model.PageMeta.PageTitle = Model.Category.CategoryName;
+    Model.PageMeta.Description = Model.PageMeta.PageTitle;
+    Model.PageMeta.AddKeyword(Model.Category.CategoryName);
+    Model.PageMeta.AddKeyword("Category");
+    Model.PageMeta.AddKeyword("Products");
+    Model.PageMeta.AddKeyword("Inventory");
+    Model.PageMeta.AddKeyword("Stock");
+}
+
+@functions {
+public IDictionary<string, string> RouteParams(int productId)
+{
+    IDictionary<string, string> result = new Dictionary<string, string>();
+    result.Add("productId", productId.ToString());
+    return result;
+}
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <img src="@String.Format("images/categories/{0} {1}.jpg", Model.Category.CategoryId.ToString(), Model.Category.CategoryName.Replace("/","_"))" class="img-responsive" />
+        <h3>@Model.Category.CategoryName</h3>
+        <div class="pull-right highlight-button"><a asp-area="" asp-controller="Inventory" asp-action="Categories"><i class="fa fa-backward"></i> Back to Categories</a></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>@Model.Category.Description</p>
+    </div>
+</div>
+<ul class="list-group">
+    @foreach (ProductApiO item in Model.Products)
+    {
+        <li class="list-group-item">
+            <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.ProductId)">
+                <h4>@item.ProductName</h4>
+            </a>
+        </li>
+    }
+</ul>

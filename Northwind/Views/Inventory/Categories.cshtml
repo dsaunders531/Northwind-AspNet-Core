@@ -1,0 +1,35 @@
+﻿@model CategoriesViewModel
+
+@{
+    // Setup some basic defaults for the page.
+    Model.PageMeta.PageTitle = "Categories";
+    Model.PageMeta.Description = Model.PageMeta.PageTitle;
+    Model.PageMeta.AddKeyword("Categories");
+    Model.PageMeta.AddKeyword("Products");
+    Model.PageMeta.AddKeyword("Inventory");
+    Model.PageMeta.AddKeyword("Stock");
+}
+
+@functions {
+public IDictionary<string, string> RouteParams(int categoryId)
+{
+    IDictionary<string, string> result = new Dictionary<string, string>();
+    result.Add("categoryId", categoryId.ToString());
+    return result;
+}
+}
+
+@foreach (CategoryRowApiO item in Model.Categories)
+{
+    <a asp-area="" asp-controller="Inventory" asp-action="Category" asp-all-route-data="@RouteParams(item.CategoryId)">
+        <div class="col-sm-6 panel panel-custom">
+            <div class="panel-heading">
+                <img src="@String.Format("images/categories/{0} {1}.jpg", item.CategoryId.ToString(), item.CategoryName.Replace("/","_"))" />
+                <h4>@item.CategoryName</h4>
+            </div>
+            <div class="panel-body">
+                <p>@item.Description</p>
+            </div>
+        </div>
+    </a>
+}

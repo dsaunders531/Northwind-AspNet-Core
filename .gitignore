@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Northwind.Tests/bin/Debug/netcoreapp2.1
+/Northwind.Tests/obj
+/Northwind.IntegrationTests/bin/Debug/netcoreapp2.1
+/Northwind.IntegrationTests/obj
+/Northwind.DAL/bin/Debug/netcoreapp2.1
+/Northwind.DAL/obj
+/Northwind.BLL/bin/Debug/netcoreapp2.1
+/Northwind.BLL/obj
+/Northwind/bin/Debug/netcoreapp2.1
+/Northwind/obj
+/mezzanine.utility/bin/Debug/netcoreapp2.1
+/mezzanine.utility/obj
+/mezzanine.essentials/bin/Debug/netcoreapp2.1
+/mezzanine.essentials/obj
+*.user

@@ -1,0 +1,67 @@
+﻿@model CreateAccountViewModel
+
+@{
+    Model.PageMeta.PageTitle = "Create Account";
+    Model.PageMeta.Description = "Create Account";
+    Model.PageMeta.AddKeyword("Create Account");
+    Model.PageMeta.RobotsFollow = false;
+    Model.PageMeta.RobotsIndex = false;
+}
+
+<h2>Create an account</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-area="Auth" asp-controller="Account" asp-action="CreateAccount" method="post" class="form-horizontal" asp-antiforgery="true">
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+    <div class="form-group row">
+        <label asp-for="Name" for="Name" class="control-label col-sm-4"></label>
+        <div class="col-sm-4">
+            <input id="Name" asp-for="Name" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="Name"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Email" for="Email" class="control-label col-sm-4"></label>
+        <div class="col-sm-4">
+            <input id="Email" asp-for="Email" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="Email"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Password" for="Password" class="control-label col-sm-4"></label>
+        <div class="col-sm-4">
+            <input id="Password" asp-for="Password" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="Password"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Password2" for="Password2" class="control-label col-sm-4"></label>
+        <div class="col-sm-4">
+            <input id="Password2" asp-for="Password2" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="Password2"></span>
+        </div>
+    </div>
+
+    <div class="form-group row btn-group">
+        <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-user-plus"> </i> Create</button>
+        <a class="btn btn-default btn-lg" href="@Model.ReturnUrl ?? /"><i class="fa fa-eraser"> </i> Cancel</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

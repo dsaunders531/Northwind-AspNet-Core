@@ -1,0 +1,16 @@
+﻿@model IPagination
+
+@if (Model != null)
+{
+    @if (Model.PageCount() > 1)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="pagination" page-model="@Model"
+                    page-class="pagination" page-class-normal="" page-class-selected="active"
+                    page-show-previous-next="true" page-previous-text="Previous" page-next-text="Next"></ul>
+            </div>
+        </div>
+    }
+}
+

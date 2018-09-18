@@ -1,0 +1,23 @@
+﻿@model ProductViewModel
+
+@{
+    // Setup some basic defaults for the page.
+    Model.PageMeta.PageTitle = Model.Product.ProductName;
+    Model.PageMeta.Description = Model.PageMeta.PageTitle;
+    Model.PageMeta.AddKeyword(Model.Product.ProductName);
+    Model.PageMeta.AddKeyword("Products");
+    Model.PageMeta.AddKeyword("Inventory");
+    Model.PageMeta.AddKeyword("Stock");
+}
+
+<div class="panel panel-custom">
+    <div class="panel-heading">
+        <h4>@Model.Product.ProductName</h4>
+        <div class="pull-right highlight-button" onclick="window.history.go(-1)"><i class="fa fa-backward"></i> Back</div>
+    </div>
+    <div class="panel-body">
+        <p>@Model.Product.Category.Description</p>
+        <p>@Model.Product.QuantityPerUnit</p>
+        <p>@Model.Product.UnitPrice.Value.ToString("c")</p>
+    </div>
+</div>

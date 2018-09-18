@@ -1,0 +1,7 @@
+﻿NUGET does not put the required files in the correct place.
+
+Get the latest version from the projects site.
+
+Add it to the folder with versions.
+
+Migrate the project to use the new version where required and retest.

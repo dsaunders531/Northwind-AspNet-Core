@@ -1,0 +1,23 @@
+﻿@model IViewModel
+
+@{
+    Model.PageMeta.PageTitle = "Contact";
+    Model.PageMeta.Description = "Contact Information";
+    Model.PageMeta.AddKeyword("Contact Details");
+}
+
+<h2>@Model.PageMeta.Description</h2>
+<h3>@ViewData["Message"]</h3>
+
+<address>
+    House<br />
+    Somewhere<br />
+    A town<br />
+    AA1 1AA<br />
+    <abbr title="Phone">P:</abbr>+44 (0) 1234 567890
+</address>
+
+<address>
+    <strong>Support:</strong> <a href="mailto:null@example.com">Support@example.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:null@example.com">Marketing@example.com</a>
+</address>

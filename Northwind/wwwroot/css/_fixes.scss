@@ -1,0 +1,107 @@
+﻿/*
+    Site Style.
+
+    This is not a complete solution - you will need to make changes for different brand images.
+
+*/
+
+@import '_functions.scss';
+@import '_theme.scss';
+
+.more-padding-top {
+    padding-top: 21px;
+    padding-bottom: 14px;
+}
+
+.more-margin-bottom {
+    margin-bottom: 6px;
+}
+
+.busy-cursor {
+    cursor: progress;
+}
+
+.wait-cursor {
+    cursor: wait;
+}
+
+i .fa .show-disabled,
+div .show-disabled,
+.show-disabled {
+    color: $body-font-color-disabled;
+}
+
+.highlight-button {
+    visibility: hidden;
+    display: none;
+}
+
+.jsonExample
+{
+    font-family: Courier New, Courier, monospace;
+    background-color: black;
+    color: greenyellow;
+    padding: 12px;
+}
+
+div .panel-custom 
+{
+    margin-top: 16px;
+    margin-bottom: 0px;
+    min-height: 350px;
+    height: 350px;
+    max-height: 350px;
+    background-color: rgba(255, 255, 255, 0.6);  
+    border: 2px solid $nav-background;
+    @include border-radius(3px);
+}
+
+div .panel-custom:last-of-type
+{
+    margin-bottom: 16px;
+}
+
+div .panel-custom .panel-heading img {
+    height: 200px;
+    border: none;
+}
+
+.mobile-only-visible
+{ }
+
+.desktop-only-visible {
+    max-height: 0px;
+    max-width: 0px;
+    visibility: hidden;
+}
+
+@media (min-width: 768px) {
+    .mobile-only-visible {
+        max-height: 0px;
+        max-width: 0px;
+        visibility: hidden;
+    }
+
+    .desktop-only-visible {
+        max-height: initial;
+        max-width: initial;
+        visibility: initial;
+    }
+
+    .highlight-button {
+        visibility:visible;
+        display: initial;
+        padding: 3px;
+        padding-left: 9px;
+        padding-right: 9px;
+        margin-top: -3px;
+        border: 1px solid $nav-background;
+        background-color: $header-background;
+        color: $body-font-color;
+        @include border-radius(12px);
+    }
+
+    .highlight-button:hover {
+        @include box-glow(2px, lightgrey);
+    }
+}

@@ -1,0 +1,78 @@
+﻿@model IViewModel
+@* All the navbar details *@
+
+@{    
+    AssemblyInfo appInfo = new AssemblyInfo();
+}
+
+<nav class="navbar navbar-custom">
+    <div class="container">
+        <div class="navbar-header">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/Northwind-Logo.png" />
+            </a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" aria-expanded="false">
+            <ul id="navbar-main" class="nav navbar-nav">
+                @*
+                    The ids must follow the pattern nav_{controller}_{action} in lower case.
+                    otherwise they will not be selected by navbar.js
+
+                    After adding new nav entries, update navbar.js with the appropriate values.
+                    It should be fine with conventional controller action url patterns.
+
+                    There must be an id nav_home_index. This is the fallback if the others cannot be found.
+
+                    Only 1 level of dropdown menu is supported.
+                *@
+                <li id="nav_home_index">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                </li>
+                <li id="nav_home_contact">
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                </li>
+                <li id="nav_home_about">
+                    <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+                </li>    
+                <li id="nav_inventory_index" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Shop
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li id="nav_inventory_categories">
+                            <a asp-area="" asp-controller="Inventory" asp-action="Categories">Categories</a>
+                        </li>
+                        <li id="nav_inventory_products">
+                            <a asp-area="" asp-controller="Inventory" asp-action="Products">Products</a>
+                        </li>
+                    </ul>
+                </li>                                
+            </ul>
+            
+            <ul id="nav_account_home" class="nav navbar-nav navbar-right">
+                @if (User.Identity.IsAuthenticated == false)
+                {
+                    <li id="nav_account_login"><a asp-area="Auth" asp-controller="Account" asp-action="Login"><i class="fa fa-user"></i> Login</a></li>
+                    <li id="nav_account_createaccount"><a asp-area="Auth" asp-controller="Account" asp-action="CreateAccount"><i class="fa fa-user-plus"></i> Register</a></li>
+                }
+                else
+                {
+                    <li id="nav_account_logout"><a asp-area="Auth" asp-controller="Account" asp-action="Logout"><i class="fa fa-lock"> </i> Hi @User.Identity.Name, Logout</a></li>
+                    @* TODO view and download profile, close account functions *@
+                }
+                @* TODO web admin functions for managing user accounts *@
+            </ul>
+        </div>
+    </div>
+</nav>
+

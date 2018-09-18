@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20180829165850_RenameModels.cs" />
+    <Compile Remove="Migrations\20180911120233_CategoryApiUpdate.cs" />
+    <Compile Remove="Migrations\20180912103309_ProductUpdate.cs" />
+    <Compile Remove="Migrations\AuthenticationDb\20180917170352_AuthenticationCreate.cs" />
+    <Compile Remove="Migrations\AuthenticationDb\20180917175217_AuthenticationCreate.cs" />
+    <Compile Remove="Migrations\AuthenticationDb\20180917201432_AuthenticationUpdate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+  </ItemGroup>
+
+</Project>

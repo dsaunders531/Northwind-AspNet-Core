@@ -1,0 +1,95 @@
+﻿@model IViewModel
+
+@{
+    Model.PageMeta.PageTitle = "About";
+    Model.PageMeta.Description = "About us";
+    Model.PageMeta.AddKeyword("About");
+}
+
+<h2>@Model.PageMeta.Description</h2>
+<h3>@ViewData["Message"]</h3>
+
+<ul class="list-group">
+    <li class="list-group-item list-group-item-heading">This site uses these technology providers and services.</li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <i class="fa fa-html5 fa-2x">&nbsp; </i>
+            </div>
+            <div class="col-sm-10">
+                <a href="https://www.w3.org/standards/webdesign/htmlcss">HTML5</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <i class="fa fa-css3 fa-2x">&nbsp; </i>
+            </div>
+            <div class="col-sm-10">
+                <a href="https://www.w3.org/standards/webdesign/htmlcss">CSS3</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/logos/MS_Corporate.png" style="height:23px; width: 108px;" />
+            </div>
+            <div class="col-sm-10">
+                <a href="https://www.microsoft.com/en-gb/">Microsoft ASP.Net Core</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <i class="fa fa-font-awesome fa-2x">&nbsp; </i>
+            </div>
+            <div class="col-sm-10">
+                <a href="https://fontawesome.com/">Font Awesome</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/logos/Boostrap_logo.svg" style="height:14px; width: 14px;" />
+            </div>
+            <div class="col-sm-10">
+                <a href="https://getbootstrap.com/">Bootstrap</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/logos/jquery-mark-light.gif" style="height: 21px; width: 80px" />
+            </div>
+            <div class="col-sm-10">
+                <a href="https://jquery.com/">jQuery</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/logos/newtonsoft.png" style="height: 21px; width: 21px" />
+            </div>
+            <div class="col-sm-10">
+                <a href="https://www.newtonsoft.com/json">Newtonsoft JSON</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/logos/restsharp_400x400.png" style="height: 21px; width: 21px" />
+            </div>
+            <div class="col-sm-10">
+                <a href="http://restsharp.org">RestSharp</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item list-group-item-info">This site is not affiliated to any of the above.</li>
+</ul>

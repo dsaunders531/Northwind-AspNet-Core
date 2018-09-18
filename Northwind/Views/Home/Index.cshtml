@@ -1,0 +1,60 @@
+@model IViewModel
+
+@{
+    // Setup some basic defaults for the home page.
+    Model.PageMeta.PageTitle = "Home";
+    Model.PageMeta.Description = "Home Page";
+    Model.PageMeta.AddKeyword("Home");
+}
+
+@*<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
+
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
+
+@section scripts {    
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
+}*@
+
+<div class="row">
+    <div class="col-md-6">
+        <div id="foodItemCarousel" class="carousel slide" data-ride="carousel" data-interval="6000" style="margin-top: 14px; height: 400px; min-height: 400px;">
+            <ol class="carousel-indicators">
+                <li data-target="#foodItemCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#foodItemCarousel" data-slide-to="1"></li>
+                <li data-target="#foodItemCarousel" data-slide-to="2"></li>
+                <li data-target="#foodItemCarousel" data-slide-to="3"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <div class="image0"></div>                    
+                </div>
+                <div class="item">
+                    <div class="image1"></div>                    
+                </div>
+                <div class="item">
+                    <div class="image2"></div>                   
+                </div>
+                <div class="item">
+                    <div class="image3"></div>
+                </div>
+            </div>
+            <a class="left carousel-control" href="#foodItemCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#foodItemCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <h2>@this.LoremIpsum(3, 6, 1, 1, 1)</h2>
+        <p>@this.LoremIpsum(8, 12, 2, 6, 1)</p>
+        <p>@this.LoremIpsum(8, 12, 2, 6, 1)</p>
+    </div>
+    <div class="col-md-6">
+        <h2>@this.LoremIpsum(3, 6, 1, 1, 1)</h2>
+        <p>@this.LoremIpsum(8, 12, 4, 16, 1)</p>
+        <p>@this.LoremIpsum(8, 12, 4, 16, 1)</p>
+        <p>@this.LoremIpsum(8, 12, 4, 16, 1)</p>
+    </div>
+</div>
