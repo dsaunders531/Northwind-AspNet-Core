@@ -39,11 +39,11 @@ namespace mezzanine.Utility
             
             if (table != null)
             {
-                result = Activator.CreateInstance<T>();
-                Type typeOfT = result.GetType();
-
                 if (table.Rows.Count > 0)
-                {                  
+                {
+                    result = Activator.CreateInstance<T>();
+                    Type typeOfT = result.GetType();
+
                     if (typeOfT.IsSerializable == true && typeOfT.GetInterface("IList") == typeof(IList))
                     {
                         // create an instance of each row type

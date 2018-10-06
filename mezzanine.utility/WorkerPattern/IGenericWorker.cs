@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace mezzanine.WorkerPattern
 {
@@ -7,10 +8,11 @@ namespace mezzanine.WorkerPattern
     /// </summary>
     /// <typeparam name="TApiRowModel"></typeparam>
     /// <typeparam name="TDbModelKey"></typeparam>
-    public interface IGenericWorker<TApiRowModel, TDbModelKey>
+    public interface IGenericWorker<TDbModel, TApiRowModel, TDbModelKey>
     {
         List<TApiRowModel> FetchAll();
         TApiRowModel Fetch(TDbModelKey key);
+        TApiRowModel Fetch(TApiRowModel apiModel, Func<TDbModel, bool> fetchWithoutKey);
         TApiRowModel Create(TApiRowModel apiModel);
         TApiRowModel Update(TApiRowModel apiModel);
         void Delete(TDbModelKey key);

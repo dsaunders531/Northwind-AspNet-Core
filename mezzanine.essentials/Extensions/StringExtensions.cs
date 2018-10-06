@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using mezzanine.Utility;
+﻿using mezzanine.Utility;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Globalization;
 
 namespace mezzanine.Extensions
 {
@@ -416,6 +416,20 @@ namespace mezzanine.Extensions
         public static string URLDecode(this string value)
         {
             return WebUtility.UrlDecode(value);
+        }
+
+        /// <summary>
+        /// See if the string is erm... null or empty
+        /// </summary>
+        /// <param name="valuue"></param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this string value)
+        {
+            bool result = false;
+
+            result = value == null || value == string.Empty;
+
+            return result;
         }
     }
 }

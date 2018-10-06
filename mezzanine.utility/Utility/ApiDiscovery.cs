@@ -51,12 +51,18 @@ namespace mezzanine.Utility
                         // get the attributes
                         foreach (MethodInfo method in methods)
                         {
-                            ApiActionModel apiActionModel = this.GetApiActionModel(method);
+                            ApiActionModel apiActionModel = this.GetApiActionModel(method, controllerRoute);
 
                             if (apiActionModel != null)
                             {
                                 apiController.Actions.Add(apiActionModel);
                             }
+                        }
+
+                        // Remove the route info from the route its not needed anymore.
+                        if (apiController.Route.Contains("[action]"))
+                        {
+                            apiController.Route = apiController.Route.Replace("[action]", string.Empty);
                         }
 
                         result.Controllers.Add(apiController);
@@ -127,7 +133,7 @@ namespace mezzanine.Utility
         /// <param name="apiMethod"></param>
         /// <param name="routeInfo"></param>
         /// <returns></returns>
-        private bool FindApiMethod(MethodInfo method, out ApiMethod apiMethod, out string routeInfo)
+        private bool FindApiMethod(MethodInfo method, string controllerRoute, out ApiMethod apiMethod, out string routeInfo)
         {
             bool result = false;
             apiMethod = ApiMethod.GET;
@@ -139,7 +145,7 @@ namespace mezzanine.Utility
             if (methodAttr != null)
             {
                 apiMethod = ApiMethod.GET;
-                routeInfo = this.GetDefaultCustomAttributeValue(method, typeof(HttpGetAttribute));
+                routeInfo = this.GetRouteAttributeValue(method, typeof(HttpGetAttribute), controllerRoute);
                 result = true;
             }
             else
@@ -149,7 +155,7 @@ namespace mezzanine.Utility
                 if (methodAttr != null)
                 {
                     apiMethod = ApiMethod.POST;
-                    routeInfo = this.GetDefaultCustomAttributeValue(method, typeof(HttpPostAttribute));
+                    routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPostAttribute), controllerRoute);
                     result = true;
                 }
                 else
@@ -159,7 +165,7 @@ namespace mezzanine.Utility
                     if (methodAttr != null)
                     {
                         apiMethod = ApiMethod.PUT;
-                        routeInfo = this.GetDefaultCustomAttributeValue(method, typeof(HttpPutAttribute));
+                        routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
                         result = true;
                     }
                     else
@@ -169,7 +175,7 @@ namespace mezzanine.Utility
                         if (methodAttr != null)
                         {
                             apiMethod = ApiMethod.PATCH;
-                            routeInfo = this.GetDefaultCustomAttributeValue(method, typeof(HttpPutAttribute));
+                            routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
                             result = true;
                         }
                         else
@@ -179,7 +185,7 @@ namespace mezzanine.Utility
                             if (methodAttr != null)
                             {
                                 apiMethod = ApiMethod.DELETE;
-                                routeInfo = this.GetDefaultCustomAttributeValue(method, typeof(HttpDeleteAttribute));
+                                routeInfo = this.GetRouteAttributeValue(method, typeof(HttpDeleteAttribute), controllerRoute);
                                 result = true;
                             }
                         }
@@ -196,7 +202,24 @@ namespace mezzanine.Utility
         /// <param name="attributeDatas"></param>
         /// <param name="targetType"></param>
         /// <returns></returns>
-        private string GetDefaultCustomAttributeValue(MethodInfo method, Type targetType)
+        private string GetRouteAttributeValue(MethodInfo method, Type targetType, string controllerRoute)
+        {
+            string result = this.GetDefaultAttributeValue(method, targetType);           
+
+            if (result == string.Empty)
+            {
+                result = controllerRoute;
+            }
+
+            if (result.Contains("[action]"))
+            {
+                result = result.Replace("[action]", method.Name);
+            }
+
+            return result;
+        }
+
+        private string GetDefaultAttributeValue(MethodInfo method, Type targetType)
         {
             string result = string.Empty;
             IEnumerable<CustomAttributeData> attributeDatas = method.CustomAttributes;
@@ -210,12 +233,7 @@ namespace mezzanine.Utility
                     break;
                 }
             }
-
-            if (result.Contains("[action]"))
-            {
-                result = result.Replace("[action]", method.Name);
-            }
-
+          
             return result;
         }
 
@@ -224,7 +242,7 @@ namespace mezzanine.Utility
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        private ApiActionModel GetApiActionModel(MethodInfo method)
+        private ApiActionModel GetApiActionModel(MethodInfo method, string controllerRoute)
         {
             ApiActionModel result = new ApiActionModel() { Signature = method.ToString(), Name = method.Name };
             bool addAction = false;
@@ -232,7 +250,7 @@ namespace mezzanine.Utility
             // determing the method
             ApiMethod apiMethod = ApiMethod.GET; // default
             string routeInfo = string.Empty;
-            addAction = this.FindApiMethod(method, out apiMethod, out routeInfo);
+            addAction = this.FindApiMethod(method, controllerRoute, out apiMethod, out routeInfo);
 
             if (addAction == false)
             {
@@ -249,7 +267,7 @@ namespace mezzanine.Utility
 
                 if (methodAttr != null)
                 {
-                    result.SucessResponseCode = Convert.ToInt32(this.GetDefaultCustomAttributeValue(method, typeof(ProducesResponseTypeAttribute)));
+                    result.SucessResponseCode = Convert.ToInt32(this.GetDefaultAttributeValue(method, typeof(ProducesResponseTypeAttribute)));
                 }
 
                 // Get the input parameters                
@@ -283,21 +301,20 @@ namespace mezzanine.Utility
                 }
 
                 // determine the output type.
-                if (method.ReturnType.IsAbstract == false)
+                if (method.ReturnType.IsGenericType)
                 {
-                    if (method.ReturnType.IsGenericType)
-                    {
-                        // assuming the return type is always a single type.
-                        result.ReturnType = method.ReturnType.GenericTypeArguments[0];
-                    }
-                    else
-                    {
-                        result.ReturnType = method.ReturnType;
-                    }
-
-                    result.ReturnBody = result.ReturnType.JSONExample().UnMinify();
+                    // assuming the return type is always a single type.
+                    result.ReturnType = method.ReturnType.GenericTypeArguments[0];                     
                 }
-                
+                else
+                {
+                    result.ReturnType = method.ReturnType;
+                }
+
+                if (result.ReturnType.IsAbstract == false)
+                {
+                    result.ReturnBody = result.ReturnType.JSONExample().UnMinify();
+                }                                        
             }
 
             return result;

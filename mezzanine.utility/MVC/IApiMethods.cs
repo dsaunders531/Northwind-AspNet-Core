@@ -30,7 +30,7 @@ namespace mezzanine.MVC
     /// <typeparam name="TApiRowModel"></typeparam>
     public interface IApiPutable<TApiRowModel>
     {
-        ActionResult Put(TApiRowModel apiRowModel);
+        ActionResult<TApiRowModel> Put(TApiRowModel apiRowModel);
     }
 
     /// <summary>

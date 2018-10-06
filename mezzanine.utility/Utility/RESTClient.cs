@@ -34,24 +34,24 @@ namespace mezzanine.Utility
                             List<KeyValuePair<string, string>> queryParameters = null, 
                             List<KeyValuePair<string, string>> routeParameters = null,
                             List<KeyValuePair<string, string>> headerParameters = null,
+                            List<KeyValuePair<string, string>> cookies = null,
                             object jsonBody = null,
                             string jsonBodyPartial = "")
         {
             RestResult<OutputT> result = new RestResult<OutputT>();
 
-            RestRequest request = this.CreateRequest(resourceUrl, method, queryParameters, routeParameters, headerParameters, jsonBody, jsonBodyPartial);
-            
-            IRestResponse response = RestClient.Execute(request);
-
-            result.StatusCode = (int)response.StatusCode;
-            result.Content = response.Content;
-            
             try
             {
-                using (JSONSerialiser serializer = new JSONSerialiser())
+                RestResult initialResult = this.Execute(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
+
+                using (Transposition transposition = new Transposition())
                 {
-                    result.Result = serializer.Deserialize<OutputT>(response.Content);
-                }
+                    result = transposition.Transpose(initialResult, result);
+                    using (JSONSerialiser serializer = new JSONSerialiser())
+                    {
+                        result.Result = serializer.Deserialize<OutputT>(initialResult.Content);
+                    }
+                }                
             }
             catch (Exception e) 
             {
@@ -63,15 +63,51 @@ namespace mezzanine.Utility
             return result;
         }
 
+        public RestResult Execute(string resourceUrl,
+                            Method method,
+                            List<KeyValuePair<string, string>> queryParameters = null,
+                            List<KeyValuePair<string, string>> routeParameters = null,
+                            List<KeyValuePair<string, string>> headerParameters = null,
+                            List<KeyValuePair<string, string>> cookies = null,
+                            object jsonBody = null,
+                            string jsonBodyPartial = "")
+        {
+            RestResult result = new RestResult();
+            
+            try
+            {
+                RestRequest request = this.CreateRequest(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
+
+                IRestResponse response = RestClient.Execute(request);
+
+                result.StatusCode = (int)response.StatusCode;
+                result.Content = response.Content;
+                result.Headers.AddRange(response.Headers);
+                result.Cookies.AddRange(response.Cookies);
+            }
+            catch (Exception e)
+            {
+                result.Success = false;
+                result.Exception = e;
+                result.Message = e.Message;
+            }
+
+            return result;
+        }
+
         private RestRequest CreateRequest(string resourceUrl,
                             Method method,
                             List<KeyValuePair<string, string>> queryParameters,
                             List<KeyValuePair<string, string>> routeParameters,
                             List<KeyValuePair<string, string>> headerParameters,
+                            List<KeyValuePair<string, string>> cookies,
                             object jsonBody, 
                             string jsonBodyPartial)
         {
             RestRequest request = new RestRequest(resourceUrl, method) { RequestFormat = DataFormat.Json };
+
+            // add cookie values
+            request = this.AddCookies(request, cookies);
 
             // add query parameters
             request = this.AddQueryParameters(request, queryParameters);
@@ -92,6 +128,22 @@ namespace mezzanine.Utility
                 if (jsonBodyPartial.Length > 0)
                 {
                     request.Parameters.Add(new Parameter() { Name = "application/json", ContentType = null, Type = ParameterType.RequestBody, Value = jsonBodyPartial });
+                }
+            }
+
+            return request;
+        }
+
+        private RestRequest AddCookies(RestRequest request, List<KeyValuePair<string, string>> cookies)
+        {
+            if (cookies != null)
+            {
+                if (cookies.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> item in cookies)
+                    {
+                        request.AddCookie(item.Key, item.Value);
+                    }
                 }
             }
 

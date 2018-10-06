@@ -1,14 +1,15 @@
 ﻿using mezzanine.Exceptions;
 using mezzanine.Extensions;
 using mezzanine.Utility;
-using Microsoft.AspNetCore.Mvc;
 using mezzanine.WorkerPattern;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace mezzanine.MVC
-{    
+{
     /// <summary>
     /// The generic api controller.
     /// </summary>
@@ -17,9 +18,9 @@ namespace mezzanine.MVC
     /// <typeparam name="TDbModelKey"></typeparam>    
     public abstract class GenericApiController<TDbModel, TApiRowModel, TDbModelKey> : Controller
     {
-        private IGenericWorker<TApiRowModel, TDbModelKey> WorkerService { get; set; }
+        private IGenericWorker<TDbModel, TApiRowModel, TDbModelKey> WorkerService { get; set; }
 
-        public GenericApiController(IGenericWorker<TApiRowModel, TDbModelKey> workerService)
+        public GenericApiController(IGenericWorker<TDbModel, TApiRowModel, TDbModelKey> workerService)
         {
             this.WorkerService = workerService;
         }
@@ -38,7 +39,7 @@ namespace mezzanine.MVC
             {
                 Response.AddBody(e.Message);
                 // application error internal server error
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -56,13 +57,13 @@ namespace mezzanine.MVC
             catch (RecordNotFoundException e)
             {
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(204); // no content
+                return new StatusCodeResult(StatusCodes.Status204NoContent); // no content
             }
             catch (Exception e)
             {
                 Response.AddBody(e.Message);
                 // application error internal server error
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -71,16 +72,23 @@ namespace mezzanine.MVC
         /// </summary>
         /// <param name="apiRowModel"></param>
         /// <returns></returns>        
-        public ActionResult BasePut(TApiRowModel apiRowModel)
+        public ActionResult<TApiRowModel> BasePut(TApiRowModel apiRowModel, [FromServices] Func<TDbModel, bool> fetchWithoutKey)
         {
             try
             {
                 if (ModelState.IsValid == true)
                 {
-                    this.WorkerService.Create(apiRowModel);
+                    TApiRowModel result = default(TApiRowModel);
+
+                    result = this.WorkerService.Create(apiRowModel);
+
                     this.WorkerService.Commit();
 
-                    return new StatusCodeResult(201); // created
+                    result = this.WorkerService.Fetch(apiRowModel, fetchWithoutKey);
+
+                    Response.StatusCode = StatusCodes.Status201Created; // created
+
+                    return result;
                 }
                 else
                 {
@@ -91,25 +99,25 @@ namespace mezzanine.MVC
             {
                 // expectation failed - field is missing
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(417);
+                return new StatusCodeResult(StatusCodes.Status417ExpectationFailed);
             }
             catch (ModelStateException e)
             {
                 // not acceptable
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(406);
+                return new StatusCodeResult(StatusCodes.Status406NotAcceptable);
             }
             catch (RecordFoundException e)
             {
                 // bad request
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(400);
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
             }
             catch (Exception e)
             {
                 // application error internal server error
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 

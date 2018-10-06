@@ -14,7 +14,7 @@ namespace mezzanine.WorkerPattern
     /// <typeparam name="TDbModelKey"></typeparam>
     /// <typeparam name="TApiRowModel"></typeparam>
     /// <typeparam name="TFetchSortFieldType"></typeparam>
-    public abstract class GenericWorker<TDbModel, TDbModelKey, TApiRowModel, TFetchSortFieldType> : Worker, IGenericWorker<TApiRowModel, TDbModelKey>
+    public abstract class GenericWorker<TDbModel, TDbModelKey, TApiRowModel, TFetchSortFieldType> : Worker, IGenericWorker<TDbModel, TApiRowModel, TDbModelKey>
     {
         private IRepository<TDbModel, TDbModelKey> Repository { get; set; }  
 
@@ -69,6 +69,32 @@ namespace mezzanine.WorkerPattern
                 using (Transposition tranposition = new Transposition())
                 {
                     result = tranposition.Transpose<TApiRowModel>(row, result);
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Fetches 1 item without using its key.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>        
+        public TApiRowModel Fetch(TApiRowModel apiRowModel, Func<TDbModel, bool> fetchSelector)
+        {
+            TDbModel row = this.Repository.FetchAll.Where(fetchSelector).FirstOrDefault();
+
+            if (row == null)
+            {
+                throw new RecordNotFoundException("Could not find a matching item.");
+            }
+            else
+            {
+                TApiRowModel result = Activator.CreateInstance<TApiRowModel>();
+
+                using (Transposition transposition = new Transposition())
+                {
+                    result = transposition.Transpose<TApiRowModel>(row, result);
                 }
 
                 return result;
