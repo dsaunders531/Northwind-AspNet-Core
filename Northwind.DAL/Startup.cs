@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using mezzanine.EF;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
+using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
-using mezzanine.EF;
 
 namespace Northwind.DAL
 {
@@ -14,6 +15,8 @@ namespace Northwind.DAL
     public static class Startup
     {
         public static AppConfigurationModel AppConfiguration { get; set; }
+
+        public static IApplicationBuilder ApplicationBuilder { get; set; }
 
         public static NorthwindContext NorthwindContext
         {
@@ -28,6 +31,18 @@ namespace Northwind.DAL
                 optionsBuilder = null;
 
                 return result;              
+            }
+        }
+
+        public static IRepository<ApiSessionModel, string> ApiLoginRepository
+        {
+            get
+            {
+                using (IServiceScope serviceScope = ApplicationBuilder.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    IRepository<ApiSessionModel, string> service = serviceScope.ServiceProvider.GetRequiredService<IRepository<ApiSessionModel, string>>();
+                    return service;
+                }
             }
         }
 
@@ -54,6 +69,8 @@ namespace Northwind.DAL
 
         public static void Configure(IApplicationBuilder app)
         {
+            ApplicationBuilder = app;
+
             // Create and update the database automatically (like doing Update-Database)
             // https://stackoverflow.com/questions/42355481/auto-create-database-in-entity-framework-core
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -68,6 +85,8 @@ namespace Northwind.DAL
         public static void ConfigureIdentityServices(AppConfigurationModel appConfiguration, IServiceCollection services)
         {
             services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Authentication)); // The user database
+
+            services.AddSingleton<IRepository<ApiSessionModel, string>, ApiLoginRepository>(); // The api logins repository
 
             // Setup the password validation requirements eg: Password1!
             services.AddIdentity<UserProfileModel, IdentityRole>(

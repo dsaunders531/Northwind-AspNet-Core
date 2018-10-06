@@ -120,7 +120,7 @@ namespace Northwind.Controllers
         [Authorize]
         public async Task<IActionResult> Logout(string returnUrl)
         {
-            await this.IdentityService.Logout();
+            await this.IdentityService.LogoutAsync();
 
             return Redirect(returnUrl ?? "/");
         }

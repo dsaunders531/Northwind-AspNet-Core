@@ -1,8 +1,9 @@
 ﻿using mezzanine.Exceptions;
 using mezzanine.Extensions;
 using mezzanine.Utility;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Northwind.Areas.api.Filters;
 using Northwind.BLL.Models;
 using Northwind.BLL.Services;
 using System;
@@ -11,12 +12,12 @@ using System.IO;
 
 namespace Northwind.Areas.api.Controllers
 {
-    // Note this is the basisi for GenericApiControllerBase
+    // Note this is the basis for GenericApiControllerBase
 
     [ApiController]
     [Area("api")]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Api")]
+    [ApiAuthorize(Roles = "Api")]
     public class CategoryController : Controller
     {
         private CategoryService CategoryService { get; set; }
@@ -80,16 +81,23 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult Put([FromBody] CategoryRowApiO category)
+        public ActionResult<CategoryRowApiO> Put([FromBody] CategoryRowApiO category)
         {
             try
             {
                 if (ModelState.IsValid == true)
                 {
-                    this.CategoryService.Create(category);
-                    this.CategoryService.Commit();
+                    CategoryRowApiO result = default(CategoryRowApiO);
 
-                    return new StatusCodeResult(201); // created
+                    result = this.CategoryService.Create(category);
+
+                    this.CategoryService.Commit(); // Save the record to get the new id
+
+                    result = this.CategoryService.Fetch(category);
+
+                    Response.StatusCode = StatusCodes.Status201Created; // created
+
+                    return result;
                 }
                 else
                 {

@@ -82,7 +82,7 @@
 
 <h2>@Model.PageMeta.AppInfo.Product - Api</h2>
 <p>Details of the applications api endpoints are described below.</p>
-
+<p>You will need to <a asp-area="api" asp-controller="Home" asp-action="Authenticate">authenticate</a> to use the api.</p>
 <ul class="list-group">
     @foreach (ApiControllerModel apiController in Model.Controllers)
     {
@@ -99,7 +99,14 @@
                 <div class="panel-heading ">
                     @if (string.IsNullOrEmpty(action.Route) == false)
                     {
-                        <strong>/@apiController.Route/@action.Route</strong>
+                        @if (action.Route.Contains(apiController.Route))
+                        {
+                            <strong>/@action.Route</strong>
+                        }
+                        else
+                        {
+                            <strong>/@apiController.Route/@action.Route</strong>
+                        }
                     }
                     else
                     {

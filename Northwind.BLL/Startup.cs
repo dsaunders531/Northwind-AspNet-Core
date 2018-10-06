@@ -15,6 +15,18 @@ namespace Northwind.BLL
     /// </summary>
     public static class Startup
     {
+        public static IdentityService IdentityService
+        {
+            get
+            {
+                using (IServiceScope serviceScope = DAL.Startup.ApplicationBuilder.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    IdentityService service = serviceScope.ServiceProvider.GetRequiredService<IdentityService>();
+                    return service;
+                }
+            }
+        }
+
         public static void ConfigureServices(AppConfigurationModel appConfiguration, IServiceCollection services, IHostingEnvironment environment)
         {
             // Custom services
@@ -25,11 +37,11 @@ namespace Northwind.BLL
             
             // AspNetCore Identity
             Northwind.DAL.Startup.ConfigureIdentityServices(appConfiguration, services);
-            services.AddTransient<IdentityService, IdentityService>();
+            services.AddSingleton<IdentityService, IdentityService>();
 
             services.AddTransient<RetailInventoryService, RetailInventoryService>();
             services.AddTransient<CategoryService, CategoryService>();
-            services.AddTransient<IGenericWorker<ProductRowApiO, int>, ProductWorker>();
+            services.AddTransient<IGenericWorker<Product, ProductRowApiO, int>, ProductRowWorker>();
         }
 
         public static void Configure(AppConfigurationModel appConfiguration, IApplicationBuilder app)

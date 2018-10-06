@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Northwind.IntegrationTests
 {
-    public class ProductApiTests
-    {
-        private const string BaseUrl = "http://localhost:52869/api";
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+    public class ProductApiTests : ApiTestBase
+    {        
         private const string TestProductName = "Test Product";
 
         private string GetRecordSql
@@ -29,7 +27,7 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                RestResult<List<ProductRowApiO>> apiResult = restClient.Execute<List<ProductRowApiO>>("Product", RestSharp.Method.GET);
+                RestResult<List<ProductRowApiO>> apiResult = restClient.Execute<List<ProductRowApiO>>("Product", RestSharp.Method.GET, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult.Result);
 
@@ -57,7 +55,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "2")
                 };
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams);
+                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult);
 
@@ -84,7 +82,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "1000")
                 };
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams);
+                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 204, apiResult.Content);
                 Assert.Null(apiResult.Result);
             }
@@ -108,11 +106,14 @@ namespace Northwind.IntegrationTests
                 {
                     ProductRowApiO newItem = new ProductRowApiO() { ProductName = TestProductName, CategoryId = 2, QuantityPerUnit = "4 in a box", UnitPrice = (decimal)12.37, SupplierId = 1 };
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem);
+                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 201, apiResult.Content);
 
                     ProductRowApiO sqlResult = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
-                    Assert.True(sqlResult.ProductName == newItem.ProductName && sqlResult.CategoryId == newItem.CategoryId && sqlResult.QuantityPerUnit == newItem.QuantityPerUnit);
+                    Assert.True(sqlResult.ProductName == apiResult.Result.ProductName 
+                                    && sqlResult.CategoryId == apiResult.Result.CategoryId 
+                                    && sqlResult.QuantityPerUnit == apiResult.Result.QuantityPerUnit
+                                    && sqlResult.ProductId == apiResult.Result.ProductId);
                 }
             }
         }
@@ -126,7 +127,7 @@ namespace Northwind.IntegrationTests
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
                 ProductRowApiO newItem = new ProductRowApiO() { ProductName = string.Empty, UnitPrice = 0, SupplierId = -3, CategoryId = -4 };
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400, apiResult.Content);
             }
         }
@@ -154,7 +155,7 @@ namespace Northwind.IntegrationTests
                     ProductRowApiO updated = existing;
                     updated.UnitPrice = 123;
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBody: updated);
+                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBody: updated, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                     Assert.True(apiResult.Result.UnitPrice == 123, "The updated value was not returned");
                 }
@@ -174,7 +175,7 @@ namespace Northwind.IntegrationTests
             {
                 string partialJson = "{ \"ProductId\": -12345, \"CategoryId\": 2, \"SupplierId\":1, \"UnitPrice\": 0 }";
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }
@@ -200,7 +201,7 @@ namespace Northwind.IntegrationTests
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
                     string partialJson = "{ \"ProductId\": " + existing.ProductId + ", \"CategoryId\": 2, \"SupplierId\": 1, \"UnitPrice\": 32.1 }";
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
 
                     ProductRowApiO dbValue = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
@@ -230,7 +231,7 @@ namespace Northwind.IntegrationTests
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
                     string partialJson = "{ \"ProductId\": " + existingCategory.ProductId + " }";
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     
                     Assert.False(apiResult.StatusCode == 200, apiResult.Content);
                 }
@@ -265,7 +266,7 @@ namespace Northwind.IntegrationTests
                         new KeyValuePair<string, string>("key", existingCategory.ProductId.ToString())
                     };
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams);
+                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 301, apiResult.Content);
                 }
 
@@ -287,7 +288,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "-1234")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 500 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }

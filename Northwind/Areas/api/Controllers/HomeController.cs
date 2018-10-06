@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using mezzanine.Models;
 using mezzanine.Utility;
-using mezzanine.Models;
-using Northwind.BLL.Models;
+using mezzanine.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Northwind.Areas.api.Controllers
 {
@@ -24,6 +24,11 @@ namespace Northwind.Areas.api.Controllers
             result.PageMeta = new PageMetaModel();
 
             return View(result);
+        }
+
+        public IActionResult Authenticate()
+        {
+            return View(new ViewModel());
         }
     }
 }

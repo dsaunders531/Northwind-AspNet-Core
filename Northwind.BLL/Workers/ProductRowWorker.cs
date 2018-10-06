@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class ProductWorker : GenericWorker<Product, int, ProductRowApiO, string>
+    public class ProductRowWorker : GenericWorker<Product, int, ProductRowApiO, string>
     {
-        public ProductWorker(IRepository<Product, int> repository) : base(repository)
+        public ProductRowWorker(IRepository<Product, int> repository) : base(repository)
         {
         }
 

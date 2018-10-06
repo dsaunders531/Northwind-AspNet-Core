@@ -9,10 +9,8 @@ namespace Northwind.IntegrationTests
     /// <summary>
     /// Test the api endpoint for categories
     /// </summary>
-    public class CategoryApiTests
+    public class CategoryApiTests : ApiTestBase
     {
-        private const string BaseUrl = "http://localhost:52869/api";
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
         private const string TestCategoryName = "Test Category";
 
         private string GetRecordSql
@@ -31,7 +29,7 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                RestResult<List<CategoryRowApiO>> apiResult = restClient.Execute<List<CategoryRowApiO>>("Category", RestSharp.Method.GET);
+                RestResult<List<CategoryRowApiO>> apiResult = restClient.Execute<List<CategoryRowApiO>>("Category", RestSharp.Method.GET, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult.Result);
 
@@ -58,7 +56,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "2")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST,routeParameters: routeParams);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST,routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult);
 
@@ -84,7 +82,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "1000")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST, routeParameters: routeParams);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 204, apiResult.Content);
                 Assert.Null(apiResult.Result);                            
             }
@@ -108,11 +106,13 @@ namespace Northwind.IntegrationTests
                 {
                     CategoryRowApiO newCategory = new CategoryRowApiO() { CategoryName = TestCategoryName, Description = "Some text about the item" };
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory);
+                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 201, apiResult.Content);
 
                     CategoryRowApiO sqlResult = sqlClient.Fill<CategoryRowApiO>("SELECT CategoryID as CategoryId, CategoryName, Description FROM Categories WHERE CategoryName = '" + newCategory.CategoryName + "' ORDER BY CategoryID");
-                    Assert.True(sqlResult.CategoryName == newCategory.CategoryName && sqlResult.Description == newCategory.Description);
+                    Assert.True(sqlResult.CategoryName == apiResult.Result.CategoryName 
+                                && sqlResult.Description == apiResult.Result.Description 
+                                && sqlResult.CategoryId == apiResult.Result.CategoryId);
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace Northwind.IntegrationTests
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
                 CategoryRowApiO newCategory = new CategoryRowApiO() { CategoryName = string.Empty, Description = "Some text about the item" };
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400, apiResult.Content);
             }
         }
@@ -154,7 +154,7 @@ namespace Northwind.IntegrationTests
                     CategoryRowApiO updatedCategory = existingCategory;
                     updatedCategory.Description += " More text.";
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBody: updatedCategory);
+                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBody: updatedCategory, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                     Assert.True(apiResult.Result.Description.EndsWith(" More text."), "The updated text was not returned");
                 }
@@ -174,7 +174,7 @@ namespace Northwind.IntegrationTests
             {
                 string partialJson = "{ \"CategoryId\": -12345, \"Description\": \"All about more text\" }";
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }
@@ -200,7 +200,7 @@ namespace Northwind.IntegrationTests
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
                     string partialJson = "{ \"CategoryId\": " + existingCategory.CategoryId + ", \"Description\": \"All about more text\" }";
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                 }
 
@@ -230,7 +230,7 @@ namespace Northwind.IntegrationTests
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
                     string partialJson = "{ \"CategoryId\": " + existingCategory.CategoryId + " }";
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson);
+                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     
                     // the assert should be false. The model we are working with is simple and has only 1 required parameter.
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
@@ -266,7 +266,7 @@ namespace Northwind.IntegrationTests
                         new KeyValuePair<string, string>("CategoryId", existingCategory.CategoryId.ToString())
                     };
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams);
+                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 301, apiResult.Content);
                 }
 
@@ -288,7 +288,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "-1234")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams);
+                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 500 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }

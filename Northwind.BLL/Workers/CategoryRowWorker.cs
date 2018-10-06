@@ -72,6 +72,33 @@ namespace Northwind.BLL.Workers
         }
 
         /// <summary>
+        /// Fetch an item using a other fields apart from its key.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        public CategoryRowApiO Fetch(CategoryRowApiO category)
+        {
+            Category categoryDb = this.CategoryRepository.FetchAll.Where(f => f.CategoryName.Substring(0, category.CategoryName.Length) == category.CategoryName 
+                                                                            && f.Description.Substring(0, category.Description.Length) == category.Description).FirstOrDefault();
+
+            if (categoryDb == null)
+            {
+                throw new RecordNotFoundException("Could not find a matching item.");
+            }
+            else
+            {
+                CategoryRowApiO result = new CategoryRowApiO();
+
+                using (Transposition transposition = new Transposition())
+                {
+                    result = transposition.Transpose(categoryDb, result);
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Adds a new record
         /// </summary>
         /// <param name="apiModel"></param>
@@ -187,7 +214,7 @@ namespace Northwind.BLL.Workers
 
         public void Commit()
         {
-            this.CategoryRepository.Save();
+            this.CategoryRepository.Save();            
         }
     }
 }

@@ -1,0 +1,35 @@
+﻿@model IViewModel
+@*
+    List the discovery manager output.
+*@
+
+@{
+    Model.PageMeta.PageTitle = "API Authentication";
+    Model.PageMeta.Description = "How to authenticate with the api";
+    Model.PageMeta.AddKeyword("Api");
+    Model.PageMeta.AddKeyword("Authentication");
+}
+
+<h2>Authenticate with the api</h2>
+<p>
+    If you want to consume an api endpoint, you must authenticate.
+</p>
+<p>
+    You authenticate using your email and password. Your user must be a member of the 'Api' role.
+</p>
+<p>
+    Send a POST request to api/Authorize/Login. The json body is defined in the discovery page.
+    Upon sucessful login, the response will include a header value with a key 'ApiToken'.
+</p>
+<p>
+    You need to send this token in every request you make to the api. The token is placed in the request header using the key 'ApiToken'.
+</p>
+<p>
+    Each token lasts for 4 hours. After it has expired, you can get a new token by authenticating again.
+</p>
+<p>
+    When you want your session to stop, send a GET to api/Authorize/Logout. You need to send the token in the header for this request.    
+</p>
+<p>
+    After logging out or your session expires, no further requests using the token will be possible..
+</p>

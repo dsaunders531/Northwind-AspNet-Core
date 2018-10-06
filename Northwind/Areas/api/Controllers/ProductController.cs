@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using mezzanine.MVC;
+using mezzanine.WorkerPattern;
 using Microsoft.AspNetCore.Mvc;
-using Northwind.BLL;
+using Northwind.Areas.api.Filters;
 using Northwind.BLL.Models;
-using Northwind.BLL.Workers;
 using Northwind.DAL.Models;
 using System.Collections.Generic;
-using mezzanine.MVC;
-using mezzanine.WorkerPattern;
 
 namespace Northwind.Areas.api.Controllers
 {
     [ApiController]
     [Area("api")]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Api")]
+    [ApiAuthorize(Roles = "Api")]
     public class ProductController : GenericApiController<Product, ProductRowApiO, int>, 
                                         IApiGetable<ProductRowApiO>, 
                                         IApiPostable<ProductRowApiO, int>, 
@@ -21,7 +19,7 @@ namespace Northwind.Areas.api.Controllers
                                         IApiPatchable<ProductRowApiO>, 
                                         IApiDeleteable<int>
     {
-        public ProductController(IGenericWorker<ProductRowApiO, int> workerService) : base(workerService)
+        public ProductController(IGenericWorker<Product, ProductRowApiO, int> workerService) : base(workerService)
         {
         }
 
@@ -56,10 +54,12 @@ namespace Northwind.Areas.api.Controllers
 
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
-        [Consumes("application/json")]
-        public ActionResult Put([FromBody] ProductRowApiO apiRowModel)
+        [Consumes("application/json")]        
+        public ActionResult<ProductRowApiO> Put([FromBody] ProductRowApiO apiRowModel)
         {
-            return base.BasePut(apiRowModel);
+            return base.BasePut(apiRowModel, p => p.SupplierId == apiRowModel.SupplierId
+                                                && p.CategoryId == apiRowModel.CategoryId
+                                                && p.ProductName.Substring(0, apiRowModel.ProductName.Length) == apiRowModel.ProductName);
         }
     }
 }
