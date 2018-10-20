@@ -425,11 +425,7 @@ namespace mezzanine.Extensions
         /// <returns></returns>
         public static bool IsNullOrEmpty(this string value)
         {
-            bool result = false;
-
-            result = value == null || value == string.Empty;
-
-            return result;
+            return string.IsNullOrEmpty(value);
         }
     }
 }

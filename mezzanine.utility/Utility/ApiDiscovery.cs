@@ -63,6 +63,11 @@ namespace mezzanine.Utility
                         if (apiController.Route.Contains("[action]"))
                         {
                             apiController.Route = apiController.Route.Replace("[action]", string.Empty);
+
+                            if (apiController.Route.EndsWith("/"))
+                            {
+                                apiController.Route = apiController.Route.Substring(0, apiController.Route.Length - 1);
+                            }
                         }
 
                         result.Controllers.Add(apiController);

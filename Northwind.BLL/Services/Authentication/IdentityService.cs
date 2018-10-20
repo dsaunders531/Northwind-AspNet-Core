@@ -7,9 +7,9 @@ namespace Northwind.BLL.Services
 {
     public sealed class IdentityService : IdentityWorker
     {
-        public IdentityService(IAppConfigurationService appConfigurationService, UserManager<UserProfileModel> userManager,
+        public IdentityService(IAppConfiguration appConfiguration, UserManager<UserProfileModel> userManager,
                                 SignInManager<UserProfileModel> signInManager, RoleManager<IdentityRole> roleManager) 
-            : base(((Northwind.BLL.Services.AppConfigurationService)appConfigurationService).AppConfiguration, userManager, signInManager, roleManager)
+            : base(appConfiguration, userManager, signInManager, roleManager)
         {
         }
     }

@@ -17,7 +17,7 @@ namespace mezzanine.Filters
             if (context.HttpContext.Request.IsHttps == false)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
-            }
+            }            
         }
     }
 }

@@ -70,8 +70,10 @@ namespace mezzanine.MVC
         /// <summary>
         /// Create a new record.
         /// </summary>
-        /// <param name="apiRowModel"></param>
-        /// <returns></returns>        
+        /// <param name="apiRowModel">The model you want to create.</param>
+        /// <param name="fetchWithoutKey">The selector for getting the record without the key.</param>
+        /// <returns></returns>    
+        /// <remarks>You will get the record back with any defaults and its Key column value set. The selector does this for you. Make sure you don't use the key as part of the selector.</remarks>
         public ActionResult<TApiRowModel> BasePut(TApiRowModel apiRowModel, [FromServices] Func<TDbModel, bool> fetchWithoutKey)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using mezzanine.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Northwind.BLL.Services;
 using Northwind.BLL.ViewModels.Authentication;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
@@ -20,13 +21,13 @@ namespace Northwind.BLL.Workers
         private RoleManager<IdentityRole> RoleManager { get; set; }
         private List<string> DefaultRoles { get; set; }
 
-        public IdentityWorker(AppConfigurationModel appConfiguration, UserManager<UserProfileModel> userManager, 
+        public IdentityWorker(IAppConfiguration appConfiguration, UserManager<UserProfileModel> userManager, 
                                 SignInManager<UserProfileModel> signInManager, RoleManager<IdentityRole> roleManager)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
             this.RoleManager = roleManager;
-            this.DefaultRoles = appConfiguration.SeedData.DefaultRoles.ToList<string>();
+            this.DefaultRoles = appConfiguration.AppConfiguration.SeedData.DefaultRoles.ToList<string>();
         }
 
         public async Task<IdentityResult> CreateAccountAsync(CreateAccountViewModel model)

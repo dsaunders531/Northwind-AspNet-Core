@@ -6,9 +6,17 @@ using System;
 namespace Northwind.BLL.Services
 {
     /// <summary>
+    /// Interface for the strongly typed version of the application configuration.
+    /// </summary>
+    public interface IAppConfiguration
+    {
+        AppConfigurationModel AppConfiguration { get; }
+    }
+
+    /// <summary>
     /// Use the mezzanine configuration service to provide a strongly typed configuration in the application.
     /// </summary>
-    public sealed class AppConfigurationService: mezzanine.Services.AppConfigurationService
+    public sealed class AppConfigurationService: mezzanine.Services.AppConfigurationService, IAppConfiguration 
     {
         public AppConfigurationModel AppConfiguration { get; private set; }
 

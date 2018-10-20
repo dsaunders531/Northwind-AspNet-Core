@@ -104,14 +104,15 @@ namespace mezzanine.WorkerPattern
         /// <summary>
         /// Adds a new record
         /// </summary>
-        /// <param name="apiModel"></param>
+        /// <param name="apiRowModel"></param>
         /// <param name="existingRecordSelector">Selector for existing record</param>
         /// <returns>The key for the new record.</returns>
-        public TApiRowModel Create(TApiRowModel apiModel, Func<TDbModel, bool> existingRecordSelector)
+        /// <remarks>The existing record selector must select the record without using the key (it will be 0 in a new record).</remarks>
+        public TApiRowModel Create(TApiRowModel apiRowModel, Func<TDbModel, bool> existingRecordSelector)
         {
             TApiRowModel result = default(TApiRowModel);
 
-            if (apiModel == null)
+            if (apiRowModel == null)
             {
                 throw new ArgumentNullException("The input parameter cannot be null");
             }
@@ -119,7 +120,7 @@ namespace mezzanine.WorkerPattern
             {
                 if (ModelState.IsValid == false)
                 {
-                    string modelType = apiModel.GetType().ToString();
+                    string modelType = apiRowModel.GetType().ToString();
                     ModelState.AddModelError(string.Empty, string.Format("Validation Failed, the {0} contains invalid data.", modelType));
                     throw new ModelStateException(string.Format("The {0} is not valid", modelType), ModelState);
                 }
@@ -140,11 +141,11 @@ namespace mezzanine.WorkerPattern
                         // map the item and add it
                         using (Transposition transposition = new Transposition())
                         {
-                            dbModel = transposition.Transpose<TDbModel>(apiModel, dbModel);
+                            dbModel = transposition.Transpose<TDbModel>(apiRowModel, dbModel);
 
                             this.Repository.Create(dbModel);
 
-                            result = transposition.Transpose<TApiRowModel>(dbModel, apiModel);
+                            result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
                     }
                 }
@@ -158,19 +159,19 @@ namespace mezzanine.WorkerPattern
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public abstract TApiRowModel Create(TApiRowModel apiModel);
+        public abstract TApiRowModel Create(TApiRowModel apiRowModel);
 
         /// <summary>
         /// Update a record in the database.
         /// </summary>
-        /// <param name="apiModel"></param>
+        /// <param name="apiRowModel"></param>
         /// <param name="existingRecordSelector">Selector for existing records</param>
         /// <returns></returns>
-        public TApiRowModel Update(TApiRowModel apiModel, Func<TDbModel, bool> existingRecordSelector)
+        public TApiRowModel Update(TApiRowModel apiRowModel, Func<TDbModel, bool> existingRecordSelector)
         {
             TApiRowModel result = default(TApiRowModel);
 
-            if (apiModel == null)
+            if (apiRowModel == null)
             {
                 throw new ArgumentNullException("The input parameter cannot be null");
             }
@@ -178,7 +179,7 @@ namespace mezzanine.WorkerPattern
             {
                 if (ModelState.IsValid == false)
                 {
-                    string modelType = apiModel.GetType().ToString();
+                    string modelType = apiRowModel.GetType().ToString();
                     ModelState.AddModelError(string.Empty, string.Format("Validation Failed, the {0} contains invalid data.", modelType));
                     throw new ModelStateException(string.Format("The {0} is not valid", modelType), ModelState);
                 }
@@ -197,12 +198,12 @@ namespace mezzanine.WorkerPattern
                         // map the apiO to the db model.
                         using (Transposition transposition = new Transposition())
                         {
-                            dbModel = transposition.Transpose<TDbModel>(apiModel, dbModel);
+                            dbModel = transposition.Transpose<TDbModel>(apiRowModel, dbModel);
 
                             // update the item
                             this.Repository.Update(dbModel);
 
-                            result = transposition.Transpose<TApiRowModel>(dbModel, apiModel);
+                            result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
                     }
                 }
