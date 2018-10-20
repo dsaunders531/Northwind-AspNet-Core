@@ -18,6 +18,7 @@ namespace Northwind.BLL.Models
         [MaxLength(15), MinLength(1)]
         public string CategoryName { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
     }
 }

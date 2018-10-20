@@ -2,49 +2,45 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Northwind.BLL.Validators;
 
-namespace Northwind.DAL.Models
+namespace Northwind.BLL.Models
 {
-    [Table("Orders")]
-    public partial class Order
+    [NotMapped]
+    public class OrderRowApiO
     {
-        public Order()
-        {
-            OrderDetails = new HashSet<OrderDetail>();
-        }
-
-        [Key]
-        [Column("OrderID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int OrderId { get; set; }
 
-        [Column("CustomerID")]
+        [Required]
+        [ValidCustomer()]
         [MaxLength(5)]
         public string CustomerId { get; set; }
 
-        [Column("EmployeeID")]
+        [Required]
+        [ValidEmployee()]
         public int? EmployeeId { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
-        [Column("OrderDate", TypeName = "datetime")]
         public DateTime? OrderDate { get; set; }
 
         [DataType(DataType.Date)]
-        [Column("RequiredDate", TypeName = "datetime")]
         public DateTime? RequiredDate { get; set; }
 
         [DataType(DataType.Date)]
-        [Column("ShippedDate", TypeName = "datetime")]
         public DateTime? ShippedDate { get; set; }
 
         public int? ShipVia { get; set; }
 
-        [Column("Freight", TypeName = "money")]
+        [DataType(DataType.Currency)]
         public decimal? Freight { get; set; }
 
+        [Required]
         [MaxLength(40)]
         public string ShipName { get; set; }
 
+        [Required]
         [MaxLength(60)]
         public string ShipAddress { get; set; }
 
@@ -54,16 +50,12 @@ namespace Northwind.DAL.Models
         [MaxLength(15)]
         public string ShipRegion { get; set; }
 
+        [Required]
         [DataType(DataType.PostalCode)]
         [MaxLength(10)]
         public string ShipPostalCode { get; set; }
 
         [MaxLength(15)]
         public string ShipCountry { get; set; }
-
-        public Customer Customer { get; set; }
-        public Employee Employee { get; set; }
-        public Shipper ShipViaNavigation { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -19,7 +19,9 @@ namespace Northwind.BLL.Workers
 
         public override ProductRowApiO Create(ProductRowApiO apiModel)
         {
-            return base.Create(apiModel, model => model.ProductId == apiModel.ProductId);
+            return base.Create(apiModel, model => model.ProductName == apiModel.ProductName 
+                                        && model.CategoryId == apiModel.CategoryId 
+                                        && model.SupplierId == apiModel.SupplierId);
         }
 
         public override ProductRowApiO Update(ProductRowApiO apiModel)

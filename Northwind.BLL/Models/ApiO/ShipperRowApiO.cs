@@ -3,19 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Northwind.DAL.Models
+namespace Northwind.BLL.Models
 {
-    [Table("Shippers")]
-    public partial class Shipper
+    [NotMapped]
+    public class ShipperRowApiO
     {
-        public Shipper()
-        {
-            Orders = new HashSet<Order>();
-        }
-
-        [Key]
-        [Column("ShipperID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int ShipperId { get; set; }
 
         [Required]
@@ -25,7 +18,5 @@ namespace Northwind.DAL.Models
         [MaxLength(24)]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
-
-        public ICollection<Order> Orders { get; set; }
     }
 }

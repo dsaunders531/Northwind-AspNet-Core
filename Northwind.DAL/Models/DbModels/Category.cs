@@ -18,7 +18,6 @@ namespace Northwind.DAL.Models
         [Required]
         public int CategoryId { get; set; }
 
-        //[Index("CategoryName")]
         [Required]
         [MaxLength(15), MinLength(1)]
         public string CategoryName { get; set; }

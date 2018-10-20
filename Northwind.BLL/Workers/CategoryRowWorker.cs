@@ -122,10 +122,7 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // check the item does not already exist
-                    Category dbModel = this.CategoryRepository.Fetch(apiModel.CategoryId);
-
-                    // alternative way of getting 1 item.
-                    //dbModel = this.CategoryRepository.FetchAll.Where(cat => cat.CategoryId == apiModel.CategoryId).FirstOrDefault();
+                    Category dbModel = this.CategoryRepository.FetchAll.Where(cat => cat.CategoryName == apiModel.CategoryName).FirstOrDefault();
 
                     if (dbModel != null)
                     {

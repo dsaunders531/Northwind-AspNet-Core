@@ -15,6 +15,7 @@ namespace Northwind.DAL.Models
         [Key]
         [Required]
         [Column("ProductID")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
 
         [Required]
@@ -33,9 +34,9 @@ namespace Northwind.DAL.Models
         [Column("UnitPrice", TypeName = "money")]
         public decimal? UnitPrice { get; set; }
 
-        public short? UnitsInStock { get; set; }
+        public short? UnitsInStock { get; set; } 
 
-        public short? UnitsOnOrder { get; set; }
+        public short? UnitsOnOrder { get; set; } 
 
         public short? ReorderLevel { get; set; }
 

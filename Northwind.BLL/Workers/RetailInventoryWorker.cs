@@ -127,10 +127,10 @@ namespace Northwind.BLL.Workers
             return result;
         }
 
-        public List<ProductApiO> GetCategoryProducts(int categoryId)
+        public List<ProductRowApiO> GetCategoryProducts(int categoryId)
         {
             Category category = this.CategoryRepository.Fetch(categoryId);
-            List<ProductApiO> result = new List<ProductApiO>();
+            List<ProductRowApiO> result = new List<ProductRowApiO>();
 
             if (category != null)
             {
@@ -138,7 +138,7 @@ namespace Northwind.BLL.Workers
                 {
                     foreach (Product item in category.Products)
                     {
-                        result.Add(transposition.Transpose<ProductApiO>(item, new ProductApiO()));
+                        result.Add(transposition.Transpose<ProductRowApiO>(item, new ProductRowApiO()));
                     }
                 }               
             }

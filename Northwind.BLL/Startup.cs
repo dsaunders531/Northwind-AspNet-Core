@@ -30,7 +30,11 @@ namespace Northwind.BLL
         public static void ConfigureServices(AppConfigurationModel appConfiguration, IServiceCollection services, IHostingEnvironment environment)
         {
             // Custom services
-            services.AddSingleton<IAppConfigurationService>(new Northwind.BLL.Services.AppConfigurationService(environment)); // provides strongly typed access to appsettings.json.
+            // The configuration is split into 2 parts. 
+            // - AppConfigurationService has the strongly typed configuration and filesystem.
+            // - AppConfiguration is the strongly typed configuration only.
+            services.AddSingleton<IAppConfigurationService>(new Northwind.BLL.Services.AppConfigurationService(environment));
+            services.AddSingleton<IAppConfiguration>(new Northwind.BLL.Services.AppConfigurationService(environment));
 
             // Application Data - this is a dependant of business logic so we start it here
             Northwind.DAL.Startup.ConfigureServices(appConfiguration, services);
@@ -42,6 +46,16 @@ namespace Northwind.BLL
             services.AddTransient<RetailInventoryService, RetailInventoryService>();
             services.AddTransient<CategoryService, CategoryService>();
             services.AddTransient<IGenericWorker<Product, ProductRowApiO, int>, ProductRowWorker>();
+            services.AddTransient<IGenericWorker<Customer, CustomerRowApiO, string>, CustomerRowWorker>();
+            services.AddTransient<IGenericWorker<CustomerDemographic, CustomerDemographicRowApiO, string>, CustomerDemographicRowWorker>();
+            services.AddTransient<IGenericWorker<Employee, EmployeeRowApiO, int>, EmployeeRowWorker>();
+            services.AddTransient<IGenericWorker<EmployeeTerritory, EmployeeTerritoryRowApiO, int>, EmployeeTerritoryRowWorker>();
+            services.AddTransient<IGenericWorker<Order, OrderRowApiO, int>, OrderRowWorker>();
+            services.AddTransient<IGenericWorker<OrderDetail, OrderDetailRowApiO, int>, OrderDetailRowWorker>();
+            services.AddTransient<IGenericWorker<Region, RegionRowApiO, int>, RegionRowWorker>();
+            services.AddTransient<IGenericWorker<Shipper, ShipperRowApiO, int>, ShipperRowWorker>();
+            services.AddTransient<IGenericWorker<Supplier, SupplierRowApiO, int>, SupplierRowWorker>();
+            services.AddTransient<IGenericWorker<Territory, TerritoryRowApiO, int>, TerritoryRowWorker>();
         }
 
         public static void Configure(AppConfigurationModel appConfiguration, IApplicationBuilder app)

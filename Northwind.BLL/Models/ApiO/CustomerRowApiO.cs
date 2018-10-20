@@ -1,23 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+using Northwind.BLL.Validators;
 
-namespace Northwind.DAL.Models
+namespace Northwind.BLL.Models
 {
-    [Table("Customers")]
-    public partial class Customer
+    [NotMapped]
+    public class CustomerRowApiO
     {
-        public Customer()
-        {
-            CustomerCustomerDemo = new HashSet<CustomerCustomerDemo>();
-            Orders = new HashSet<Order>();
-        }
-
-        [Key]
-        [Column("CustomerID")]
-        [MaxLength(5)]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [MaxLength(5)]
         public string CustomerId { get; set; }
 
         [Required]
@@ -27,6 +21,7 @@ namespace Northwind.DAL.Models
         [MaxLength(30)]
         public string ContactName { get; set; }
 
+        [Required]
         [MaxLength(30)]
         public string ContactTitle { get; set; }
 
@@ -39,8 +34,9 @@ namespace Northwind.DAL.Models
         [MaxLength(15)]
         public string Region { get; set; }
 
+        [Required]
         [DataType(DataType.PostalCode)]
-        [MaxLength(10)]
+        [MaxLength(15)]
         public string PostalCode { get; set; }
 
         [MaxLength(15)]
@@ -53,8 +49,5 @@ namespace Northwind.DAL.Models
         [MaxLength(24)]
         [DataType(DataType.PhoneNumber)]
         public string Fax { get; set; }
-
-        public ICollection<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
-        public ICollection<Order> Orders { get; set; }
     }
 }

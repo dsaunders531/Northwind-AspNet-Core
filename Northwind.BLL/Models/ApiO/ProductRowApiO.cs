@@ -19,9 +19,11 @@ namespace Northwind.BLL.Models
         [MaxLength(40)]
         public string ProductName { get; set; }
 
+        [Required]
         [ValidSupplier()]
         public int? SupplierId { get; set; }
 
+        [Required]
         [ValidCategory()]
         public int? CategoryId { get; set; }
 
@@ -50,9 +52,11 @@ namespace Northwind.BLL.Models
         [MaxLength(40), MinLength(1)]
         public string ProductName { get; set; }
 
+        [Required]
         [ValidSupplier()]
         public int SupplierId { get; set; }
 
+        [Required]
         [ValidCategory()]
         public int CategoryId { get; set; }
 

@@ -1,29 +1,21 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace Northwind.DAL.Models
+namespace Northwind.BLL.Models
 {
-    [Table("Customers")]
-    public partial class Customer
+    [NotMapped]
+    public class SupplierRowApiO
     {
-        public Customer()
-        {
-            CustomerCustomerDemo = new HashSet<CustomerCustomerDemo>();
-            Orders = new HashSet<Order>();
-        }
-
-        [Key]
-        [Column("CustomerID")]
-        [MaxLength(5)]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string CustomerId { get; set; }
+        public int SupplierId { get; set; }
 
         [Required]
         [MaxLength(40)]
         public string CompanyName { get; set; }
 
+        [Required]
         [MaxLength(30)]
         public string ContactName { get; set; }
 
@@ -39,6 +31,7 @@ namespace Northwind.DAL.Models
         [MaxLength(15)]
         public string Region { get; set; }
 
+        [Required]
         [DataType(DataType.PostalCode)]
         [MaxLength(10)]
         public string PostalCode { get; set; }
@@ -54,7 +47,7 @@ namespace Northwind.DAL.Models
         [DataType(DataType.PhoneNumber)]
         public string Fax { get; set; }
 
-        public ICollection<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        [DataType(DataType.Url)]
+        public string HomePage { get; set; }
     }
 }

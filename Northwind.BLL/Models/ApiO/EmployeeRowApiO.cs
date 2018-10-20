@@ -2,22 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Northwind.BLL.Validators;
 
-namespace Northwind.DAL.Models
+namespace Northwind.BLL.Models
 {
-    [Table("Employees")]
-    public partial class Employee
+    [NotMapped]
+    public class EmployeeRowApiO
     {
-        public Employee()
-        {
-            EmployeeTerritories = new HashSet<EmployeeTerritory>();
-            InverseReportsToNavigation = new HashSet<Employee>();
-            Orders = new HashSet<Order>();
-        }
-
-        [Key]
-        [Column("EmployeeID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int EmployeeId { get; set; }
 
         [Required]
@@ -34,12 +26,11 @@ namespace Northwind.DAL.Models
         [MaxLength(25)]
         public string TitleOfCourtesy { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
-        [Column("BirthDate", TypeName = "datetime")]
         public DateTime? BirthDate { get; set; }
 
         [DataType(DataType.Date)]
-        [Column("HireDate", TypeName = "datetime")]
         public DateTime? HireDate { get; set; }
 
         [MaxLength(60)]
@@ -51,6 +42,7 @@ namespace Northwind.DAL.Models
         [MaxLength(15)]
         public string Region { get; set; }
 
+        [Required]
         [DataType(DataType.PostalCode)]
         [MaxLength(10)]
         public string PostalCode { get; set; }
@@ -65,20 +57,15 @@ namespace Northwind.DAL.Models
         [MaxLength(4)]
         public string Extension { get; set; }
 
-        [Column("Photo", TypeName = "image")]
         public byte[] Photo { get; set; }
 
-        [Column("Notes", TypeName = "ntext")]
+        [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
 
+        [ValidEmployee()]
         public int? ReportsTo { get; set; }
 
         [MaxLength(255)]
         public string PhotoPath { get; set; }
-
-        public Employee ReportsToNavigation { get; set; }
-        public ICollection<EmployeeTerritory> EmployeeTerritories { get; set; }
-        public ICollection<Employee> InverseReportsToNavigation { get; set; }
-        public ICollection<Order> Orders { get; set; }
     }
 }

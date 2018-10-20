@@ -30,17 +30,32 @@ namespace Northwind
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string applicationName = this.Environment.ApplicationName.Replace(" ", string.Empty).Trim();
+
             // Built-in services
             services.AddMemoryCache();
-            services.AddSession();
+
+            services.AddSession(options => 
+                {
+                    options.Cookie.Name = string.Format(".{0}.Session", applicationName);
+                }
+            );
+
             services.AddLocalization();
-            services.AddAntiforgery();
+
+            services.AddAntiforgery(options =>
+                {
+                    options.Cookie.Name = string.Format(".{0}.AntiForgery", applicationName);
+                    options.FormFieldName = "AntiForgery";
+                    options.HeaderName = "x-application-anti-forgery";
+                });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.ConsentCookie.Name = string.Format(".{0}.Consent", this.Environment.ApplicationName.Replace(" ", string.Empty).Trim());
             });
 
             // Business logic services - this also configures the database services & Identity services

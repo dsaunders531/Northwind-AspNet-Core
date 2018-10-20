@@ -10,14 +10,11 @@ using Northwind.DAL.Repositories;
 
 namespace Northwind.BLL.Validators
 {
-    /// <summary>
-    /// ValidationAttribute to see if a category exists.
-    /// </summary>
-    public class ValidCategoryAttribute : Attribute, IModelValidator
+    public class ValidProductAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The category id does not exist";
+        public string ErrorMessage { get; set; } = "The product id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
@@ -26,18 +23,17 @@ namespace Northwind.BLL.Validators
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<Category, int> categories = new CategoryRepository(dbContext);
+                IRepository<Product, int> products = new ProductRepository(dbContext);
 
-                int? value = context.Model as int?; // get the value of supplier (the type must match the column type)
+                int? value = context.Model as int?; 
 
                 if (value == null)
                 {
-                    // a supplier id must be supplied
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A category id must be provided") };
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A product id must be provided") };
                 }
                 else
                 {
-                    Category category = categories.Fetch(value.Value);
+                    Product category = products.Fetch(value.Value);
 
                     if (category == null)
                     {
