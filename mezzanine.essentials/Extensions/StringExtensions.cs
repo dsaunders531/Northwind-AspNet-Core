@@ -1,11 +1,12 @@
-﻿using mezzanine.Utility;
+﻿using mezzanine.Serialization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     /// <summary>
     /// Extensions for the string type.
@@ -57,7 +58,14 @@ namespace mezzanine.Extensions
         {
             if (count != 1)
             {
-                value += "s";
+                if (value.Last().ToString() !="y")
+                {
+                    value = value.Substring(0, value.Length - 1) + "ies";
+                }
+                else
+                {
+                    value += "s";
+                }                
             }
 
             return value;
@@ -238,7 +246,7 @@ namespace mezzanine.Extensions
         {
             T result = default(T);
 
-            using (JSONSerialiser js = new JSONSerialiser())
+            using (JSONSerializer js = new JSONSerializer())
             {
                 result = js.Deserialize<T>(value);
             }
@@ -426,6 +434,38 @@ namespace mezzanine.Extensions
         public static bool IsNullOrEmpty(this string value)
         {
             return string.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// Converts a string to upper camel case.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToCamelCase(this string value)
+        {
+            return value.ToTitleCase().Trim().Replace(" ", string.Empty);
+        }
+
+        /// <summary>
+        /// Encrypt a string with the provider.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="encryptionProvider"></param>
+        /// <returns></returns>
+        public static string Encrypt(this string value, IEncryptionProvider encryptionProvider)
+        {
+            return encryptionProvider.Encrypt(value);
+        }
+
+        /// <summary>
+        /// Decrypt a string with the specified provider. Use the same provider you encypted the string with.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="encryptionProvider"></param>
+        /// <returns></returns>
+        public static string Decrypt(this string value, IEncryptionProvider encryptionProvider)
+        {
+            return encryptionProvider.Decrypt(value);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class HttpResponseExtensions
     {

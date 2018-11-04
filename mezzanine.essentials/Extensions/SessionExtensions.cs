@@ -1,8 +1,8 @@
-﻿using mezzanine.Utility;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
+using mezzanine.Serialization;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     /// <summary>
     /// Extensions for Session.
@@ -18,7 +18,7 @@ namespace mezzanine.Extensions
         /// <remarks>Use GetJSon to retrieve the object.></remarks>
         public static void SetJSon(this ISession session, string key, object value)
         {
-            using (JSONSerialiser js = new JSONSerialiser())
+            using (JSONSerializer js = new JSONSerializer())
             {
                 string sessionData = js.Serialize(value).ToBase64();
                 session.SetString(key, sessionData);
@@ -38,7 +38,7 @@ namespace mezzanine.Extensions
             string sessionData = null;
             T result = default(T);
 
-            using (JSONSerialiser js = new JSONSerialiser())
+            using (JSONSerializer js = new JSONSerializer())
             {
                 sessionData = session.GetString(key).FromBase64();
                 result = sessionData == null ? default(T) : js.Deserialize<T>(sessionData);

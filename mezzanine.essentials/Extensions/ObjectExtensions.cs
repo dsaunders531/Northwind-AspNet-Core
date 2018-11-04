@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using mezzanine.Utility;
+using mezzanine.Serialization;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class ObjectExtensions
     {
         public static string ToJson(this object me)
         {
-            using (JSONSerialiser serializer = new JSONSerialiser())
+            using (JSONSerializer serializer = new JSONSerializer())
             {
                 return serializer.Serialize(me);
             }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class HttpContextExtensions
     {

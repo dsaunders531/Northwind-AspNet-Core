@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class RazorPageExtensions
     {

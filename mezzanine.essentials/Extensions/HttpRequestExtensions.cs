@@ -3,7 +3,7 @@ using Microsoft.Extensions.Primitives;
 using System.Globalization;
 using System.Linq;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class HttpRequestExtensions
     {

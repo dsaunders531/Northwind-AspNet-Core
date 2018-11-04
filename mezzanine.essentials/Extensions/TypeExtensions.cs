@@ -1,8 +1,8 @@
-﻿using mezzanine.Utility;
+﻿using mezzanine.Serialization;
 using System;
 using System.Linq;
 
-namespace mezzanine.Extensions
+namespace mezzanine
 {
     public static class TypeExtensions
     {
@@ -15,7 +15,7 @@ namespace mezzanine.Extensions
         {
             string result = string.Empty;
 
-            using (JSONSerialiser js = new JSONSerialiser())
+            using (JSONSerializer js = new JSONSerializer())
             {
                 try
                 {
