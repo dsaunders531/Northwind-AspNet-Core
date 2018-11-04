@@ -1,4 +1,4 @@
-﻿using mezzanine.Extensions;
+﻿using mezzanine;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -15,6 +15,7 @@ namespace Northwind.Areas.api.Filters
     /// <summary>
     /// An attribute to allow and implement the api login method and use a token in the request to log the user in.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = false)]
     public class ApiAuthorizeAttribute : Attribute, IAuthorizationFilter, IResultFilter
     {
         /// <summary>

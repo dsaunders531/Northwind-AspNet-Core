@@ -10,6 +10,7 @@ using Northwind.DAL.Repositories;
 
 namespace Northwind.BLL.Validators
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class ValidTerritoryAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;

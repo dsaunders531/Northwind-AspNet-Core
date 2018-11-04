@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.IntegrationTests", "Northwind.IntegrationTests\Northwind.IntegrationTests.csproj", "{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mezzanine.utility", "mezzanine.utility\mezzanine.utility.csproj", "{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.BLL", "Northwind.BLL\Northwind.BLL.csproj", "{030DABE6-876D-4EA0-ABF2-4ACAD0712827}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.DAL", "Northwind.DAL\Northwind.DAL.csproj", "{51D45BB0-F5D0-418A-BA46-E9F0608ECA61}"
@@ -23,10 +21,6 @@ Global
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Release|Any CPU.ActiveCfg = Release|Any CPU

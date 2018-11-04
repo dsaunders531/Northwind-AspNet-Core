@@ -1,4 +1,4 @@
-﻿using mezzanine.Utility;
+﻿using mezzanine.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Northwind.DAL.Models;
 using System;
@@ -34,7 +34,7 @@ namespace Northwind.BLL.Services
                 configPath = base.ContentRootPath + "appsettings.Development.json";
             }
 
-            using (JSONSerialiser js = new JSONSerialiser())
+            using (JSONSerializer js = new JSONSerializer())
             {
                 this.AppConfiguration = js.Deserialize<AppConfigurationModel>(new Uri(configPath));
             }

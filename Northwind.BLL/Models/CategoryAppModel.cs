@@ -1,10 +1,12 @@
 ﻿using Northwind.BLL.Models;
 using System.Collections.Generic;
-using mezzanine.ViewModels;
+using mezzanine.ViewModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Northwind.BLL.ViewModels
+namespace Northwind.BLL.Models
 {
-    public class CategoryViewModel : ViewModel
+    [NotMapped]
+    public class CategoryAppModel 
     {
         public CategoryRowApiO Category { get; set; }
 

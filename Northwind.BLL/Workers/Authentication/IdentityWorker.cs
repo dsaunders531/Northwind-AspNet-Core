@@ -1,7 +1,7 @@
-﻿using mezzanine.Extensions;
+﻿using mezzanine;
 using Microsoft.AspNetCore.Identity;
 using Northwind.BLL.Services;
-using Northwind.BLL.ViewModels.Authentication;
+using Northwind.BLL.Models.Authentication;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace Northwind.BLL.Workers
             this.DefaultRoles = appConfiguration.AppConfiguration.SeedData.DefaultRoles.ToList<string>();
         }
 
-        public async Task<IdentityResult> CreateAccountAsync(CreateAccountViewModel model)
+        public async Task<IdentityResult> CreateAccountAsync(CreateAccountAppModel model)
         {
             UserProfileModel user = new UserProfileModel { UserName = model.Name, Email = model.Email };
 
@@ -58,7 +58,7 @@ namespace Northwind.BLL.Workers
         /// <param name="model"></param>
         /// <param name="mustBeInRole"></param>
         /// <returns></returns>
-        public async Task<SignInResult> LoginAsync(LoginViewModel model, string mustBeInRole = "")
+        public async Task<SignInResult> LoginAsync(LoginAppModel model, string mustBeInRole = "")
         {
             return await this.LoginAsync(model.Email, model.Password, mustBeInRole);
         }

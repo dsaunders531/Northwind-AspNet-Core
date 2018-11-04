@@ -1,5 +1,5 @@
 ﻿using mezzanine.EF;
-using mezzanine.Exceptions;
+using mezzanine;
 using mezzanine.Utility;
 using mezzanine.WorkerPattern;
 using Northwind.BLL.Models;
@@ -211,7 +211,7 @@ namespace Northwind.BLL.Workers
 
         public void Commit()
         {
-            this.CategoryRepository.Save();            
+            this.CategoryRepository.Commit();            
         }
     }
 }

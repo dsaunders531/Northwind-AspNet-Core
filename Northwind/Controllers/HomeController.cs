@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Northwind.ViewModels;
-using Northwind.BLL.ViewModels;
-using mezzanine.ViewModels;
+using Northwind.Models;
+using Northwind.BLL.Models;
+using mezzanine.ViewModel;
 
 namespace Northwind.Controllers
 {
@@ -16,7 +16,7 @@ namespace Northwind.Controllers
     {
         public IActionResult Index()
         {
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Northwind.Controllers
         {
             ViewData["Message"] = "Your application description page.";
 
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace Northwind.Controllers
         {
             ViewData["Message"] = "Your contact page.";
 
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel() { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ViewModel<ErrorModel>() { ViewData = new ErrorModel() { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } });
         }
     }
 }

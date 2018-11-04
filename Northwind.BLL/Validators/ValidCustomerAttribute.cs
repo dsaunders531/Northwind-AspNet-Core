@@ -11,6 +11,7 @@ using mezzanine.Filters;
 
 namespace Northwind.BLL.Validators
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class ValidCustomerAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;

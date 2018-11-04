@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mezzanine.essentials", "mezzanine.essentials\mezzanine.essentials.csproj", "{1604B956-1A27-49BC-984A-9AFDC556B1C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mezzanine.utility", "mezzanine.utility\mezzanine.utility.csproj", "{6E004EAC-948D-48F2-8219-14D9488BDCB4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.DAL", "Northwind.DAL\Northwind.DAL.csproj", "{E40F375F-31A4-4074-B1D7-1FCC40B0865B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.BLL", "Northwind.BLL\Northwind.BLL.csproj", "{2B625E6C-0C7A-4F42-A2E7-A2C65E186F0F}"
@@ -31,10 +29,6 @@ Global
 		{1604B956-1A27-49BC-984A-9AFDC556B1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1604B956-1A27-49BC-984A-9AFDC556B1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1604B956-1A27-49BC-984A-9AFDC556B1C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E004EAC-948D-48F2-8219-14D9488BDCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E004EAC-948D-48F2-8219-14D9488BDCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E004EAC-948D-48F2-8219-14D9488BDCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E004EAC-948D-48F2-8219-14D9488BDCB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E40F375F-31A4-4074-B1D7-1FCC40B0865B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E40F375F-31A4-4074-B1D7-1FCC40B0865B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E40F375F-31A4-4074-B1D7-1FCC40B0865B}.Release|Any CPU.ActiveCfg = Release|Any CPU

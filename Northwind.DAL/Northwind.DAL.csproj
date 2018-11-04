@@ -16,7 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\mezzanine.essentials\mezzanine.essentials.csproj" />
   </ItemGroup>
 
 </Project>

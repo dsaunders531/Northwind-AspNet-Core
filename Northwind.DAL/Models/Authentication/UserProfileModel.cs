@@ -1,10 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.Extensions;
-using mezzanine.Utility;
-using mezzanine;
 
 namespace Northwind.DAL.Models
 {

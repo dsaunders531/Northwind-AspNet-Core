@@ -7,8 +7,7 @@ using Northwind.DAL.Models;
 using System.Data;
 using System.Data.Common;
 using mezzanine;
-using mezzanine.Utility;
-using mezzanine.Extensions;
+using mezzanine.DbClient;
 using System.Data.SqlClient;
 
 namespace Northwind.DAL

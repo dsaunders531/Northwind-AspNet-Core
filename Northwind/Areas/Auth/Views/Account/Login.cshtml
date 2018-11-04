@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@model ViewModel<LoginAppModel>
 
 @{
     Model.PageMeta.PageTitle = "Login";
@@ -13,31 +13,31 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-area="Auth" asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" asp-antiforgery="true">
-    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+    <input type="hidden" name="returnUrl" value="@Model.ViewData.ReturnUrl" />
 
     <div class="form-group row">
-        <label asp-for="Email" for="Email" class="control-label col-sm-4"></label>
+        <label asp-for="ViewData.Email" for="Email" class="control-label col-sm-4"></label>
         <div class="col-sm-4">
-            <input id="Email" asp-for="Email" class="form-control" />
+            <input id="Email" asp-for="ViewData.Email" class="form-control" />
         </div>
         <div class="col-sm-4">
-            <span asp-validation-for="Email"></span>
+            <span asp-validation-for="ViewData.Email"></span>
         </div>
     </div>
 
     <div class="form-group row">
-        <label asp-for="Password" for="Password" class="control-label col-sm-4"></label>
+        <label asp-for="ViewData.Password" for="Password" class="control-label col-sm-4"></label>
         <div class="col-sm-4">
-            <input id="Password" asp-for="Password" class="form-control" />
+            <input id="Password" asp-for="ViewData.Password" class="form-control" />
         </div>
         <div class="col-sm-4">
-            <span asp-validation-for="Password"></span>
+            <span asp-validation-for="ViewData.Password"></span>
         </div>
     </div>
 
     <div class="form-group row btn-group">
         <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-unlock"> </i> Login</button>
-        <a class="btn btn-default btn-lg" href="@Model.ReturnUrl ?? /"><i class="fa fa-eraser"> </i> Cancel</a>
+        <a class="btn btn-default btn-lg" href="@Model.ViewData.ReturnUrl ?? /"><i class="fa fa-eraser"> </i> Cancel</a>
     </div>
 
 </form>

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using mezzanine.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.BLL.Services;
-using Northwind.BLL.ViewModels.Authentication;
+using Northwind.BLL.Models.Authentication;
 using System.Threading.Tasks;
 
 namespace Northwind.Controllers
@@ -27,24 +28,27 @@ namespace Northwind.Controllers
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public ViewResult CreateAccount(string returnUrl) => View(new CreateAccountViewModel() { ReturnUrl = returnUrl });
+        public ViewResult CreateAccount(string returnUrl)
+        {
+            return View(new ViewModel<CreateAccountAppModel>() { ViewData = new CreateAccountAppModel() { ReturnUrl = returnUrl } });
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAccount(CreateAccountViewModel model)
+        public async Task<IActionResult> CreateAccount(ViewModel<CreateAccountAppModel> model)
         {
             if (ModelState.IsValid == true)
             {                
-                IdentityResult result = await this.IdentityService.CreateAccountAsync(model);
+                IdentityResult result = await this.IdentityService.CreateAccountAsync(model.ViewData);
 
                 if (result.Succeeded == true)
                 {
-                    Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password, ReturnUrl = model.ReturnUrl });
+                    Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(new LoginAppModel() { Email = model.ViewData.Email, Password = model.ViewData.Password, ReturnUrl = model.ViewData.ReturnUrl });
 
                     if (signInResult.Succeeded == true)
                     {
-                        return Redirect(model.ReturnUrl ?? "/");
+                        return Redirect(model.ViewData.ReturnUrl ?? "/");
                     }
                     else
                     {
@@ -76,24 +80,24 @@ namespace Northwind.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
-            LoginViewModel model = new LoginViewModel() { ReturnUrl = returnUrl };
+            ViewModel<LoginAppModel> model = new ViewModel<LoginAppModel>() { ViewData = new LoginAppModel() { ReturnUrl = returnUrl } };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(ViewModel<LoginAppModel> model)
         {
             if (ModelState.IsValid == true)
             {
-                Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(model);
+                Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(model.ViewData);
 
                 if (signInResult != null)
                 {
                     if (signInResult.Succeeded == true)
                     {
-                        return Redirect(model.ReturnUrl ?? "/");
+                        return Redirect(model.ViewData.ReturnUrl ?? "/");
                     }
                     else
                     {

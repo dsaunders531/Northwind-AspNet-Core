@@ -65,7 +65,7 @@ namespace Northwind.Areas.api.Controllers
                             Repository.Create(apiSessionModel);
                         }
 
-                        Repository.Save();
+                        Repository.Commit();
 
                         // return magic key                       
                         Response.Headers.Add(new KeyValuePair<string, StringValues>(HeaderTokenName, apiSessionModel.Token));
@@ -98,7 +98,7 @@ namespace Northwind.Areas.api.Controllers
             if (model != null)
             {
                 Repository.Delete(model);
-                Repository.Save();
+                Repository.Commit();
             }
             
             await this.IdentityService.LogoutAsync();

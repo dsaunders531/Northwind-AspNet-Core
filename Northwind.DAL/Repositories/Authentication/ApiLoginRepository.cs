@@ -72,16 +72,20 @@ namespace Northwind.DAL.Repositories
         /// </summary>
         public void ClearExpiredLogins(int timeoutHours)
         {
+            this.Commit(); // move unsaved to saved.
+
             IQueryable<ApiSessionModel> expiredModels = from ApiSessionModel l in this.FetchAll
                                                 where l.SessionStarted < DateTime.Now.AddHours(timeoutHours * -1)
                                                 select l;
 
-            foreach (ApiSessionModel item in expiredModels)
+            if (expiredModels != null && expiredModels.Count() > 0)
             {
-                this.Delete(item);
+                foreach (ApiSessionModel item in expiredModels)
+                {
+                    this.Delete(item);
+                }
+                this.Commit();
             }
-
-            this.Save();
         }
 
         /// <summary>
@@ -97,7 +101,7 @@ namespace Northwind.DAL.Repositories
         /// <summary>
         /// Save the sessions
         /// </summary>
-        public void Save()
+        public void Commit()
         {
             // Note all we are doing is moving the unsaved sessions to saved sessions.
             this.SavedApiSessions.AddRange(this.UnsavedApiSessions);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
-using mezzanine.Utility;
+using mezzanine.DbClient;
 using Northwind.BLL.Models;
 
 namespace Northwind.Tests

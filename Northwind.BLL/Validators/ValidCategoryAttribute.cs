@@ -13,6 +13,7 @@ namespace Northwind.BLL.Validators
     /// <summary>
     /// ValidationAttribute to see if a category exists.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class ValidCategoryAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;

@@ -1,14 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.ViewModels;
+using mezzanine.ViewModel;
 
-namespace Northwind.BLL.ViewModels.Authentication
+namespace Northwind.BLL.Models.Authentication
 {
+    //[NotMapped]
+    //public class LoginViewModel : ViewModel<LoginAppModel>
+    //{
+    //}
+
     /// <summary>
     /// View model for logging in.
     /// </summary>
     [NotMapped]
-    public class LoginViewModel : ViewModel
+    public class LoginAppModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.ViewModels;
+using mezzanine.ViewModel;
 
-namespace Northwind.BLL.ViewModels.Authentication
+namespace Northwind.BLL.Models.Authentication
 {
     /// <summary>
     /// View model for creating an account.
     /// </summary>
     [NotMapped]
-    public class CreateAccountViewModel : ViewModel
+    public class CreateAccountAppModel
     {
         [Required]
         [DataType(DataType.Text)]

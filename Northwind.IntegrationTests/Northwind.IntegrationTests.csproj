@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+    <ProjectReference Include="..\mezzanine.essentials\mezzanine.essentials.csproj" />
     <ProjectReference Include="..\Northwind.BLL\Northwind.BLL.csproj" />
     <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
   </ItemGroup>

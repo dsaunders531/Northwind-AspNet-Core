@@ -1,10 +1,10 @@
-﻿@model ProductViewModel
+﻿@model ViewModel<ProductApiO>
 
 @{
     // Setup some basic defaults for the page.
-    Model.PageMeta.PageTitle = Model.Product.ProductName;
+    Model.PageMeta.PageTitle = Model.ViewData.ProductName;
     Model.PageMeta.Description = Model.PageMeta.PageTitle;
-    Model.PageMeta.AddKeyword(Model.Product.ProductName);
+    Model.PageMeta.AddKeyword(Model.ViewData.ProductName);
     Model.PageMeta.AddKeyword("Products");
     Model.PageMeta.AddKeyword("Inventory");
     Model.PageMeta.AddKeyword("Stock");
@@ -12,12 +12,12 @@
 
 <div class="panel panel-custom">
     <div class="panel-heading">
-        <h4>@Model.Product.ProductName</h4>
+        <h4>@Model.ViewData.ProductName</h4>
         <div class="pull-right highlight-button" onclick="window.history.go(-1)"><i class="fa fa-backward"></i> Back</div>
     </div>
     <div class="panel-body">
-        <p>@Model.Product.Category.Description</p>
-        <p>@Model.Product.QuantityPerUnit</p>
-        <p>@Model.Product.UnitPrice.Value.ToString("c")</p>
+        <p>@Model.ViewData.Category.Description</p>
+        <p>@Model.ViewData.QuantityPerUnit</p>
+        <p>@Model.ViewData.UnitPrice.Value.ToString("c")</p>
     </div>
 </div>

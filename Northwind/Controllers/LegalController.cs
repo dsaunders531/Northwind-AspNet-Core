@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Northwind.ViewModels;
-using Northwind.BLL.ViewModels;
-using mezzanine.ViewModels;
+using Northwind.Models;
+using Northwind.BLL.Models;
+using mezzanine.ViewModel;
 
 namespace Northwind.Controllers
 {
@@ -18,7 +18,7 @@ namespace Northwind.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Northwind.Controllers
         /// <returns></returns>
         public IActionResult Cookies()
         {
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Northwind.Controllers
         /// <returns></returns>
         public IActionResult GDPR()
         {
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
     }
 }

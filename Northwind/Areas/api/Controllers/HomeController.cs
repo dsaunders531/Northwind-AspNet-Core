@@ -1,6 +1,7 @@
-﻿using mezzanine.Models;
+﻿using mezzanine.TagHelpers;
 using mezzanine.Utility;
-using mezzanine.ViewModels;
+using mezzanine.ViewModel;
+using mezzanine.ApiDiscovery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace Northwind.Areas.api.Controllers
 
         public IActionResult Authenticate()
         {
-            return View(new ViewModel());
+            return View(new ViewModel<EmptyResult>());
         }
     }
 }

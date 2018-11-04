@@ -13,6 +13,7 @@ namespace Northwind.BLL.Validators
     /// <summary>
     /// Validation attribute to check the supplier exists.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class ValidSupplierAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;

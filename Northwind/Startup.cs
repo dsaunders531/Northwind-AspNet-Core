@@ -1,5 +1,5 @@
-using mezzanine.Extensions;
-using mezzanine.Services;
+using mezzanine;
+using mezzanine.Services.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -91,6 +91,7 @@ namespace Northwind
                 app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
             }
 
+            app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -121,7 +122,7 @@ namespace Northwind
 
             if (this.AppConfiguration.Logging.LogXMLEnabled == true)
             {
-                loggerFactory.AddProvider(new XMLLoggerProvider(this.AppConfiguration.Logging.LogXMLLevel.ToLogLevel(),
+                loggerFactory.AddProvider(new XMLLoggerService(this.AppConfiguration.Logging.LogXMLLevel.ToLogLevel(),
                                                                 this.ConfigurationService.WebRootPath + this.AppConfiguration.Logging.LogXMLPath,
                                                                 this.AppConfiguration.Logging.LogRotateMaxEntries));
             }

@@ -1,6 +1,5 @@
-﻿using mezzanine.Exceptions;
-using mezzanine.Extensions;
-using mezzanine.Utility;
+﻿using mezzanine;
+using mezzanine.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Areas.api.Filters;
@@ -154,7 +153,7 @@ namespace Northwind.Areas.api.Controllers
                         {
                             if (requestBody.Length > 0)
                             {
-                                using (JSONSerialiser serialiser = new JSONSerialiser())
+                                using (JSONSerializer serialiser = new JSONSerializer())
                                 {
                                     // The request may contain a partial so work around this.
                                     category = serialiser.Deserialize<CategoryRowApiO>(requestBody);
