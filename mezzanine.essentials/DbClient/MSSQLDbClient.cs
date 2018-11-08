@@ -391,23 +391,35 @@ namespace mezzanine.DbClient
         {
             int result = default(int);
 
-            if (command.CommandType != CommandType.StoredProcedure)
+            if (command.CommandText.ToUpper().StartsWith("EXEC"))
             {
-                throw new ArgumentException("The command is not a stored procedure type.");
+                // Running a stored proc using exec
+                if (this.IsValidStatement(command.CommandText) == false)
+                {
+                    throw new ArgumentException("The command contains invalid text.");
+                }
             }
-            
-            // the command text should be 1 word for a stored proc.
-            if (this.IsValidStatement(command.CommandText) == false)
+            else
             {
-                throw new ArgumentException("The command is not a stored procedure.");
-            }
+                // Run standard checks.
+                if (command.CommandType != CommandType.StoredProcedure)
+                {
+                    throw new ArgumentException("The command is not a stored procedure type.");
+                }
 
-            if (command.CommandText.Split(Convert.ToChar(" ")).GetUpperBound(0) > 0)
-            {
-                // the command is more than 1 word - which is not a stored proc.
-                throw new ArgumentException("The command is not a stored procedure.");
-            }
+                // the command text should be 1 word for a stored proc.
+                if (this.IsValidStatement(command.CommandText) == false)
+                {
+                    throw new ArgumentException("The command is not a stored procedure.");
+                }
 
+                if (command.CommandText.Split(Convert.ToChar(" ")).GetUpperBound(0) > 0)
+                {
+                    // the command is more than 1 word - which is not a stored proc.
+                    throw new ArgumentException("The command is not a stored procedure.");
+                }
+            }
+          
             if (this.IsValidSqlParameters(command.Parameters) == false)
             {
                 // the command is more than 1 word - which is not a stored proc.
@@ -527,7 +539,16 @@ namespace mezzanine.DbClient
 
         private string GenerateTransactionName()
         {
-            return this.CreateConnection.WorkstationId + DateTime.Now.Ticks.ToString();
+            string result = this.CreateConnection.WorkstationId + DateTime.Now.Ticks.ToString();
+            const int maxLen = 32;
+
+            if (result.Length > maxLen)
+            {
+                // Keep the leftmost characters as these will be unique.
+                result = result.Substring(result.Length - maxLen, maxLen);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -568,14 +589,20 @@ namespace mezzanine.DbClient
         /// <returns></returns>
         private bool IsValidSqlParameter(string value)
         {
-            bool result = value.Contains(@"'") == true && value.Contains(@"''") == false; // there is a single apostrophe, double apos is allowed.
+            bool result = true; 
 
-            if (result == false)
+            if (value.Contains(@"'"))
             {
-                result = !this.IsValidStatement(value);
+                // there is a single apostrophe, double apos is allowed.
+                result = value.Contains(@"''");
+            }            
+
+            if (result == true)
+            {
+                result = this.IsValidStatement(value);
             }
 
-            return !result; // NB the reversal of result value
+            return result; // NB the reversal of result value
         }
 
         /// <summary>
@@ -587,17 +614,25 @@ namespace mezzanine.DbClient
         private bool IsValidStatement(string sqlText, bool allowUpdates = false)
         {
             // ALTER, CREATE, DROP, GRANT, ; (DELETE, INSERT, UPDATE)
-            sqlText = sqlText.Trim().ToUpper();
-            bool result = sqlText.Contains(";") == true || sqlText.StartsWith("ALTER") == true 
-                          || sqlText.StartsWith("CREATE") == true || sqlText.StartsWith("DROP") == true 
-                          || sqlText.StartsWith("GRANT") == true;
+            sqlText = sqlText.Trim().Replace(" ", string.Empty).ToUpper();
 
-            if (result == false && allowUpdates == false)
+            bool result = true;
+
+            // cannot have a ; followed by ALTER, CREATE etc.
+            result = ! (sqlText.Contains(";ALTER") || sqlText.StartsWith("ALTER")
+                     || sqlText.Contains(";CREATE") || sqlText.StartsWith("CREATE")
+                     || sqlText.Contains(";DROP") || sqlText.StartsWith("DROP")
+                     || sqlText.Contains(";GRANT") || sqlText.StartsWith("GRANT")
+                     || sqlText.Contains(";SELECT") || sqlText.Contains(";EXEC"));
+
+            if (result == true && allowUpdates == false)
             {
-                result = sqlText.StartsWith("DELETE") == true || sqlText.StartsWith("INSERT") == true || sqlText.StartsWith("UPDATE");
+                result = ! (sqlText.Contains(";DELETE") || sqlText.StartsWith("DELETE") 
+                            || sqlText.Contains(";INSERT") || sqlText.StartsWith("INSERT") 
+                            || sqlText.Contains(";UPDATE") || sqlText.StartsWith("UPDATE"));
             }
 
-            return !result; // NB the reversal of result value
+            return result;
         }
     }
 }

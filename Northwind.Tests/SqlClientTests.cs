@@ -9,7 +9,7 @@ namespace Northwind.Tests
 {
     public class SqlClientTests
     {
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+        private const string ConnectionString = "Server=Laptop10\\SQLEXPRESS;Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
 
         /// <summary>
         /// See that the SqlClient Fill method works with many records.
