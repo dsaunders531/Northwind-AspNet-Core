@@ -111,6 +111,10 @@ namespace mezzanine.RestClient
             request = this.AddCookies(request, cookies);
 
             // add query parameters
+            if ((method == Method.POST || method == Method.PUT) && queryParameters != null)
+            {
+                throw new ArgumentException("Query parameters cannot be used with POST or PUT methods.");
+            }
             request = this.AddQueryParameters(request, queryParameters);
 
             // add route parameters
