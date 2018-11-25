@@ -6,24 +6,24 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class TerritoryRowWorker : GenericWorker<Territory, int, TerritoryRowApiO, string>
+    public class TerritoryRowWorker : GenericWorker<TerritoryDbModel, int, TerritoryRowApiModel, string>
     {
-        public TerritoryRowWorker(IRepository<Territory, int> repository) : base(repository)
+        public TerritoryRowWorker(IRepository<TerritoryDbModel, int> repository) : base(repository)
         {
         }
 
-        public override TerritoryRowApiO Create(TerritoryRowApiO apiRowModel)
+        public override TerritoryRowApiModel Create(TerritoryRowApiModel apiRowModel)
         {
             return base.Create(apiRowModel, model => model.RegionId == apiRowModel.RegionId 
                                                     && model.TerritoryDescription == apiRowModel.TerritoryDescription);
         }
 
-        public override List<TerritoryRowApiO> FetchAll()
+        public override List<TerritoryRowApiModel> FetchAll()
         {
             return base.FetchAll(t => t.TerritoryDescription);
         }
 
-        public override TerritoryRowApiO Update(TerritoryRowApiO apiRowModel)
+        public override TerritoryRowApiModel Update(TerritoryRowApiModel apiRowModel)
         {
             return base.Update(apiRowModel, model => model.TerritoryId == apiRowModel.TerritoryId);
         }

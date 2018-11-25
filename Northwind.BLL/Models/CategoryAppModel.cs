@@ -8,8 +8,8 @@ namespace Northwind.BLL.Models
     [NotMapped]
     public class CategoryAppModel 
     {
-        public CategoryRowApiO Category { get; set; }
+        public CategoryRowApiModel Category { get; set; }
 
-        public List<ProductApiO> Products { get; set; }
+        public List<ProductApiModel> Products { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Northwind.BLL.Services
     /// </summary>
     public sealed class RetailInventoryService : RetailInventoryWorker
     {
-        public RetailInventoryService(IRepository<Product, int> products, IRepository<Category, int> categories) : base(products, categories)
+        public RetailInventoryService(IRepository<ProductDbModel, int> products, IRepository<CategoryDbModel, int> categories) : base(products, categories)
         { }
     }
 }

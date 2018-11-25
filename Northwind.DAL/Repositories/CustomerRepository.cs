@@ -8,18 +8,18 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The customer repository
     /// </summary>
-    public sealed class CustomerRepository : Repository<Customer, string>
+    public sealed class CustomerRepository : Repository<CustomerDbModel, string>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public CustomerRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public CustomerRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Customer> FetchAll
+        public override IQueryable<CustomerDbModel> FetchAll
         {
             get
             {
-                IQueryable<Customer> result = Context.Customers
+                IQueryable<CustomerDbModel> result = Context.Customers
                                                     .Include(c => c.CustomerCustomerDemo)
                                                         .ThenInclude(t => t.CustomerType)
                                                     .Include(o => o.Orders)
@@ -34,22 +34,22 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Customer item)
+        public override void Create(CustomerDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(Customer item)
+        public override void Delete(CustomerDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Customer Fetch(string id)
+        public override CustomerDbModel Fetch(string id)
         {
-            return (from Customer c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
+            return (from CustomerDbModel c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
         }
         
-        public override void Update(Customer item)
+        public override void Update(CustomerDbModel item)
         {
             // Update the database but ignore all the linked data ( Includes and ThenIncludes )
             this.Context.AttachRange(item.CustomerCustomerDemo);

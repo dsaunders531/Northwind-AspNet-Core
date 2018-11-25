@@ -1,4 +1,4 @@
-﻿@model ViewModel<List<ProductApiO>>
+﻿@model ViewModel<List<ProductApiModel>>
 
 @{
     // Setup some basic defaults for the page.
@@ -18,7 +18,7 @@ public IDictionary<string, string> RouteParams(int productId)
 }
 }
 
-@foreach (ProductApiO item in Model.ViewData)
+@foreach (ProductApiModel item in Model.ViewData)
 {
     <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.ProductId)">
         <div class="col-sm-6 panel panel-custom">

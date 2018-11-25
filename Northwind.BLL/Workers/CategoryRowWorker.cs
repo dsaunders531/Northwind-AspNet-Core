@@ -18,9 +18,9 @@ namespace Northwind.BLL.Workers
     /// </summary>
     public class CategoryWorker : Worker
     {
-        private IRepository<Category, int> CategoryRepository { get; set; }
+        private IRepository<CategoryDbModel, int> CategoryRepository { get; set; }
 
-        public CategoryWorker(IRepository<Category, int> categories)
+        public CategoryWorker(IRepository<CategoryDbModel, int> categories)
         {
             this.CategoryRepository = categories;
         }
@@ -29,16 +29,16 @@ namespace Northwind.BLL.Workers
         /// Fetches all the categories
         /// </summary>
         /// <returns></returns>
-        public List<CategoryRowApiO> FetchAll()
+        public List<CategoryRowApiModel> FetchAll()
         {
-            List<Category> categories = this.CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
-            List<CategoryRowApiO> result = new List<CategoryRowApiO>();
+            List<CategoryDbModel> categories = this.CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
+            List<CategoryRowApiModel> result = new List<CategoryRowApiModel>();
 
             using (Transposition transposition = new Transposition())
             {
-                foreach (Category item in categories)
+                foreach (CategoryDbModel item in categories)
                 {
-                    result.Add(transposition.Transpose<CategoryRowApiO>(item, new CategoryRowApiO()));
+                    result.Add(transposition.Transpose<CategoryRowApiModel>(item, new CategoryRowApiModel()));
                 }
             }
 
@@ -50,9 +50,9 @@ namespace Northwind.BLL.Workers
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        public CategoryRowApiO Fetch(int categoryId)
+        public CategoryRowApiModel Fetch(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            CategoryDbModel category = this.CategoryRepository.Fetch(categoryId);
 
             if (category == null)
             {
@@ -60,11 +60,11 @@ namespace Northwind.BLL.Workers
             }
             else
             {
-                CategoryRowApiO result = new CategoryRowApiO();
+                CategoryRowApiModel result = new CategoryRowApiModel();
 
                 using (Transposition tranposition = new Transposition())
                 {
-                    result = tranposition.Transpose<CategoryRowApiO>(category, result);
+                    result = tranposition.Transpose<CategoryRowApiModel>(category, result);
                 }
 
                 return result;
@@ -76,9 +76,9 @@ namespace Northwind.BLL.Workers
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public CategoryRowApiO Fetch(CategoryRowApiO category)
+        public CategoryRowApiModel Fetch(CategoryRowApiModel category)
         {
-            Category categoryDb = this.CategoryRepository.FetchAll.Where(f => f.CategoryName.Substring(0, category.CategoryName.Length) == category.CategoryName 
+            CategoryDbModel categoryDb = this.CategoryRepository.FetchAll.Where(f => f.CategoryName.Substring(0, category.CategoryName.Length) == category.CategoryName 
                                                                             && f.Description.Substring(0, category.Description.Length) == category.Description).FirstOrDefault();
 
             if (categoryDb == null)
@@ -87,7 +87,7 @@ namespace Northwind.BLL.Workers
             }
             else
             {
-                CategoryRowApiO result = new CategoryRowApiO();
+                CategoryRowApiModel result = new CategoryRowApiModel();
 
                 using (Transposition transposition = new Transposition())
                 {
@@ -103,9 +103,9 @@ namespace Northwind.BLL.Workers
         /// </summary>
         /// <param name="apiModel"></param>
         /// <returns>The key for the new record.</returns>
-        public CategoryRowApiO Create(CategoryRowApiO apiModel)
+        public CategoryRowApiModel Create(CategoryRowApiModel apiModel)
         {
-            CategoryRowApiO result = default(CategoryRowApiO);
+            CategoryRowApiModel result = default(CategoryRowApiModel);
 
             if (apiModel == null)
             {
@@ -122,7 +122,7 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // check the item does not already exist
-                    Category dbModel = this.CategoryRepository.FetchAll.Where(cat => cat.CategoryName == apiModel.CategoryName).FirstOrDefault();
+                    CategoryDbModel dbModel = this.CategoryRepository.FetchAll.Where(cat => cat.CategoryName == apiModel.CategoryName).FirstOrDefault();
 
                     if (dbModel != null)
                     {
@@ -131,16 +131,16 @@ namespace Northwind.BLL.Workers
                     }
                     else
                     {
-                        dbModel = new Category();
+                        dbModel = new CategoryDbModel();
                         
                         // map the item and add it
                         using (Transposition transposition = new Transposition())
                         {
-                            dbModel = transposition.Transpose<Category>(apiModel, dbModel);
+                            dbModel = transposition.Transpose<CategoryDbModel>(apiModel, dbModel);
 
                             this.CategoryRepository.Create(dbModel);
 
-                            result = transposition.Transpose<CategoryRowApiO>(dbModel, apiModel);
+                            result = transposition.Transpose<CategoryRowApiModel>(dbModel, apiModel);
                         }
                     }
                 }
@@ -149,9 +149,9 @@ namespace Northwind.BLL.Workers
             return result;
         }
 
-        public CategoryRowApiO Update(CategoryRowApiO apiModel)
+        public CategoryRowApiModel Update(CategoryRowApiModel apiModel)
         {
-            CategoryRowApiO result = default(CategoryRowApiO);
+            CategoryRowApiModel result = default(CategoryRowApiModel);
 
             if (apiModel == null)
             {
@@ -168,7 +168,7 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // find the item
-                    Category dbModel = this.CategoryRepository.Fetch(apiModel.CategoryId);
+                    CategoryDbModel dbModel = this.CategoryRepository.Fetch(apiModel.CategoryId);
 
                     if (dbModel == null)
                     {
@@ -180,12 +180,12 @@ namespace Northwind.BLL.Workers
                         // map the apiO to the db model.
                         using (Transposition transposition = new Transposition())
                         {
-                            dbModel = transposition.Transpose<Category>(apiModel, dbModel);
+                            dbModel = transposition.Transpose<CategoryDbModel>(apiModel, dbModel);
 
                             // update the item
                             this.CategoryRepository.Update(dbModel);
 
-                            result = transposition.Transpose<CategoryRowApiO>(dbModel, apiModel);                        
+                            result = transposition.Transpose<CategoryRowApiModel>(dbModel, apiModel);                        
                         }
                     }
                 }
@@ -196,7 +196,7 @@ namespace Northwind.BLL.Workers
 
         public void Delete(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            CategoryDbModel category = this.CategoryRepository.Fetch(categoryId);
 
             if (category == null)
             {

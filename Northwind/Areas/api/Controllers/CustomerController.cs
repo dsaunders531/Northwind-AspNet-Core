@@ -12,14 +12,14 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class CustomerController : GenericApiController<Customer, CustomerRowApiO, string>,
-                                            IApiGetable<CustomerRowApiO>,
-                                            IApiPostable<CustomerRowApiO, string>,
-                                            IApiPutable<CustomerRowApiO>,
-                                            IApiPatchable<CustomerRowApiO>,
+    public class CustomerController : GenericApiController<CustomerDbModel, CustomerRowApiModel, string>,
+                                            IApiGetable<CustomerRowApiModel>,
+                                            IApiPostable<CustomerRowApiModel, string>,
+                                            IApiPutable<CustomerRowApiModel>,
+                                            IApiPatchable<CustomerRowApiModel>,
                                             IApiDeleteable<string>
     {
-        public CustomerController(IGenericWorker<Customer, CustomerRowApiO, string> workerService) : base(workerService)
+        public CustomerController(IGenericWorker<CustomerDbModel, CustomerRowApiModel, string> workerService) : base(workerService)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Northwind.Areas.api.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<List<CustomerRowApiO>> Get()
+        public ActionResult<List<CustomerRowApiModel>> Get()
         {
             return base.BaseGet();
         }
@@ -39,14 +39,14 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<CustomerRowApiO> Patch([FromBody] CustomerRowApiO apiRowModel)
+        public ActionResult<CustomerRowApiModel> Patch([FromBody] CustomerRowApiModel apiRowModel)
         {
             return base.BasePatch(apiRowModel);
         }
 
         [HttpPost("{key}")]
         [Produces("application/json")]
-        public ActionResult<CustomerRowApiO> Post([FromRoute] string key)
+        public ActionResult<CustomerRowApiModel> Post([FromRoute] string key)
         {
             return base.BasePost(key);
         }
@@ -54,7 +54,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult<CustomerRowApiO> Put([FromBody] CustomerRowApiO apiRowModel)
+        public ActionResult<CustomerRowApiModel> Put([FromBody] CustomerRowApiModel apiRowModel)
         {
             return base.BasePut(apiRowModel, c => c.CompanyName == apiRowModel.CompanyName 
                                             && c.ContactTitle == apiRowModel.ContactTitle 

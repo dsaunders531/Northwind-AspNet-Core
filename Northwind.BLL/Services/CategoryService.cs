@@ -9,7 +9,7 @@ namespace Northwind.BLL.Services
 {
     public sealed class CategoryService : CategoryWorker
     {
-        public CategoryService(IRepository<Category, int> categories) : base(categories)
+        public CategoryService(IRepository<CategoryDbModel, int> categories) : base(categories)
         {
         }
     }

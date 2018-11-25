@@ -12,14 +12,14 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class ShipperController : GenericApiController<Shipper, ShipperRowApiO, int>,
-                                    IApiGetable<ShipperRowApiO>,
-                                    IApiPostable<ShipperRowApiO, int>,
-                                    IApiPutable<ShipperRowApiO>,
+    public class ShipperController : GenericApiController<ShipperDbModel, ShipperRowApiModel, int>,
+                                    IApiGetable<ShipperRowApiModel>,
+                                    IApiPostable<ShipperRowApiModel, int>,
+                                    IApiPutable<ShipperRowApiModel>,
                                     IApiDeleteable<int>,
-                                    IApiPatchable<ShipperRowApiO>
+                                    IApiPatchable<ShipperRowApiModel>
     {
-        public ShipperController(IGenericWorker<Shipper, ShipperRowApiO, int> workerService) : base(workerService)
+        public ShipperController(IGenericWorker<ShipperDbModel, ShipperRowApiModel, int> workerService) : base(workerService)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Northwind.Areas.api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<ShipperRowApiO>> Get()
+        public ActionResult<List<ShipperRowApiModel>> Get()
         {
             return base.BaseGet();
         }
@@ -39,14 +39,14 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<ShipperRowApiO> Patch([FromBody] ShipperRowApiO apiRowModel)
+        public ActionResult<ShipperRowApiModel> Patch([FromBody] ShipperRowApiModel apiRowModel)
         {
             return base.BasePatch(apiRowModel);
         }
 
         [HttpPost("{key}")]
         [Produces("application/json")]
-        public ActionResult<ShipperRowApiO> Post([FromRoute] int key)
+        public ActionResult<ShipperRowApiModel> Post([FromRoute] int key)
         {
             return base.BasePost(key);
         }
@@ -54,7 +54,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult<ShipperRowApiO> Put([FromBody] ShipperRowApiO apiRowModel)
+        public ActionResult<ShipperRowApiModel> Put([FromBody] ShipperRowApiModel apiRowModel)
         {
             return base.BasePut(apiRowModel, s => s.CompanyName == apiRowModel.CompanyName
                                                 && s.Phone == apiRowModel.Phone);

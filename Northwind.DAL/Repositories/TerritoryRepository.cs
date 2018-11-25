@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The territory repository.
     /// </summary>
-    public sealed class TerritoryRepository : Repository<Territory, string>
+    public sealed class TerritoryRepository : Repository<TerritoryDbModel, string>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public TerritoryRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public TerritoryRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Territory> FetchAll
+        public override IQueryable<TerritoryDbModel> FetchAll
         {
             get
             {
@@ -26,12 +26,12 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Territory item)
+        public override void Create(TerritoryDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(Territory item)
+        public override void Update(TerritoryDbModel item)
         {
             this.Context.Attach(item.Region);
             this.Context.AttachRange(item.EmployeeTerritories);
@@ -40,19 +40,19 @@ namespace Northwind.DAL.Repositories
             this.Context.Update(item);
         }
 
-        public override void Delete(Territory item)
+        public override void Delete(TerritoryDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Territory Fetch(string territoryId)
+        public override TerritoryDbModel Fetch(string territoryId)
         {
-            return (from Territory t in this.FetchAll where t.TerritoryId == territoryId select t).FirstOrDefault();
+            return (from TerritoryDbModel t in this.FetchAll where t.TerritoryId == territoryId select t).FirstOrDefault();
         }
 
-        public IQueryable<Territory> FetchByRegionId(int regionId)
+        public IQueryable<TerritoryDbModel> FetchByRegionId(int regionId)
         {
-            return (from Territory t in this.FetchAll where t.RegionId == regionId select t);
+            return (from TerritoryDbModel t in this.FetchAll where t.RegionId == regionId select t);
         }
     }
 }

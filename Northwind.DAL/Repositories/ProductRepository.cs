@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The product repository
     /// </summary>
-    public sealed class ProductRepository : Repository<Product, int>
+    public sealed class ProductRepository : Repository<ProductDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public ProductRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public ProductRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Product> FetchAll
+        public override IQueryable<ProductDbModel> FetchAll
         {
             get
             {
@@ -27,12 +27,12 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Product item)
+        public override void Create(ProductDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(Product item)
+        public override void Update(ProductDbModel item)
         {
             this.Context.Attach(item.Category);
             this.Context.Attach(item.Supplier);
@@ -42,24 +42,24 @@ namespace Northwind.DAL.Repositories
             this.Context.Update(item);
         }
 
-        public override void Delete(Product item)
+        public override void Delete(ProductDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Product Fetch(int id)
+        public override ProductDbModel Fetch(int id)
         {
-            return (from Product p in this.FetchAll where p.ProductId == id select p).FirstOrDefault();
+            return (from ProductDbModel p in this.FetchAll where p.ProductId == id select p).FirstOrDefault();
         }
 
-        public IQueryable<Product> FetchBySupplierId(int supplierId)
+        public IQueryable<ProductDbModel> FetchBySupplierId(int supplierId)
         {
-            return (from Product p in this.FetchAll where p.SupplierId == supplierId select p);
+            return (from ProductDbModel p in this.FetchAll where p.SupplierId == supplierId select p);
         }
 
-        public IQueryable<Product> FetchByCategoryId(int categoryId)
+        public IQueryable<ProductDbModel> FetchByCategoryId(int categoryId)
         {
-            return (from Product p in this.FetchAll where p.CategoryId == categoryId select p);
+            return (from ProductDbModel p in this.FetchAll where p.CategoryId == categoryId select p);
         }
     }
 }

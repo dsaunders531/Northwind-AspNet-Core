@@ -9,7 +9,7 @@ using Northwind.DAL;
 
 namespace Northwind.DAL.Migrations
 {
-    [DbContext(typeof(NorthwindContext))]
+    [DbContext(typeof(NorthwindDbContext))]
     [Migration("20181013185515_MigrateToAnnotations")]
     partial class MigrateToAnnotations
     {

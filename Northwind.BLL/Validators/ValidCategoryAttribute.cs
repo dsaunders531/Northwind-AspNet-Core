@@ -21,13 +21,13 @@ namespace Northwind.BLL.Validators
         public string ErrorMessage { get; set; } = "The category id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
-        {
+        {            
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
 
             // Dependancy injection does not work with attributes so manually wire up the database context.
-            using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
+            using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<Category, int> categories = new CategoryRepository(dbContext);
+                IRepository<CategoryDbModel, int> categories = new CategoryRepository(dbContext);
 
                 int? value = context.Model as int?; // get the value of supplier (the type must match the column type)
 
@@ -38,7 +38,7 @@ namespace Northwind.BLL.Validators
                 }
                 else
                 {
-                    Category category = categories.Fetch(value.Value);
+                    CategoryDbModel category = categories.Fetch(value.Value);
 
                     if (category == null)
                     {

@@ -7,7 +7,7 @@ using Northwind.DAL;
 using mezzanine.EF;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
-using mezzanine.Filters;
+using mezzanine.Attributes;
 
 namespace Northwind.BLL.Validators
 {
@@ -23,9 +23,9 @@ namespace Northwind.BLL.Validators
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
 
             // Dependancy injection does not work with attributes so manually wire up the database context.
-            using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
+            using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<CustomerDemographic, string> repository = new CustomerDemographicRepository(dbContext);
+                IRepository<CustomerDemographicDbModel, string> repository = new CustomerDemographicRepository(dbContext);
 
                 string value = context.Model as string; 
 
@@ -35,7 +35,7 @@ namespace Northwind.BLL.Validators
                 }
                 else
                 {
-                    CustomerDemographic model = repository.Fetch(value);
+                    CustomerDemographicDbModel model = repository.Fetch(value);
 
                     if (model == null)
                     {

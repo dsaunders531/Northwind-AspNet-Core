@@ -7,23 +7,23 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class CustomerDemographicRowWorker : GenericWorker<CustomerDemographic, string, CustomerDemographicRowApiO, string>
+    public class CustomerDemographicRowWorker : GenericWorker<CustomerDemographicDbModel, string, CustomerDemographicRowApiModel, string>
     {
-        public CustomerDemographicRowWorker(IRepository<CustomerDemographic, string> repository) : base(repository)
+        public CustomerDemographicRowWorker(IRepository<CustomerDemographicDbModel, string> repository) : base(repository)
         {
         }
 
-        public override CustomerDemographicRowApiO Create(CustomerDemographicRowApiO apiRowModel)
+        public override CustomerDemographicRowApiModel Create(CustomerDemographicRowApiModel apiRowModel)
         {
             return base.Create(apiRowModel, model => model.CustomerDesc == apiRowModel.CustomerDesc);
         }
 
-        public override List<CustomerDemographicRowApiO> FetchAll()
+        public override List<CustomerDemographicRowApiModel> FetchAll()
         {
             return base.FetchAll(c => c.CustomerDesc);
         }
 
-        public override CustomerDemographicRowApiO Update(CustomerDemographicRowApiO apiRowModel)
+        public override CustomerDemographicRowApiModel Update(CustomerDemographicRowApiModel apiRowModel)
         {
             return base.Update(apiRowModel, model => model.CustomerTypeId == apiRowModel.CustomerTypeId);
         }

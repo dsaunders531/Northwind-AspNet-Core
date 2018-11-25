@@ -12,14 +12,14 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class RegionController : GenericApiController<Region, RegionRowApiO, int>,
-                                        IApiGetable<RegionRowApiO>,
-                                        IApiPostable<RegionRowApiO, int>,
-                                        IApiPutable<RegionRowApiO>,
+    public class RegionController : GenericApiController<RegionDbModel, RegionRowApiModel, int>,
+                                        IApiGetable<RegionRowApiModel>,
+                                        IApiPostable<RegionRowApiModel, int>,
+                                        IApiPutable<RegionRowApiModel>,
                                         IApiDeleteable<int>,
-                                        IApiPatchable<RegionRowApiO>
+                                        IApiPatchable<RegionRowApiModel>
     {
-        public RegionController(IGenericWorker<Region, RegionRowApiO, int> workerService) : base(workerService)
+        public RegionController(IGenericWorker<RegionDbModel, RegionRowApiModel, int> workerService) : base(workerService)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Northwind.Areas.api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<RegionRowApiO>> Get()
+        public ActionResult<List<RegionRowApiModel>> Get()
         {
             return base.BaseGet();
         }
@@ -39,14 +39,14 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<RegionRowApiO> Patch(RegionRowApiO apiRowModel)
+        public ActionResult<RegionRowApiModel> Patch(RegionRowApiModel apiRowModel)
         {
             return base.BasePatch(apiRowModel);
         }
 
         [HttpPost("{key}")]
         [Produces("application/json")]
-        public ActionResult<RegionRowApiO> Post([FromRoute] int key)
+        public ActionResult<RegionRowApiModel> Post([FromRoute] int key)
         {
             return base.BasePost(key);
         }
@@ -54,7 +54,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult<RegionRowApiO> Put(RegionRowApiO apiRowModel)
+        public ActionResult<RegionRowApiModel> Put(RegionRowApiModel apiRowModel)
         {
             return base.BasePut(apiRowModel, model => model.RegionDescription == apiRowModel.RegionDescription);
         }

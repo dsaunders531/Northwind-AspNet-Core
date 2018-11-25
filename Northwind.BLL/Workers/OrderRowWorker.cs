@@ -7,23 +7,23 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class OrderRowWorker : GenericWorker<Order, int, OrderRowApiO, DateTime?>
+    public class OrderRowWorker : GenericWorker<OrderDbModel, int, OrderRowApiModel, DateTime?>
     {
-        public OrderRowWorker(IRepository<Order, int> repository) : base(repository)
+        public OrderRowWorker(IRepository<OrderDbModel, int> repository) : base(repository)
         {
         }
 
-        public override OrderRowApiO Create(OrderRowApiO apiRowModel)
+        public override OrderRowApiModel Create(OrderRowApiModel apiRowModel)
         {
             return base.Create(apiRowModel, model => model.CustomerId == apiRowModel.CustomerId && model.EmployeeId == apiRowModel.EmployeeId);
         }
 
-        public override List<OrderRowApiO> FetchAll()
+        public override List<OrderRowApiModel> FetchAll()
         {
             return base.FetchAll(o => o.OrderDate);
         }
 
-        public override OrderRowApiO Update(OrderRowApiO apiRowModel)
+        public override OrderRowApiModel Update(OrderRowApiModel apiRowModel)
         {
             return base.Update(apiRowModel, model => model.OrderId == apiRowModel.OrderId);
         }

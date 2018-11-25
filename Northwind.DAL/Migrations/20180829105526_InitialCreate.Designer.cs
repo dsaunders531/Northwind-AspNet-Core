@@ -9,7 +9,7 @@ using Northwind.DAL.Models;
 
 namespace Northwind.DAL.Migrations
 {
-    [DbContext(typeof(NorthwindContext))]
+    [DbContext(typeof(NorthwindDbContext))]
     [Migration("20180829105526_InitialCreate")]
     partial class InitialCreate
     {

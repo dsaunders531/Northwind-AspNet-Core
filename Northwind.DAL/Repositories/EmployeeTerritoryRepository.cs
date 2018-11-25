@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Northwind.DAL.Repositories
 {
-    public sealed class EmployeeTerritoryRepository : Repository<EmployeeTerritory, int>
+    public sealed class EmployeeTerritoryRepository : Repository<EmployeeTerritoryDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public EmployeeTerritoryRepository(NorthwindContext context) : base(context) { this.Context = context;  }
+        public EmployeeTerritoryRepository(NorthwindDbContext context) : base(context) { this.Context = context;  }
 
-        public override IQueryable<EmployeeTerritory> FetchAll
+        public override IQueryable<EmployeeTerritoryDbModel> FetchAll
         {
             get
             {
@@ -22,32 +22,32 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(EmployeeTerritory item)
+        public override void Create(EmployeeTerritoryDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(EmployeeTerritory item)
+        public override void Delete(EmployeeTerritoryDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override EmployeeTerritory Fetch(int id)
+        public override EmployeeTerritoryDbModel Fetch(int id)
         {
-            return (from EmployeeTerritory t in this.FetchAll where id == t.EmployeeId select t).FirstOrDefault();
+            return (from EmployeeTerritoryDbModel t in this.FetchAll where id == t.EmployeeId select t).FirstOrDefault();
         }
 
-        public IQueryable<EmployeeTerritory> FetchByEmployeeId(int employeeId)
+        public IQueryable<EmployeeTerritoryDbModel> FetchByEmployeeId(int employeeId)
         {
-            return from EmployeeTerritory t in this.FetchAll where employeeId == t.EmployeeId select t;
+            return from EmployeeTerritoryDbModel t in this.FetchAll where employeeId == t.EmployeeId select t;
         }
 
-        public IQueryable<EmployeeTerritory> FetchByTerritoryId(string territoryId)
+        public IQueryable<EmployeeTerritoryDbModel> FetchByTerritoryId(string territoryId)
         {
-            return from EmployeeTerritory t in this.FetchAll where territoryId == t.TerritoryId select t;
+            return from EmployeeTerritoryDbModel t in this.FetchAll where territoryId == t.TerritoryId select t;
         }
 
-        public override void Update(EmployeeTerritory item)
+        public override void Update(EmployeeTerritoryDbModel item)
         {
             this.Context.Attach(item.Employee);
             this.Context.Attach(item.Territory);

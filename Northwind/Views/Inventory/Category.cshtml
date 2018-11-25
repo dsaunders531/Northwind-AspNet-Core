@@ -34,7 +34,7 @@ public IDictionary<string, string> RouteParams(int productId)
     </div>
 </div>
 <ul class="list-group">
-    @foreach (ProductApiO item in Model.ViewData.Products)
+    @foreach (ProductApiModel item in Model.ViewData.Products)
     {
         <li class="list-group-item">
             <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.ProductId)">

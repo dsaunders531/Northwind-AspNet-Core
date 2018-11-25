@@ -25,14 +25,14 @@ namespace Northwind.Areas.api.Controllers
 
         [HttpGet("[action]")]
         [Produces("application/json")]
-        public ActionResult<List<CategoryRowApiO>> Categories()
+        public ActionResult<List<CategoryRowApiModel>> Categories()
         {
             return this.RetailInventory.GetAllCategories();
         }
 
         [HttpGet("[action]")]
         [Produces("application/json")]
-        public ActionResult<List<ProductApiO>> Products()
+        public ActionResult<List<ProductApiModel>> Products()
         {
             return this.RetailInventory.GetAllProducts();
         }

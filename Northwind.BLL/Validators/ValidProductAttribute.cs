@@ -22,9 +22,9 @@ namespace Northwind.BLL.Validators
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
 
             // Dependancy injection does not work with attributes so manually wire up the database context.
-            using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
+            using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<Product, int> products = new ProductRepository(dbContext);
+                IRepository<ProductDbModel, int> products = new ProductRepository(dbContext);
 
                 int? value = context.Model as int?; 
 
@@ -34,7 +34,7 @@ namespace Northwind.BLL.Validators
                 }
                 else
                 {
-                    Product category = products.Fetch(value.Value);
+                    ProductDbModel category = products.Fetch(value.Value);
 
                     if (category == null)
                     {

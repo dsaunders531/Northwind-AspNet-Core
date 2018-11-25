@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The employee repository
     /// </summary>
-    public sealed class EmployeeRepository : Repository<Employee, int>
+    public sealed class EmployeeRepository : Repository<EmployeeDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public EmployeeRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public EmployeeRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Employee> FetchAll
+        public override IQueryable<EmployeeDbModel> FetchAll
         {
             get
             {
@@ -35,22 +35,22 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Employee item)
+        public override void Create(EmployeeDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(Employee item)
+        public override void Delete(EmployeeDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Employee Fetch(int id)
+        public override EmployeeDbModel Fetch(int id)
         {
-            return (from Employee e in this.FetchAll where e.EmployeeId == id select e).FirstOrDefault();
+            return (from EmployeeDbModel e in this.FetchAll where e.EmployeeId == id select e).FirstOrDefault();
         }
 
-        public override void Update(Employee item)
+        public override void Update(EmployeeDbModel item)
         {
             // Update the database but ignore all the linked data(Includes and ThenIncludes )
             this.Context.Attach(item.ReportsToNavigation);

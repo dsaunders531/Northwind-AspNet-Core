@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The order repository
     /// </summary>
-    public sealed class OrderRepository : Repository<Order, int>
+    public sealed class OrderRepository : Repository<OrderDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public OrderRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public OrderRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Order> FetchAll
+        public override IQueryable<OrderDbModel> FetchAll
         {
             get
             {
@@ -29,32 +29,32 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Order item)
+        public override void Create(OrderDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(Order item)
+        public override void Delete(OrderDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Order Fetch(int id)
+        public override OrderDbModel Fetch(int id)
         {
-            return (from Order o in this.FetchAll where o.OrderId == id select o).FirstOrDefault();
+            return (from OrderDbModel o in this.FetchAll where o.OrderId == id select o).FirstOrDefault();
         }
 
-        public IQueryable<Order> FetchByCustomerId(string customerId)
+        public IQueryable<OrderDbModel> FetchByCustomerId(string customerId)
         {
-            return (from Order o in this.FetchAll where o.CustomerId == customerId select o);
+            return (from OrderDbModel o in this.FetchAll where o.CustomerId == customerId select o);
         }
 
-        public IQueryable<Order> FetchByEmployeeId(int employeeId)
+        public IQueryable<OrderDbModel> FetchByEmployeeId(int employeeId)
         {
-            return (from Order o in this.FetchAll where o.EmployeeId == employeeId select o);
+            return (from OrderDbModel o in this.FetchAll where o.EmployeeId == employeeId select o);
         }
 
-        public override void Update(Order item)
+        public override void Update(OrderDbModel item)
         {
             this.Context.AttachRange(item.OrderDetails);
             this.Context.AttachRange(item.OrderDetails.Select(p => p.Product));

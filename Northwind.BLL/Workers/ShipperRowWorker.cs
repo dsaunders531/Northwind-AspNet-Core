@@ -6,23 +6,23 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class ShipperRowWorker : GenericWorker<Shipper, int, ShipperRowApiO, string>
+    public class ShipperRowWorker : GenericWorker<ShipperDbModel, int, ShipperRowApiModel, string>
     {
-        public ShipperRowWorker(IRepository<Shipper, int> repository) : base(repository)
+        public ShipperRowWorker(IRepository<ShipperDbModel, int> repository) : base(repository)
         {
         }
 
-        public override ShipperRowApiO Create(ShipperRowApiO apiRowModel)
+        public override ShipperRowApiModel Create(ShipperRowApiModel apiRowModel)
         {
             return base.Create(apiRowModel, model => model.CompanyName == apiRowModel.CompanyName);
         }
 
-        public override List<ShipperRowApiO> FetchAll()
+        public override List<ShipperRowApiModel> FetchAll()
         {
             return base.FetchAll(s => s.CompanyName);
         }
 
-        public override ShipperRowApiO Update(ShipperRowApiO apiRowModel)
+        public override ShipperRowApiModel Update(ShipperRowApiModel apiRowModel)
         {
             return base.Update(apiRowModel, model => model.ShipperId == apiRowModel.ShipperId);
         }

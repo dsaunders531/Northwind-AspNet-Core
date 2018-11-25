@@ -25,9 +25,9 @@ namespace Northwind.BLL.Validators
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
             
             // Dependancy injection does not work with attributes so manually wire up the database context.
-            using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
+            using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<Supplier, int> suppliers = new SupplierRepository(dbContext);
+                IRepository<SupplierDbModel, int> suppliers = new SupplierRepository(dbContext);
 
                 int? value = context.Model as int?; // get the value of supplier (the type must match the column type)
 
@@ -38,7 +38,7 @@ namespace Northwind.BLL.Validators
                 }
                 else
                 {
-                    Supplier supplier = suppliers.Fetch(value.Value);
+                    SupplierDbModel supplier = suppliers.Fetch(value.Value);
 
                     if (supplier == null)
                     {

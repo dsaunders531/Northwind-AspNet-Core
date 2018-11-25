@@ -9,6 +9,6 @@ namespace Northwind.DAL.Models
     public class ConnectionStringsConfigurationModel
     {
         public string Content { get; set; }
-        public string Authentication { get; set; }
+        public string Identity { get; set; }
     }
 }

@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The order detail repository
     /// </summary>
-    public sealed class OrderDetailRepository : Repository<OrderDetail, int>
+    public sealed class OrderDetailRepository : Repository<OrderDetailDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public OrderDetailRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public OrderDetailRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<OrderDetail> FetchAll
+        public override IQueryable<OrderDetailDbModel> FetchAll
         {
             get
             {
@@ -30,12 +30,12 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(OrderDetail item)
+        public override void Create(OrderDetailDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(OrderDetail item)
+        public override void Update(OrderDetailDbModel item)
         {
             this.Context.Attach(item.Product);
             this.Context.Attach(item.Order);
@@ -46,19 +46,19 @@ namespace Northwind.DAL.Repositories
             this.Context.Update(item);
         }
 
-        public override void Delete(OrderDetail item)
+        public override void Delete(OrderDetailDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override OrderDetail Fetch(int id)
+        public override OrderDetailDbModel Fetch(int id)
         {
-            return (from OrderDetail d in this.FetchAll where d.OrderId == id select d).FirstOrDefault();
+            return (from OrderDetailDbModel d in this.FetchAll where d.OrderId == id select d).FirstOrDefault();
         }
 
-        public IQueryable<OrderDetail> FetchByProductId(int productId)
+        public IQueryable<OrderDetailDbModel> FetchByProductId(int productId)
         {
-            return (from OrderDetail d in this.FetchAll where d.ProductId == productId select d);
+            return (from OrderDetailDbModel d in this.FetchAll where d.ProductId == productId select d);
         }
     }
 }

@@ -6,25 +6,25 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class ProductRowWorker : GenericWorker<Product, int, ProductRowApiO, string>
+    public class ProductRowWorker : GenericWorker<ProductDbModel, int, ProductRowApiModel, string>
     {
-        public ProductRowWorker(IRepository<Product, int> repository) : base(repository)
+        public ProductRowWorker(IRepository<ProductDbModel, int> repository) : base(repository)
         {
         }
 
-        public override List<ProductRowApiO> FetchAll()
+        public override List<ProductRowApiModel> FetchAll()
         {
             return base.FetchAll(p => p.ProductName);
         }
 
-        public override ProductRowApiO Create(ProductRowApiO apiModel)
+        public override ProductRowApiModel Create(ProductRowApiModel apiModel)
         {
             return base.Create(apiModel, model => model.ProductName == apiModel.ProductName 
                                         && model.CategoryId == apiModel.CategoryId 
                                         && model.SupplierId == apiModel.SupplierId);
         }
 
-        public override ProductRowApiO Update(ProductRowApiO apiModel)
+        public override ProductRowApiModel Update(ProductRowApiModel apiModel)
         {
             return base.Update(apiModel, model => model.ProductId == apiModel.ProductId);
         }

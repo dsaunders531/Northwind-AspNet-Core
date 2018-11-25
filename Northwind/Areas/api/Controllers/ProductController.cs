@@ -12,14 +12,14 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class ProductController : GenericApiController<Product, ProductRowApiO, int>, 
-                                        IApiGetable<ProductRowApiO>, 
-                                        IApiPostable<ProductRowApiO, int>, 
-                                        IApiPutable<ProductRowApiO>,
-                                        IApiPatchable<ProductRowApiO>, 
+    public class ProductController : GenericApiController<ProductDbModel, ProductRowApiModel, int>, 
+                                        IApiGetable<ProductRowApiModel>, 
+                                        IApiPostable<ProductRowApiModel, int>, 
+                                        IApiPutable<ProductRowApiModel>,
+                                        IApiPatchable<ProductRowApiModel>, 
                                         IApiDeleteable<int>
     {
-        public ProductController(IGenericWorker<Product, ProductRowApiO, int> workerService) : base(workerService)
+        public ProductController(IGenericWorker<ProductDbModel, ProductRowApiModel, int> workerService) : base(workerService)
         {
         }
 
@@ -31,7 +31,7 @@ namespace Northwind.Areas.api.Controllers
 
         [HttpGet()]
         [Produces("application/json")]
-        public ActionResult<List<ProductRowApiO>> Get()
+        public ActionResult<List<ProductRowApiModel>> Get()
         {
             return base.BaseGet();
         }
@@ -40,14 +40,14 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<ProductRowApiO> Patch([FromBody] ProductRowApiO apiRowModel)
+        public ActionResult<ProductRowApiModel> Patch([FromBody] ProductRowApiModel apiRowModel)
         {
             return base.BasePatch(apiRowModel);
         }
 
         [HttpPost("{key}")]
         [Produces("application/json")]
-        public ActionResult<ProductRowApiO> Post([FromRoute] int key)
+        public ActionResult<ProductRowApiModel> Post([FromRoute] int key)
         {
             return base.BasePost(key);
         }
@@ -55,7 +55,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]        
-        public ActionResult<ProductRowApiO> Put([FromBody] ProductRowApiO apiRowModel)
+        public ActionResult<ProductRowApiModel> Put([FromBody] ProductRowApiModel apiRowModel)
         {
             return base.BasePut(apiRowModel, p => p.SupplierId == apiRowModel.SupplierId
                                                 && p.CategoryId == apiRowModel.CategoryId

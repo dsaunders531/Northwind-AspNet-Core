@@ -8,7 +8,7 @@ using Northwind.DAL;
 
 namespace Northwind.DAL.Migrations
 {
-    [DbContext(typeof(NorthwindContext))]
+    [DbContext(typeof(NorthwindDbContext))]
     partial class NorthwindContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

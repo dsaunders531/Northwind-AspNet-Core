@@ -45,17 +45,17 @@ namespace Northwind.BLL
 
             services.AddTransient<RetailInventoryService, RetailInventoryService>();
             services.AddTransient<CategoryService, CategoryService>();
-            services.AddTransient<IGenericWorker<Product, ProductRowApiO, int>, ProductRowWorker>();
-            services.AddTransient<IGenericWorker<Customer, CustomerRowApiO, string>, CustomerRowWorker>();
-            services.AddTransient<IGenericWorker<CustomerDemographic, CustomerDemographicRowApiO, string>, CustomerDemographicRowWorker>();
-            services.AddTransient<IGenericWorker<Employee, EmployeeRowApiO, int>, EmployeeRowWorker>();
-            services.AddTransient<IGenericWorker<EmployeeTerritory, EmployeeTerritoryRowApiO, int>, EmployeeTerritoryRowWorker>();
-            services.AddTransient<IGenericWorker<Order, OrderRowApiO, int>, OrderRowWorker>();
-            services.AddTransient<IGenericWorker<OrderDetail, OrderDetailRowApiO, int>, OrderDetailRowWorker>();
-            services.AddTransient<IGenericWorker<Region, RegionRowApiO, int>, RegionRowWorker>();
-            services.AddTransient<IGenericWorker<Shipper, ShipperRowApiO, int>, ShipperRowWorker>();
-            services.AddTransient<IGenericWorker<Supplier, SupplierRowApiO, int>, SupplierRowWorker>();
-            services.AddTransient<IGenericWorker<Territory, TerritoryRowApiO, int>, TerritoryRowWorker>();
+            services.AddTransient<IGenericWorker<ProductDbModel, ProductRowApiModel, int>, ProductRowWorker>();
+            services.AddTransient<IGenericWorker<CustomerDbModel, CustomerRowApiModel, string>, CustomerRowWorker>();
+            services.AddTransient<IGenericWorker<CustomerDemographicDbModel, CustomerDemographicRowApiModel, string>, CustomerDemographicRowWorker>();
+            services.AddTransient<IGenericWorker<EmployeeDbModel, EmployeeRowApiModel, int>, EmployeeRowWorker>();
+            services.AddTransient<IGenericWorker<EmployeeTerritoryDbModel, EmployeeTerritoryRowApiModel, int>, EmployeeTerritoryRowWorker>();
+            services.AddTransient<IGenericWorker<OrderDbModel, OrderRowApiModel, int>, OrderRowWorker>();
+            services.AddTransient<IGenericWorker<OrderDetailDbModel, OrderDetailRowApiModel, int>, OrderDetailRowWorker>();
+            services.AddTransient<IGenericWorker<RegionDbModel, RegionRowApiModel, int>, RegionRowWorker>();
+            services.AddTransient<IGenericWorker<ShipperDbModel, ShipperRowApiModel, int>, ShipperRowWorker>();
+            services.AddTransient<IGenericWorker<SupplierDbModel, SupplierRowApiModel, int>, SupplierRowWorker>();
+            services.AddTransient<IGenericWorker<TerritoryDbModel, TerritoryRowApiModel, int>, TerritoryRowWorker>();
         }
 
         public static void Configure(AppConfigurationModel appConfiguration, IApplicationBuilder app)

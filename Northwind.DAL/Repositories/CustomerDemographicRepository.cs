@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The customer demographic repository
     /// </summary>
-    public sealed class CustomerDemographicRepository : Repository<CustomerDemographic, string>
+    public sealed class CustomerDemographicRepository : Repository<CustomerDemographicDbModel, string>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public CustomerDemographicRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public CustomerDemographicRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<CustomerDemographic> FetchAll
+        public override IQueryable<CustomerDemographicDbModel> FetchAll
         {
             get
             {
@@ -25,22 +25,22 @@ namespace Northwind.DAL.Repositories
             }
         }       
 
-        public override void Create(CustomerDemographic item)
+        public override void Create(CustomerDemographicDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(CustomerDemographic item)
+        public override void Delete(CustomerDemographicDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override CustomerDemographic Fetch(string id)
+        public override CustomerDemographicDbModel Fetch(string id)
         {
-            return (from CustomerDemographic d in this.FetchAll where d.CustomerTypeId == id select d).FirstOrDefault();
+            return (from CustomerDemographicDbModel d in this.FetchAll where d.CustomerTypeId == id select d).FirstOrDefault();
         }
 
-        public override void Update(CustomerDemographic item)
+        public override void Update(CustomerDemographicDbModel item)
         {
             // Update the database but ignore all the linked data ( Includes and ThenIncludes )
             this.Context.AttachRange(item.CustomerCustomerDemo);

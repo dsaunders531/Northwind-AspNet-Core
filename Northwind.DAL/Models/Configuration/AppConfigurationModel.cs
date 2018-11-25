@@ -12,6 +12,6 @@ namespace Northwind.DAL.Models
         public ConnectionStringsConfigurationModel ConnectionStrings { get; set; }
         public DefaultsConfigurationModel Defaults { get; set; }
         public LoggingConfigurationModel Logging { get; set; }
-        public SeedDataModel SeedData { get; set; }
+        public IdentityConfigurationModel Identity { get; set; }
     }
 }

@@ -22,9 +22,9 @@ namespace Northwind.BLL.Validators
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
 
             // Dependancy injection does not work with attributes so manually wire up the database context.
-            using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
+            using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<Territory, string> territories = new TerritoryRepository(dbContext);
+                IRepository<TerritoryDbModel, string> territories = new TerritoryRepository(dbContext);
 
                 string value = context.Model as string; 
 
@@ -34,7 +34,7 @@ namespace Northwind.BLL.Validators
                 }
                 else
                 {
-                    Territory territory = territories.Fetch(value);
+                    TerritoryDbModel territory = territories.Fetch(value);
 
                     if (territory == null)
                     {

@@ -12,14 +12,14 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class OrderController : GenericApiController<Order, OrderRowApiO, int>,
-            IApiGetable<OrderRowApiO>,
-            IApiPostable<OrderRowApiO, int>,
-            IApiPutable<OrderRowApiO>,
-            IApiPatchable<OrderRowApiO>,
+    public class OrderController : GenericApiController<OrderDbModel, OrderRowApiModel, int>,
+            IApiGetable<OrderRowApiModel>,
+            IApiPostable<OrderRowApiModel, int>,
+            IApiPutable<OrderRowApiModel>,
+            IApiPatchable<OrderRowApiModel>,
             IApiDeleteable<int>
     {
-        public OrderController(IGenericWorker<Order, OrderRowApiO, int> workerService) : base(workerService)
+        public OrderController(IGenericWorker<OrderDbModel, OrderRowApiModel, int> workerService) : base(workerService)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Northwind.Areas.api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<OrderRowApiO>> Get()
+        public ActionResult<List<OrderRowApiModel>> Get()
         {
             return base.BaseGet();
         }
@@ -39,14 +39,14 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<OrderRowApiO> Patch([FromBody] OrderRowApiO apiRowModel)
+        public ActionResult<OrderRowApiModel> Patch([FromBody] OrderRowApiModel apiRowModel)
         {
             return base.BasePatch(apiRowModel);
         }
 
         [HttpPost("{key}")]
         [Produces("application/json")]
-        public ActionResult<OrderRowApiO> Post([FromRoute] int key)
+        public ActionResult<OrderRowApiModel> Post([FromRoute] int key)
         {
             return base.BasePost(key);
         }
@@ -54,7 +54,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult<OrderRowApiO> Put([FromBody] OrderRowApiO apiRowModel)
+        public ActionResult<OrderRowApiModel> Put([FromBody] OrderRowApiModel apiRowModel)
         {
             return base.BasePut(apiRowModel, o => o.OrderDate == apiRowModel.OrderDate 
                                             && o.CustomerId == apiRowModel.CustomerId

@@ -6,23 +6,23 @@ using System.Collections.Generic;
 
 namespace Northwind.BLL.Workers
 {
-    public class EmployeeTerritoryRowWorker : GenericWorker<EmployeeTerritory, int, EmployeeTerritoryRowApiO, string>
+    public class EmployeeTerritoryRowWorker : GenericWorker<EmployeeTerritoryDbModel, int, EmployeeTerritoryRowApiModel, string>
     {
-        public EmployeeTerritoryRowWorker(IRepository<EmployeeTerritory, int> repository) : base(repository)
+        public EmployeeTerritoryRowWorker(IRepository<EmployeeTerritoryDbModel, int> repository) : base(repository)
         {
         }
 
-        public override EmployeeTerritoryRowApiO Create(EmployeeTerritoryRowApiO apiRowModel)
+        public override EmployeeTerritoryRowApiModel Create(EmployeeTerritoryRowApiModel apiRowModel)
         {
             return base.Create(apiRowModel, t => t.EmployeeId == apiRowModel.EmployeeId && t.TerritoryId == apiRowModel.TerritoryId);
         }
 
-        public override List<EmployeeTerritoryRowApiO> FetchAll()
+        public override List<EmployeeTerritoryRowApiModel> FetchAll()
         {
             return base.FetchAll(t => t.Employee.LastName + t.Employee.FirstName);
         }
 
-        public override EmployeeTerritoryRowApiO Update(EmployeeTerritoryRowApiO apiRowModel)
+        public override EmployeeTerritoryRowApiModel Update(EmployeeTerritoryRowApiModel apiRowModel)
         {
             return base.Update(apiRowModel, t => t.EmployeeId == apiRowModel.EmployeeId && t.TerritoryId == apiRowModel.TerritoryId);
         }

@@ -32,7 +32,7 @@ namespace Northwind.Areas.api.Controllers
         /// <returns></returns>
         [HttpGet()]
         [Produces("application/json")]
-        public ActionResult<List<CategoryRowApiO>> Get()
+        public ActionResult<List<CategoryRowApiModel>> Get()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Northwind.Areas.api.Controllers
         /// <returns></returns>
         [HttpPost("{categoryId}")]
         [Produces("application/json")]
-        public ActionResult<CategoryRowApiO> Post([FromRoute] int categoryId)
+        public ActionResult<CategoryRowApiModel> Post([FromRoute] int categoryId)
         {
             try
             {
@@ -80,13 +80,13 @@ namespace Northwind.Areas.api.Controllers
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
         [Consumes("application/json")]
-        public ActionResult<CategoryRowApiO> Put([FromBody] CategoryRowApiO category)
+        public ActionResult<CategoryRowApiModel> Put([FromBody] CategoryRowApiModel category)
         {
             try
             {
                 if (ModelState.IsValid == true)
                 {
-                    CategoryRowApiO result = default(CategoryRowApiO);
+                    CategoryRowApiModel result = default(CategoryRowApiModel);
 
                     result = this.CategoryService.Create(category);
 
@@ -138,11 +138,11 @@ namespace Northwind.Areas.api.Controllers
         [ProducesResponseType(200)] // 200 = OK
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ActionResult<CategoryRowApiO> Patch([FromBody] CategoryRowApiO category)
+        public ActionResult<CategoryRowApiModel> Patch([FromBody] CategoryRowApiModel category)
         {
             try
             {
-                if (category == default(CategoryRowApiO))
+                if (category == default(CategoryRowApiModel))
                 {
                     // See if a partial has been sent.
                     using (StreamReader sr = new StreamReader(Request.Body))
@@ -156,18 +156,18 @@ namespace Northwind.Areas.api.Controllers
                                 using (JSONSerializer serialiser = new JSONSerializer())
                                 {
                                     // The request may contain a partial so work around this.
-                                    category = serialiser.Deserialize<CategoryRowApiO>(requestBody);
+                                    category = serialiser.Deserialize<CategoryRowApiModel>(requestBody);
                                 }
                             }
                         }
                     }
                 }
 
-                if (category != default(CategoryRowApiO))
+                if (category != default(CategoryRowApiModel))
                 {
                     if (ModelState.IsValid)
                     {
-                        CategoryRowApiO result = this.CategoryService.Update(category);
+                        CategoryRowApiModel result = this.CategoryService.Update(category);
                         this.CategoryService.Commit();
 
                         // Updated

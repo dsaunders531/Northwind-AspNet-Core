@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The supplier repository
     /// </summary>
-    public sealed class SupplierRepository : Repository<Supplier, int>
+    public sealed class SupplierRepository : Repository<SupplierDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public SupplierRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public SupplierRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Supplier> FetchAll
+        public override IQueryable<SupplierDbModel> FetchAll
         {
             get
             {
@@ -28,12 +28,12 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Supplier item)
+        public override void Create(SupplierDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(Supplier item)
+        public override void Update(SupplierDbModel item)
         {
             this.Context.AttachRange(item.Products);
             this.Context.AttachRange(item.Products.Select(c => c.Category));
@@ -43,14 +43,14 @@ namespace Northwind.DAL.Repositories
             this.Context.Update(item);
         }
 
-        public override void Delete(Supplier item)
+        public override void Delete(SupplierDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override Supplier Fetch(int id)
+        public override SupplierDbModel Fetch(int id)
         {
-            return (from Supplier s in this.FetchAll where s.SupplierId == id select s).FirstOrDefault();
+            return (from SupplierDbModel s in this.FetchAll where s.SupplierId == id select s).FirstOrDefault();
         }
     }
 }
