@@ -19,7 +19,7 @@ namespace Northwind.Tests
         {
             using (MSSQLDbClient client = new MSSQLDbClient(ConnectionString))
             {
-                List<ProductRowApiO> productRowApiOs = client.Fill<List<ProductRowApiO>>("SELECT * From Products");
+                List<ProductRowApiModel> productRowApiOs = client.Fill<List<ProductRowApiModel>>("SELECT * From Products");
                 Assert.True(productRowApiOs.Count > 0, "No products were found.");
             }
         }
@@ -32,7 +32,7 @@ namespace Northwind.Tests
         {
             using (MSSQLDbClient client = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO productRowApiOs = client.Fill<ProductRowApiO>("SELECT TOP 1 * FROM PRODUCTS");
+                ProductRowApiModel productRowApiOs = client.Fill<ProductRowApiModel>("SELECT TOP 1 * FROM PRODUCTS");
                 Assert.True(productRowApiOs.ProductId == 1, "No products were found.");
             }
         }

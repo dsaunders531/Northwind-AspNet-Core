@@ -18,13 +18,13 @@ namespace Northwind.Tests
         /// Create the nortwind context.
         /// </summary>
         /// <returns></returns>
-        public NorthwindContext NorthwindContext()
+        public NorthwindDbContext NorthwindContext()
         {
-            NorthwindContext result = null;
+            NorthwindDbContext result = null;
 
-            DbContextOptionsBuilder<NorthwindContext> optionsBuilder = new DbContextOptionsBuilder<NorthwindContext>()
+            DbContextOptionsBuilder<NorthwindDbContext> optionsBuilder = new DbContextOptionsBuilder<NorthwindDbContext>()
                                                                             .UseSqlServer(ConnectionString);
-            result = new NorthwindContext(optionsBuilder.Options);
+            result = new NorthwindDbContext(optionsBuilder.Options);
 
             optionsBuilder = null;
 
@@ -34,9 +34,9 @@ namespace Northwind.Tests
         [Fact]
         public void RunStoredProcComplexTypeNoParameters()
         {
-            using (NorthwindContext context = this.NorthwindContext())
+            using (NorthwindDbContext context = this.NorthwindContext())
             {
-                List<MostExpensiveProduct> mostExpensiveProducts = context.TenMostExpensiveProducts();
+                List<MostExpensiveProductModel> mostExpensiveProducts = context.TenMostExpensiveProducts();
                 Assert.True(mostExpensiveProducts.Count == 10, "Ten products were not found");
             }
         }
@@ -44,13 +44,13 @@ namespace Northwind.Tests
         [Fact]
         public void RunStoredProcComplexTypeWithParameters()
         {
-            using (NorthwindContext context = this.NorthwindContext())
+            using (NorthwindDbContext context = this.NorthwindContext())
             {
-                List<SalesByCategory> salesByCategory = context.SalesByCategory("Beverages", 1998);
+                List<SalesByCategoryModel> salesByCategory = context.SalesByCategory("Beverages", 1998);
 
                 using (MSSQLDbClient client = new MSSQLDbClient(ConnectionString))
                 {
-                    List<SalesByCategory> salesByCategoryDirect = client.Fill<List<SalesByCategory>>("exec [SalesByCategory] 'Beverages', 1998");
+                    List<SalesByCategoryModel> salesByCategoryDirect = client.Fill<List<SalesByCategoryModel>>("exec [SalesByCategory] 'Beverages', 1998");
                     Assert.True(salesByCategory.Count == salesByCategoryDirect.Count, "Sales by category returned incorrect results.");
                 }
             }
