@@ -18,15 +18,15 @@ namespace Northwind.DAL
 
         public static IApplicationBuilder ApplicationBuilder { get; set; }
 
-        public static NorthwindContext NorthwindContext
+        public static NorthwindDbContext NorthwindContext
         {
             get
             {
-                NorthwindContext result = null;
+                NorthwindDbContext result = null;
 
-                DbContextOptionsBuilder<NorthwindContext> optionsBuilder = new DbContextOptionsBuilder<NorthwindContext>()
+                DbContextOptionsBuilder<NorthwindDbContext> optionsBuilder = new DbContextOptionsBuilder<NorthwindDbContext>()
                                                                                 .UseSqlServer(Startup.AppConfiguration.ConnectionStrings.Content);
-                result = new NorthwindContext(optionsBuilder.Options);
+                result = new NorthwindDbContext(optionsBuilder.Options);
 
                 optionsBuilder = null;
 
@@ -50,21 +50,21 @@ namespace Northwind.DAL
         {
             Startup.AppConfiguration = appConfiguration;
 
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Content)); // Application data
+            services.AddDbContext<NorthwindDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Content)); // Application data
 
-            services.AddTransient<IRepository<Category, int>, CategoryRepository>();
-            services.AddTransient<IRepository<CustomerDemographic, string>, CustomerDemographicRepository>();
-            services.AddTransient<IRepository<CustomerCustomerDemo, string>, CustomerCustomerDemoRepository>();
-            services.AddTransient<IRepository<Customer, string>, CustomerRepository>();
-            services.AddTransient<IRepository<Employee, int>, EmployeeRepository>();
-            services.AddTransient<IRepository<EmployeeTerritory, int>, EmployeeTerritoryRepository>();
-            services.AddTransient<IRepository<OrderDetail, int>, OrderDetailRepository>();
-            services.AddTransient<IRepository<Order, int>, OrderRepository>();
-            services.AddTransient<IRepository<Product, int>, ProductRepository>();
-            services.AddTransient<IRepository<Region, int>, RegionRepository>();
-            services.AddTransient<IRepository<Shipper, int>, ShipperRepository>();
-            services.AddTransient<IRepository<Supplier, int>, SupplierRepository>();
-            services.AddTransient<IRepository<Territory, string>, TerritoryRepository>();
+            services.AddTransient<IRepository<CategoryDbModel, int>, CategoryRepository>();
+            services.AddTransient<IRepository<CustomerDemographicDbModel, string>, CustomerDemographicRepository>();
+            services.AddTransient<IRepository<CustomerCustomerDemoDbModel, string>, CustomerCustomerDemoRepository>();
+            services.AddTransient<IRepository<CustomerDbModel, string>, CustomerRepository>();
+            services.AddTransient<IRepository<EmployeeDbModel, int>, EmployeeRepository>();
+            services.AddTransient<IRepository<EmployeeTerritoryDbModel, int>, EmployeeTerritoryRepository>();
+            services.AddTransient<IRepository<OrderDetailDbModel, int>, OrderDetailRepository>();
+            services.AddTransient<IRepository<OrderDbModel, int>, OrderRepository>();
+            services.AddTransient<IRepository<ProductDbModel, int>, ProductRepository>();
+            services.AddTransient<IRepository<RegionDbModel, int>, RegionRepository>();
+            services.AddTransient<IRepository<ShipperDbModel, int>, ShipperRepository>();
+            services.AddTransient<IRepository<SupplierDbModel, int>, SupplierRepository>();
+            services.AddTransient<IRepository<TerritoryDbModel, string>, TerritoryRepository>();
         }
 
         public static void Configure(IApplicationBuilder app)
@@ -75,7 +75,7 @@ namespace Northwind.DAL
             // https://stackoverflow.com/questions/42355481/auto-create-database-in-entity-framework-core
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {                
-                NorthwindContext applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<NorthwindContext>();
+                NorthwindDbContext applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
                 applicationDbContext.Database.Migrate();
             }
 
@@ -84,12 +84,12 @@ namespace Northwind.DAL
 
         public static void ConfigureIdentityServices(AppConfigurationModel appConfiguration, IServiceCollection services)
         {
-            services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Authentication)); // The user database
+            services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Identity)); // The user database
 
             services.AddSingleton<IRepository<ApiSessionModel, string>, ApiLoginRepository>(); // The api logins repository
 
             // Setup the password validation requirements eg: Password1!
-            services.AddIdentity<UserProfileModel, IdentityRole>(
+            services.AddIdentity<IdentityUserModel, IdentityRoleModel>(
                     opts =>
                     {
                         opts.User.RequireUniqueEmail = true;
@@ -100,7 +100,7 @@ namespace Northwind.DAL
                         opts.Password.RequireUppercase = true;
                         opts.Password.RequireDigit = true;
                     }
-                ).AddEntityFrameworkStores<AuthenticationDbContext>(); // The model
+                ).AddEntityFrameworkStores<IdentityDbContext>(); // The model
         }
 
         public static void ConfigureIdentity(AppConfigurationModel appConfiguration, IApplicationBuilder app)
@@ -109,13 +109,13 @@ namespace Northwind.DAL
             // https://stackoverflow.com/questions/42355481/auto-create-database-in-entity-framework-core
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                AuthenticationDbContext authenticationDbContext = serviceScope.ServiceProvider.GetRequiredService<AuthenticationDbContext>();
+                IdentityDbContext authenticationDbContext = serviceScope.ServiceProvider.GetRequiredService<IdentityDbContext>();
                 authenticationDbContext.Database.Migrate();
             }
 
             // Seed data
-            AuthenticationDbContext.CreateDefaultRoles(app.ApplicationServices, appConfiguration).Wait();
-            AuthenticationDbContext.CreateAdminAccount(app.ApplicationServices, appConfiguration).Wait();
+            IdentityDbContext.CreateDefaultRoles(app.ApplicationServices, appConfiguration).Wait();
+            IdentityDbContext.CreateAdminAccount(app.ApplicationServices, appConfiguration).Wait();
 
             app.UseAuthentication();
         }

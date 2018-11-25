@@ -16,23 +16,23 @@ namespace Northwind.BLL.Workers
     /// </summary>
     public class IdentityWorker
     {
-        private UserManager<UserProfileModel> UserManager { get; set; }
-        private SignInManager<UserProfileModel> SignInManager { get; set; }
-        private RoleManager<IdentityRole> RoleManager { get; set; }
+        private UserManager<IdentityUserModel> UserManager { get; set; }
+        private SignInManager<IdentityUserModel> SignInManager { get; set; }
+        private RoleManager<IdentityRoleModel> RoleManager { get; set; }
         private List<string> DefaultRoles { get; set; }
 
-        public IdentityWorker(IAppConfiguration appConfiguration, UserManager<UserProfileModel> userManager, 
-                                SignInManager<UserProfileModel> signInManager, RoleManager<IdentityRole> roleManager)
+        public IdentityWorker(IAppConfiguration appConfiguration, UserManager<IdentityUserModel> userManager, 
+                                SignInManager<IdentityUserModel> signInManager, RoleManager<IdentityRoleModel> roleManager)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
             this.RoleManager = roleManager;
-            this.DefaultRoles = appConfiguration.AppConfiguration.SeedData.DefaultRoles.ToList<string>();
+            this.DefaultRoles = appConfiguration.AppConfiguration.Identity.NewUserRoles.ToList<string>();
         }
 
         public async Task<IdentityResult> CreateAccountAsync(CreateAccountAppModel model)
         {
-            UserProfileModel user = new UserProfileModel { UserName = model.Name, Email = model.Email };
+            IdentityUserModel user = new IdentityUserModel { UserName = model.Name, Email = model.Email };
 
             IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
 
@@ -41,10 +41,7 @@ namespace Northwind.BLL.Workers
                 // Setup the role for the user if it does not exist.
                 foreach (string item in this.DefaultRoles)
                 {
-                    if (await RoleManager.FindByNameAsync(item) == null)
-                    {
-                        await RoleManager.CreateAsync(new IdentityRole(item));
-                    }
+                    // Roles should be setup already as part of initial database configuration.
                     await UserManager.AddToRoleAsync(user, item);
                 }                
             }
@@ -72,7 +69,7 @@ namespace Northwind.BLL.Workers
         {
             SignInResult result = null;
 
-            UserProfileModel user = await this.UserManager.FindByEmailAsync(email);
+            IdentityUserModel user = await this.UserManager.FindByEmailAsync(email);
 
             if (user != null)
             {
@@ -93,8 +90,6 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     result = await this.SignInManager.PasswordSignInAsync(user, password, false, false);
-                    
-                    
                 }
             }
             else
@@ -159,7 +154,7 @@ namespace Northwind.BLL.Workers
         {
             bool result = true;
 
-            UserProfileModel user = await this.UserManager.FindByEmailAsync(email);
+            IdentityUserModel user = await this.UserManager.FindByEmailAsync(email);
 
             result = await this.IsInRoles(user, roles);
 
@@ -174,7 +169,7 @@ namespace Northwind.BLL.Workers
         /// <param name="user"></param>
         /// <param name="roles">A comma seperated list of roles.</param>
         /// <returns></returns>
-        public async Task<bool> IsInRoles(UserProfileModel user, string roles)
+        public async Task<bool> IsInRoles(IdentityUserModel user, string roles)
         {
             bool result = true;
 

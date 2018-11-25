@@ -7,10 +7,10 @@ namespace Northwind.DAL.Models
     /// App configuration seed data model used by Identity.
     /// </summary>
     [NotMapped]
-    public class SeedDataModel
+    public class IdentityConfigurationModel
     {
-        public List<string> CreateDefaultRoles { get; set; }
-        public SeedDataUserModel AdminUser { get; set; }
-        public string[] DefaultRoles { get; set; }
+        public List<IdentityRoleConfigurationModel> Roles { get; set; }
+        public IdentityUserConfigurationModel AdminUser { get; set; }
+        public string[] NewUserRoles { get; set; }
     }
 }

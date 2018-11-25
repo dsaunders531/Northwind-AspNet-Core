@@ -10,9 +10,13 @@
     <Compile Remove="Migrations\20180912103309_ProductUpdate.cs" />
     <Compile Remove="Migrations\20181013184329_test.cs" />
     <Compile Remove="Migrations\20181013185213_MigrateToAnnotations.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917170352_AuthenticationCreate.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917175217_AuthenticationCreate.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917201432_AuthenticationUpdate.cs" />
+    <Compile Remove="Migrations\IdentityDb\20180917170352_AuthenticationCreate.cs" />
+    <Compile Remove="Migrations\IdentityDb\20180917175217_AuthenticationCreate.cs" />
+    <Compile Remove="Migrations\IdentityDb\20180917201432_AuthenticationUpdate.cs" />
+    <Compile Remove="Migrations\IdentityDb\20180917203244_AuthenticationCreate.cs" />
+    <Compile Remove="Migrations\IdentityDb\20181111111209_UpdateIdentity.cs" />
+    <Compile Remove="Migrations\IdentityDb\20181111122031_ExtendRole.cs" />
+    <Compile Remove="Migrations\IdentityDb\20181111122604_ExtendModels.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mezzanine.Attributes;
 using mezzanine.ViewModel;
 
 namespace Northwind.BLL.Models.Authentication
@@ -15,16 +16,19 @@ namespace Northwind.BLL.Models.Authentication
         [Display(Name = "Your Name")]
         [MinLength(4, ErrorMessage ="The name is too short!")]
         [MaxLength(256, ErrorMessage = "The name is too long!")]
+        [SqlInjectionCheck]
         public string Name { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Address")]        
+        [Display(Name = "Email Address")]
+        [SqlInjectionCheck]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [SqlInjectionCheck]
         public string Password { get; set; }
 
         [NotMapped]
@@ -32,9 +36,11 @@ namespace Northwind.BLL.Models.Authentication
         [DataType(DataType.Password)]
         [Display(Name = "Please enter your password again")]
         [Compare("Password", ErrorMessage = "The passwords do not match")]
+        [SqlInjectionCheck]
         public string Password2 { get; set; }
 
         [NotMapped]
+        [SqlInjectionCheck]
         public string ReturnUrl { get; set; }
     }
 }

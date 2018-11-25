@@ -12,9 +12,9 @@ namespace Northwind.DAL
     /// <summary>
     /// The authentication db context.
     /// </summary>
-    public class AuthenticationDbContext : IdentityDbContext<UserProfileModel>
+    public class IdentityDbContext : IdentityDbContext<IdentityUserModel, IdentityRoleModel, Guid>
     {
-        public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options) : base(options)
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
             // Nothing to add yet...
         }
@@ -27,15 +27,15 @@ namespace Northwind.DAL
         /// <returns></returns>
         public static async Task CreateDefaultRoles(IServiceProvider serviceProvider, AppConfigurationModel configurationModel)
         {
-            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>(); //serviceProvider.GetService<RoleManager<IdentityRole>>(); 
-            List<string> roles = configurationModel.SeedData.CreateDefaultRoles;
+            RoleManager<IdentityRoleModel> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRoleModel>>();
+            List<IdentityRoleConfigurationModel> roles = configurationModel.Identity.Roles;
 
-            foreach (string item in roles)
+            foreach (IdentityRoleConfigurationModel item in roles)
             {
                 // Setup the role for the user if it does not exist.
-                if (await roleManager.FindByNameAsync(item) == null)
-                {
-                    await roleManager.CreateAsync(new IdentityRole(item));
+                if (await roleManager.FindByNameAsync(item.Name) == null)
+                {                     
+                    await roleManager.CreateAsync(new IdentityRoleModel() { Name = item.Name, Zone = item.Zone });
                 }
             }
         }
@@ -48,10 +48,10 @@ namespace Northwind.DAL
         /// <returns></returns>
         public static async Task CreateAdminAccount(IServiceProvider serviceProvider, AppConfigurationModel configurationModel)
         {
-            UserManager<UserProfileModel> userManager = serviceProvider.GetRequiredService<UserManager<UserProfileModel>>();
-            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            UserManager<IdentityUserModel> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUserModel>>();
+            RoleManager<IdentityRoleModel> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRoleModel>>();
 
-            SeedDataUserModel adminUser = configurationModel.SeedData.AdminUser;
+            IdentityUserConfigurationModel adminUser = configurationModel.Identity.AdminUser;
 
             if (await userManager.FindByNameAsync(adminUser.Name) == null)
             {
@@ -60,11 +60,19 @@ namespace Northwind.DAL
                 {
                     if (await roleManager.FindByNameAsync(item) == null)
                     {
-                        await roleManager.CreateAsync(new IdentityRole(item));
+                        // One of the roles does not exist. This should only happen if there has been a configuration error.
+                        await CreateDefaultRoles(serviceProvider, configurationModel);
+                        break;
                     }
                 }
 
-                UserProfileModel newUser = new UserProfileModel() { UserName = adminUser.Name, Email = adminUser.Email };
+                IdentityUserModel newUser = new IdentityUserModel()
+                {
+                    UserName = adminUser.Name,
+                    Email = adminUser.Email,
+                    Relationship = adminUser.Relationship,
+                    PasswordReset = true
+                };
 
                 IdentityResult identityResult = await userManager.CreateAsync(newUser, adminUser.Password);
 

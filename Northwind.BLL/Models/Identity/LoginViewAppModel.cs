@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mezzanine.Attributes;
 using mezzanine.ViewModel;
 
 namespace Northwind.BLL.Models.Authentication
@@ -18,14 +19,15 @@ namespace Northwind.BLL.Models.Authentication
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
+        [SqlInjectionCheck]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [SqlInjectionCheck]
         public string Password { get; set; }
 
-        [NotMapped]
         public string ReturnUrl { get; set; }
     }
 }
