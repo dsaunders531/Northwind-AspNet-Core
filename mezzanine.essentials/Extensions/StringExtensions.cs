@@ -476,17 +476,22 @@ namespace mezzanine
         public static bool ContainsSqlInjection(this string value)
         {
             bool result = false;
-            string sqlText = value.Trim().Replace(" ", string.Empty).ToUpper();
 
-            result = sqlText.Contains(";ALTER") 
-                     || sqlText.Contains(";CREATE") 
-                     || sqlText.Contains(";DROP") 
-                     || sqlText.Contains(";GRANT") 
-                     || sqlText.Contains(";SELECT") 
-                     || sqlText.Contains(";EXEC")
-                     || sqlText.Contains(";DELETE")
-                     || sqlText.Contains(";INSERT")
-                     || sqlText.Contains(";UPDATE");
+            if (value.IsNullOrEmpty() == false)
+            {
+                string sqlText = value.Trim().Replace(" ", string.Empty).ToUpper();
+
+                result = sqlText.Contains(";ALTER")
+                         || sqlText.Contains(";CREATE")
+                         || sqlText.Contains(";DROP")
+                         || sqlText.Contains(";GRANT")
+                         || sqlText.Contains(";SELECT")
+                         || sqlText.Contains(";EXEC")
+                         || sqlText.Contains(";DELETE")
+                         || sqlText.Contains(";INSERT")
+                         || sqlText.Contains(";UPDATE");
+
+            }
 
             return result;
         }

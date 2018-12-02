@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Northwind.BLL.Services;
 using Northwind.BLL.Models.Authentication;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Northwind.DAL.Models;
+using System;
 
 namespace Northwind.Controllers
 {
@@ -30,17 +33,17 @@ namespace Northwind.Controllers
         [AllowAnonymous]
         public ViewResult CreateAccount(string returnUrl)
         {
-            return View(new ViewModel<CreateAccountAppModel>() { ViewData = new CreateAccountAppModel() { ReturnUrl = returnUrl } });
+            return View(new ViewModel<RegisterAccountAppModel>() { ViewData = new RegisterAccountAppModel() { ReturnUrl = returnUrl } });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAccount(ViewModel<CreateAccountAppModel> model)
+        public async Task<IActionResult> Register(ViewModel<RegisterAccountAppModel> model)
         {
             if (ModelState.IsValid == true)
             {                
-                IdentityResult result = await this.IdentityService.CreateAccountAsync(model.ViewData);
+                IdentityResult result = await this.IdentityService.RegisterAccountAsync(model.ViewData);
 
                 if (result.Succeeded == true)
                 {
@@ -127,6 +130,69 @@ namespace Northwind.Controllers
             await this.IdentityService.LogoutAsync();
 
             return Redirect(returnUrl ?? "/");
+        }
+
+        /// <summary>
+        ///  List all the users
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Admins")]
+        public IActionResult Manage()
+        {
+            return View(new ViewModel<List<IdentityUserModel>>() { ViewData = IdentityService.ListUsers() });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admins")]
+        public ActionResult<List<IdentityUserModel>> Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Admins")]
+        public ActionResult<List<IdentityUserModel>> Search([FromQuery] string seachTerm)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admins")]
+        public IActionResult CreateAccount([FromForm] RegisterAccountAppModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch]
+        [Authorize(Roles = "Admins")]
+        [Route("{username}")]
+        public IActionResult Lock([FromRoute] string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch]
+        [Authorize(Roles = "Admins")]
+        [Route("{username}")]
+        public IActionResult Unlock([FromRoute] string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch]
+        [Authorize(Roles = "Admins")]
+        [Route("{username}")]
+        public IActionResult ResetPassword([FromRoute] string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admins")]
+        [Route("{username}")]
+        public IActionResult Delete([FromRoute] string username)
+        {
+            throw new NotImplementedException();
         }
     }
 }

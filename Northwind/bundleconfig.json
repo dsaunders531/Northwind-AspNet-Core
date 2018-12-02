@@ -6,5 +6,11 @@
       "wwwroot/js/navbar.js",
       "wwwroot/js/site.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/knockout/3.4.2/knockout.min.js",
+    "inputFiles": [
+      "wwwroot/lib/knockout/3.4.2/knockout.js"
+    ]
   }
 ]

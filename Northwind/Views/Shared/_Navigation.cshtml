@@ -22,15 +22,15 @@
         <div id="navbar" class="collapse navbar-collapse" aria-expanded="false">
             <ul id="navbar-main" class="nav navbar-nav">
                 @*
-                    The ids must follow the pattern nav_{controller}_{action} in lower case.
-                    otherwise they will not be selected by navbar.js
+        The ids must follow the pattern nav_{controller}_{action} in lower case.
+        otherwise they will not be selected by navbar.js
 
-                    After adding new nav entries, update navbar.js with the appropriate values.
-                    It should be fine with conventional controller action url patterns.
+        After adding new nav entries, update navbar.js with the appropriate values.
+        It should be fine with conventional controller action url patterns.
 
-                    There must be an id nav_home_index. This is the fallback if the others cannot be found.
+        There must be an id nav_home_index. This is the fallback if the others cannot be found.
 
-                    Only 1 level of dropdown menu is supported.
+        Only 1 level of dropdown menu is supported.
                 *@
                 <li id="nav_home_index">
                     <a asp-area="" asp-controller="Home" asp-action="Index">
@@ -42,7 +42,7 @@
                 </li>
                 <li id="nav_home_about">
                     <a asp-area="" asp-controller="Home" asp-action="About">About</a>
-                </li>    
+                </li>
                 <li id="nav_inventory_index" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Shop
@@ -56,7 +56,13 @@
                             <a asp-area="" asp-controller="Inventory" asp-action="Products">Products</a>
                         </li>
                     </ul>
-                </li>                                
+                </li>
+                @if (User.IsInRole("Admins"))
+                {
+                    <li id="nav_admin_index" class="dropdown">
+                        <a asp-area="Auth" asp-controller="Account" asp-action="Manage"><i class="fa fa-users"></i> Manage Users</a>                        
+                    </li>
+                }
             </ul>
             
             <ul id="nav_account_home" class="nav navbar-nav navbar-right">

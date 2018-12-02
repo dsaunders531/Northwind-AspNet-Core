@@ -56,6 +56,13 @@ div .panel-custom
     @include border-radius(3px);
 }
 
+.table-header {
+    font-variant-caps:small-caps;
+    font-weight: bold;
+    background-color: $header-background;
+    color: $header-font-color;
+}
+
 div .panel-custom:last-of-type
 {
     margin-bottom: 16px;
@@ -64,6 +71,10 @@ div .panel-custom:last-of-type
 div .panel-custom .panel-heading img {
     height: 200px;
     border: none;
+}
+
+div .row {
+    padding: 8px;
 }
 
 .mobile-only-visible

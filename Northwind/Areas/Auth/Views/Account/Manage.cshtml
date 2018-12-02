@@ -1,0 +1,74 @@
+﻿@model ViewModel<List<IdentityUserModel>>
+
+@{
+    Model.PageMeta.PageTitle = "Manage users";
+    Model.PageMeta.Description = "Manage users";
+    Model.PageMeta.AddKeyword("Manage users");
+    Model.PageMeta.RobotsFollow = false;
+    Model.PageMeta.RobotsIndex = false;
+}
+
+<h2>
+    Manage users
+</h2>
+<div class="row">
+    <div class="input-group">
+        <input type="search" autocomplete="on" id="searchbar" placeholder="Search for user" class="form-control" aria-describedby="searchbar-addon" />
+        <span class="input-group-addon" id="searchbar-addon"><i class="fa fa-search"></i></span>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-header">
+            <tr>
+                <td>
+                    User name
+                </td>
+                <td>
+                    Email
+                </td>
+                <td align="right">
+                    Edit
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (IdentityUserModel item in Model.ViewData)
+            {
+                <tr>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        <a href="mailto:@item.Email">@item.Email</a>
+                    </td>
+                    <td align="right">
+                        <button class="btn btn-default"><i class="fa fa-edit"></i> Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="row">
+    <button class="btn btn-default"><i class="fa fa-user-plus"></i> Create User</button>
+</div>
+@* TODO
+
+    Use the account api endpoints to get user list paginated and navigate pages using knockout.
+
+    implement search and return results as list paginated with navigation. note only search after 3 chars. on enter key or button click.
+
+    implement edit as modal form with lock, unlock, delete password reset and edit details funtions.
+
+    implement create new user in seperate form.
+
+    see if there is a html partial function to populate the edit user and create user in a modal form;
+        - click on button
+        - get partial html with scripts and put in modal
+        - show modal.
+    See view components https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-2.1
+*@
+
+

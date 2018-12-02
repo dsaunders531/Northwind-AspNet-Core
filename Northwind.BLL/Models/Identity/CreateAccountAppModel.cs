@@ -9,7 +9,7 @@ namespace Northwind.BLL.Models.Authentication
     /// View model for creating an account.
     /// </summary>
     [NotMapped]
-    public class CreateAccountAppModel
+    public class RegisterAccountAppModel
     {
         [Required]
         [DataType(DataType.Text)]

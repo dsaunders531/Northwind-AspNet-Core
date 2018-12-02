@@ -30,7 +30,7 @@ namespace Northwind.BLL.Workers
             this.DefaultRoles = appConfiguration.AppConfiguration.Identity.NewUserRoles.ToList<string>();
         }
 
-        public async Task<IdentityResult> CreateAccountAsync(CreateAccountAppModel model)
+        public async Task<IdentityResult> RegisterAccountAsync(RegisterAccountAppModel model)
         {
             IdentityUserModel user = new IdentityUserModel { UserName = model.Name, Email = model.Email };
 
@@ -195,6 +195,34 @@ namespace Northwind.BLL.Workers
 
                 // We have finished the loop. If the role was not found, isInThisRole will be still be false.
                 result = isInThisRole;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// List all the users in the application.
+        /// </summary>
+        /// <returns></returns>
+        public List<IdentityUserModel> ListUsers(string searchterm)
+        {
+            List<IdentityUserModel> result;
+
+            if (searchterm.IsNullOrEmpty())
+            {
+                result = this.UserManager.Users.ToList();
+            }
+            else
+            {
+                searchterm = searchterm.ToLower();
+                result = (from IdentityUserModel i in this.UserManager.Users
+                          where i.UserName.ToLower().Contains(searchterm) || i.Email.ToLower().Contains(searchterm)
+                          select i).ToList();
+            }
+
+            if (result == null)
+            {
+                result = new List<IdentityUserModel>();
             }
 
             return result;
