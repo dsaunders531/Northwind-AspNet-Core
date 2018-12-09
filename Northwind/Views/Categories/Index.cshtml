@@ -1,0 +1,87 @@
+﻿@model ViewModel<EmptyResult>
+
+@{
+    Model.PageMeta.PageTitle = "Manage categories";
+    Model.PageMeta.Description = "Manage categories";
+    Model.PageMeta.AddKeyword("Manage categories");
+    Model.PageMeta.RobotsFollow = false;
+    Model.PageMeta.RobotsIndex = false;
+}
+
+<h2>
+    <i class="fa fa-list"></i> Manage categories
+</h2>
+<div class="row">
+    <div class="input-group">
+        <input type="search" autocomplete="on" id="searchbar" placeholder="Search" class="form-control" aria-describedby="searchbar-addon" />
+        <span class="input-group-addon" id="searchbar-addon"><i class="fa fa-search"></i></span>
+    </div>
+</div>
+<div id="table" class="table-responsive" hidden>
+    <table class="table table-striped">
+        <thead class="table-header">
+            <tr>
+                <td>
+                    Id
+                </td>
+                <td>
+                    Name
+                </td>
+                <td align="right">
+                    Edit
+                </td>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: pageData">
+            <tr>
+                <td>
+                    <input type="text" data-bind="value: categoryId" class="form-control"  readonly />
+                </td>
+                <td>
+                    <input type="text" data-bind="value: categoryName" class="form-control" readonly />
+                </td>
+                <td align="right">
+                    <button class="btn btn-default"><i class="fa fa-edit"></i> Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ul class="pagination">
+            <li data-bind="css: {disabled: $root.hasPrevious() == false }">
+                <a href="#table" target="_self"  aria-label="Previous" data-bind="click: $root.previous">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+            </li>
+            <li class="active">
+                <span data-bind="text: $root.currentPage"></span>
+            </li>
+            <li>
+                <span>of </span><span data-bind="text: $root.pages"></span>
+            </li>
+            <li data-bind="css: {disabled: $root.hasNext() == false }">
+                <a href="#table" target="_self" aria-label="Previous" data-bind="click: $root.next">
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="wait" class="alert alert-warning text-center" >
+    <p class="text-center">Please wait...</p>
+    <i class="fa fa-4x fa-spinner fa-spin fa-align-center"></i>
+</div>
+<div id="error" class="alert alert-danger text-center" hidden>
+    <h5>Oh no! An error happened</h5>
+    <p id="error_message"></p>
+</div>
+
+<div class="row">
+    <button id="btnCreateCategory" class="btn btn-default"><i class="fa fa-plus"></i> Create category</button>
+</div>
+@section Scripts
+{
+    <script src="~/js/Views/Categories/Index.js"></script>
+}

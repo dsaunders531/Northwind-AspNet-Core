@@ -21,7 +21,10 @@
             </div>
         </div>
     </noscript>
-    @await Html.PartialAsync("_DefaultHeader", appInfo)
+    @if (Context.User.Identity.IsAuthenticated == false)
+    {
+        @await Html.PartialAsync("_DefaultHeader", appInfo)
+    }
     @await Html.PartialAsync("_Navigation", Model)
     <content class="content">
         <div class="container">

@@ -139,7 +139,7 @@ namespace Northwind.Controllers
         [Authorize(Roles = "Admins")]
         public IActionResult Manage()
         {
-            return View(new ViewModel<List<IdentityUserModel>>() { ViewData = IdentityService.ListUsers() });
+            return View(new ViewModel<List<IdentityUserModel>>() { ViewData = IdentityService.ListUsers(null) });
         }
 
         [HttpGet]

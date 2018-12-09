@@ -60,7 +60,18 @@
                 @if (User.IsInRole("Admins"))
                 {
                     <li id="nav_admin_index" class="dropdown">
-                        <a asp-area="Auth" asp-controller="Account" asp-action="Manage"><i class="fa fa-users"></i> Manage Users</a>                        
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-adjust"></i> Admin
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="nav_admin_categories">
+                                <a asp-area="" asp-controller="Categories" asp-action="Index">  Categories</a>
+                            </li>
+                            <li id="nav_admin_users">
+                                <a asp-area="Auth" asp-controller="Account" asp-action="Manage"><i class="fa fa-users"></i> Manage Users</a>
+                            </li>
+                        </ul>
                     </li>
                 }
             </ul>
