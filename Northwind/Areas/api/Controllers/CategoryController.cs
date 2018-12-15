@@ -8,6 +8,7 @@ using Northwind.BLL.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Northwind.Areas.api.Controllers
 {
@@ -42,6 +43,36 @@ namespace Northwind.Areas.api.Controllers
             {
                 Response.AddBody(e.Message);
                 // application error internal server error
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpGet("Search")]
+        [Produces("application/json")]
+        public ActionResult<List<CategoryRowApiModel>> Search([FromQuery] string searchTerm)
+        {
+            try
+            {
+                searchTerm = searchTerm.ToLower().Trim();
+
+                List<CategoryRowApiModel> result;
+
+                if (searchTerm.IsNullOrEmpty() == false)
+                {
+                     result = (from CategoryRowApiModel c in this.CategoryService.FetchAll()
+                                                        where c.CategoryName.ToLower().Contains(searchTerm) || c.Description.ToLower().Contains(searchTerm)
+                                                        select c).OrderBy(c => c.CategoryName).ToList();
+                }
+                else
+                {
+                    result = new List<CategoryRowApiModel>();
+                }
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                Response.AddBody(e.Message);
                 return new StatusCodeResult(500);
             }
         }
