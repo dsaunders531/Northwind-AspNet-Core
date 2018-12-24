@@ -107,5 +107,13 @@ namespace Northwind.DAL.Repositories
             this.SavedApiSessions.AddRange(this.UnsavedApiSessions);
             this.UnsavedApiSessions.Clear();
         }
+
+        public void Dispose()
+        {
+            this.SavedApiSessions.Clear();
+            this.UnsavedApiSessions.Clear();
+            this.SavedApiSessions = null;
+            this.UnsavedApiSessions = null;
+        }
     }
 }

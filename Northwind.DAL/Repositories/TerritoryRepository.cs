@@ -54,5 +54,10 @@ namespace Northwind.DAL.Repositories
         {
             return (from TerritoryDbModel t in this.FetchAll where t.RegionId == regionId select t);
         }
+
+        public override void Dispose()
+        {
+            this.Context.Dispose();
+        }
     }
 }

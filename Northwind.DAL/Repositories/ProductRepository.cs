@@ -61,5 +61,10 @@ namespace Northwind.DAL.Repositories
         {
             return (from ProductDbModel p in this.FetchAll where p.CategoryId == categoryId select p);
         }
+
+        public override void Dispose()
+        {
+            this.Context.Dispose();
+        }
     }
 }

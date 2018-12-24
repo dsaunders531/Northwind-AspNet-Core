@@ -65,5 +65,10 @@ namespace Northwind.DAL.Repositories
 
             this.Context.Update(item);
         }
+
+        public override void Dispose()
+        {
+            this.Context.Dispose();
+        }
     }
 }

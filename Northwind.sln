@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		Resources\Northwind EF Migration.docx = Resources\Northwind EF Migration.docx
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mezzanine.Tests", "mezzanine.Tests\mezzanine.Tests.csproj", "{0FB260D9-37DA-4D6A-A96D-2D94E6532880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{86ED56C9-D1FE-47E9-BC85-0389F15FCD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86ED56C9-D1FE-47E9-BC85-0389F15FCD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86ED56C9-D1FE-47E9-BC85-0389F15FCD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FB260D9-37DA-4D6A-A96D-2D94E6532880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FB260D9-37DA-4D6A-A96D-2D94E6532880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FB260D9-37DA-4D6A-A96D-2D94E6532880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FB260D9-37DA-4D6A-A96D-2D94E6532880}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

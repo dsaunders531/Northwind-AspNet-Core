@@ -49,5 +49,10 @@ namespace Northwind.DAL.Repositories
         {
             return (from RegionDbModel r in this.FetchAll where r.RegionId == id select r).FirstOrDefault();
         }
+
+        public override void Dispose()
+        {
+            this.Context.Dispose();
+        }
     }
 }
