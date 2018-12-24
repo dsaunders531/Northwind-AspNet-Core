@@ -18,3 +18,5 @@
 /mezzanine.essentials/bin/Debug/netcoreapp2.1
 /mezzanine.essentials/obj
 *.user
+/mezzanine.Tests/bin/Debug/netcoreapp2.1
+/mezzanine.Tests/obj

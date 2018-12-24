@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace mezzanine.EF
 {
@@ -6,7 +7,7 @@ namespace mezzanine.EF
     /// The respository interface.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepository<TModel, TKey>
+    public interface IRepository<TModel, TKey> : IDisposable
     {
         void Commit();
         void Create(TModel item);
