@@ -18,4 +18,11 @@
         form = 4,
         header = 5
     }
+
+    public enum EFActionType
+    {
+        Create = 0,
+        Update = 1, 
+        Delete = 2
+    }
 }
