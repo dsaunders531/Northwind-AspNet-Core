@@ -179,7 +179,7 @@ namespace mezzanine.ApiDiscovery
                         if (methodAttr != null)
                         {
                             apiMethod = ApiMethod.PATCH;
-                            routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
+                            routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPatchAttribute), controllerRoute);
                             result = true;
                         }
                         else
