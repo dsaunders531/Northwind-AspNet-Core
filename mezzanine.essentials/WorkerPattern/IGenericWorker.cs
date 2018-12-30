@@ -11,11 +11,9 @@ namespace mezzanine.WorkerPattern
     public interface IGenericWorker<TDbModel, TApiRowModel, TDbModelKey>
     {
         List<TApiRowModel> FetchAll();
-        TApiRowModel Fetch(TDbModelKey key);
-        TApiRowModel Fetch(TApiRowModel apiModel, Func<TDbModel, bool> fetchWithoutKey);
+        TApiRowModel Fetch(TDbModelKey key);        
         TApiRowModel Create(TApiRowModel apiModel);
         TApiRowModel Update(TApiRowModel apiModel);
         void Delete(TDbModelKey key);
-        void Commit();
     }
 }

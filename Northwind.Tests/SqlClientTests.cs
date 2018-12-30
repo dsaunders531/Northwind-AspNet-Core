@@ -9,7 +9,7 @@ namespace Northwind.Tests
 {
     public class SqlClientTests
     {
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+        private const string ConnectionString = "Server=LAPTOP10\\SQLEXPRESS;Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
 
         /// <summary>
         /// See that the SqlClient Fill method works with many records.
@@ -33,7 +33,7 @@ namespace Northwind.Tests
             using (MSSQLDbClient client = new MSSQLDbClient(ConnectionString))
             {
                 ProductRowApiModel productRowApiOs = client.Fill<ProductRowApiModel>("SELECT TOP 1 * FROM PRODUCTS");
-                Assert.True(productRowApiOs.ProductId == 1, "No products were found.");
+                Assert.True(productRowApiOs.RowId == 1, "No products were found.");
             }
         }
     }

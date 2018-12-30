@@ -25,7 +25,7 @@ namespace Northwind.BLL.Workers
 
         public override CustomerDemographicRowApiModel Update(CustomerDemographicRowApiModel apiRowModel)
         {
-            return base.Update(apiRowModel, model => model.CustomerTypeId == apiRowModel.CustomerTypeId);
+            return base.Update(apiRowModel, model => model.RowId == apiRowModel.CustomerTypeId);
         }
     }
 }

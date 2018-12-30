@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class SupplierRowApiModel
+    public class SupplierRowApiModel : IApiModel<int>
     {
-        [Required]
-        public int SupplierId { get; set; }
-
         [Required]
         [MaxLength(40)]
         [SqlInjectionCheck]
@@ -61,5 +59,8 @@ namespace Northwind.BLL.Models
         [DataType(DataType.Url)]
         [SqlInjectionCheck]
         public string HomePage { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

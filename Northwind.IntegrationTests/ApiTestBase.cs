@@ -10,7 +10,7 @@ namespace Northwind.IntegrationTests
     public abstract class ApiTestBase
     {
         protected const string BaseUrl = "http://localhost:52869/api";
-        protected const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+        protected const string ConnectionString = "Server=LAPTOP10\\SQLEXPRESS;Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
 
         /// <summary>
         /// Get the headers with token

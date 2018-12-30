@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Shippers")]
-    public partial class ShipperDbModel
+    public partial class ShipperDbModel : DbModel<int>
     {
         public ShipperDbModel()
         {
             Orders = new HashSet<OrderDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Column("ShipperID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ShipperId { get; set; }
 
         [Required]
         [MaxLength(40)]

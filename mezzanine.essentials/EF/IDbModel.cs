@@ -13,8 +13,8 @@ namespace mezzanine.EF
 
         byte[] ConcurrencyToken { get; set; }
 
-        long RowVersion { get; set; }
+        long? RowVersion { get; set; }
 
-        bool Deleted { get; set; }
+        bool? Deleted { get; set; }
     }
 }

@@ -17,10 +17,10 @@ namespace mezzanine.EF
 
         [Timestamp]
         public byte[] ConcurrencyToken { get; set; }
-        
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public long RowVersion { get; set; }
 
-        public bool Deleted { get; set; } = false;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public long? RowVersion { get; set; } = 0;
+
+        public bool? Deleted { get; set; } = false;
     }
 }

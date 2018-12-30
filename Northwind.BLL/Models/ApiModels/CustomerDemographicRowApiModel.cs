@@ -2,19 +2,21 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerDemographicRowApiModel
+    public class CustomerDemographicRowApiModel : IApiModel<int>
     {
         [Required]
-        [MaxLength(10)]
-        [SqlInjectionCheck]
-        public string CustomerTypeId { get; set; }
+        public long CustomerTypeId { get; set; }
 
         [Required]
         [SqlInjectionCheck]
         public string CustomerDesc { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

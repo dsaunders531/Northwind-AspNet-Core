@@ -21,10 +21,10 @@ public IDictionary<string, string> RouteParams(int categoryId)
 
 @foreach (CategoryRowApiModel item in Model.ViewData)
 {
-    <a asp-area="" asp-controller="Inventory" asp-action="Category" asp-all-route-data="@RouteParams(item.CategoryId)">
+    <a asp-area="" asp-controller="Inventory" asp-action="Category" asp-all-route-data="@RouteParams(item.RowId)">
         <div class="col-sm-6 panel panel-custom">
             <div class="panel-heading">
-                <img src="@String.Format("images/categories/{0} {1}.jpg", item.CategoryId.ToString(), item.CategoryName.Replace("/","_"))" />
+                <img src="@String.Format("images/categories/{0} {1}.jpg", item.RowId.ToString(), item.CategoryName.Replace("/","_"))" />
                 <h4>@item.CategoryName</h4>
             </div>
             <div class="panel-body">

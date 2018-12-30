@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
-    public partial class RegionDbModel
+    public partial class RegionDbModel : DbModel<int>
     {
         public RegionDbModel()
         {
             Territories = new HashSet<TerritoryDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Column("RegionID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int RegionId { get; set; }
 
         [Required]
         [MaxLength(50)]

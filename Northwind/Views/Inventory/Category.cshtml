@@ -23,7 +23,7 @@ public IDictionary<string, string> RouteParams(int productId)
 
 <div class="row">
     <div class="col-sm-12">
-        <img src="@String.Format("images/categories/{0} {1}.jpg", Model.ViewData.Category.CategoryId.ToString(), Model.ViewData.Category.CategoryName.Replace("/","_"))" class="img-responsive" />
+        <img src="@String.Format("images/categories/{0} {1}.jpg", Model.ViewData.Category.RowId.ToString(), Model.ViewData.Category.CategoryName.Replace("/","_"))" class="img-responsive" />
         <h3>@Model.ViewData.Category.CategoryName</h3>
         <div class="pull-right highlight-button"><a asp-area="" asp-controller="Inventory" asp-action="Categories"><i class="fa fa-backward"></i> Back to Categories</a></div>
     </div>
@@ -37,7 +37,7 @@ public IDictionary<string, string> RouteParams(int productId)
     @foreach (ProductApiModel item in Model.ViewData.Products)
     {
         <li class="list-group-item">
-            <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.ProductId)">
+            <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.RowId)">
                 <h4>@item.ProductName</h4>
             </a>
         </li>

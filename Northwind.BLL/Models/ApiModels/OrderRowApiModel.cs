@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Northwind.BLL.Validators;
+using Northwind.DAL.Attributes;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class OrderRowApiModel
+    public class OrderRowApiModel : IApiModel<int>
     {
-        [Required]
-        public int OrderId { get; set; }
-
         [Required]
         [ValidCustomer()]
         [MaxLength(5)]
         [SqlInjectionCheck]
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
         [ValidEmployee()]
@@ -65,5 +63,8 @@ namespace Northwind.BLL.Models
         [MaxLength(15)]
         [SqlInjectionCheck]
         public string ShipCountry { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Northwind.BLL.Workers
 
         public override SupplierRowApiModel Update(SupplierRowApiModel apiRowModel)
         {
-            return base.Update(apiRowModel, model => model.SupplierId == apiRowModel.SupplierId);
+            return base.Update(apiRowModel, model => model.RowId == apiRowModel.RowId);
         }
     }
 }

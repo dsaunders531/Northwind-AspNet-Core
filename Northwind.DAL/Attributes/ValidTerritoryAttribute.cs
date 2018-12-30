@@ -7,16 +7,15 @@ using Northwind.DAL;
 using mezzanine.EF;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
-using mezzanine.Attributes;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class ValidCustomerTypeAttribute : Attribute, IModelValidator
+    public class ValidTerritoryAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The customer type id does not exist";
+        public string ErrorMessage { get; set; } = "The territory id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
@@ -25,19 +24,19 @@ namespace Northwind.BLL.Validators
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<CustomerDemographicDbModel, string> repository = new CustomerDemographicRepository(dbContext);
+                IRepository<TerritoryDbModel, int> territories = new TerritoryRepository(dbContext);
 
-                string value = context.Model as string; 
+                int? value = (int?)context.Model; 
 
                 if (value == null)
                 {
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A customer type id must be provided") };
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A territory id must be provided") };
                 }
                 else
                 {
-                    CustomerDemographicDbModel model = repository.Fetch(value);
+                    TerritoryDbModel territory = territories.Fetch(value.Value);
 
-                    if (model == null)
+                    if (territory == null)
                     {
                         result = new List<ModelValidationResult>() { new ModelValidationResult("", ErrorMessage) };
                     }

@@ -15,8 +15,8 @@ namespace Northwind.IntegrationTests
         {
             get
             {
-                return "SELECT ProductID as ProductId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
-                        + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products WHERE ProductName = '" + TestProductName + "' ORDER BY ProductID";
+                return "SELECT RowId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
+                        + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products WHERE ProductName = '" + TestProductName + "' ORDER BY RowId";
             }
         }
 
@@ -28,14 +28,14 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                RestResult<List<ProductRowApiO>> apiResult = restClient.Execute<List<ProductRowApiO>>("Product", RestSharp.Method.GET, headerParameters: Headers);
+                RestResult<List<ProductRowApiModel>> apiResult = restClient.Execute<List<ProductRowApiModel>>("Product", RestSharp.Method.GET, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult.Result);
 
                 using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
                 {
-                    List<ProductRowApiO> sqlResult = sqlClient.Fill<List<ProductRowApiO>>("SELECT ProductID as ProductId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
-                                                                                            + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products ORDER BY ProductID");
+                    List<ProductRowApiModel> sqlResult = sqlClient.Fill<List<ProductRowApiModel>>("SELECT RowId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
+                                                                                            + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products ORDER BY RowId");
                     Assert.NotNull(sqlResult);
 
                     Assert.True(apiResult.Result.Count == sqlResult.Count, "The record counts do not match.");
@@ -56,16 +56,16 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "2")
                 };
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
+                RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult);
 
                 using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
                 {
-                    ProductRowApiO sqlResult = sqlClient.Fill<ProductRowApiO>("SELECT ProductID as ProductId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
-                                                                                            + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products WHERE ProductId = 2 ORDER BY ProductID");
+                    ProductRowApiModel sqlResult = sqlClient.Fill<ProductRowApiModel>("SELECT RowId, ProductName, SupplierID as SupplierId, CategoryID as CategoryId, QuantityPerUnit, "
+                                                                                            + "UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued FROM Products WHERE RowId = 2 ORDER BY RowId");
                     Assert.NotNull(sqlResult);
-                    Assert.True(apiResult.Result.ProductId == sqlResult.ProductId && apiResult.Result.ProductName == sqlResult.ProductName, "The records do not match.");
+                    Assert.True(apiResult.Result.RowId == sqlResult.RowId && apiResult.Result.ProductName == sqlResult.ProductName, "The records do not match.");
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "1000")
                 };
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
+                RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product/{key}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 204, apiResult.Content);
                 Assert.Null(apiResult.Result);
             }
@@ -97,7 +97,7 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO existing = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel existing = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 if (existing != null)
                 {
                     this.Delete();
@@ -105,16 +105,16 @@ namespace Northwind.IntegrationTests
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    ProductRowApiO newItem = new ProductRowApiO() { ProductName = TestProductName, CategoryId = 2, QuantityPerUnit = "4 in a box", UnitPrice = (decimal)12.37, SupplierId = 1 };
+                    ProductRowApiModel newItem = new ProductRowApiModel() { ProductName = TestProductName, CategoryId = 2, QuantityPerUnit = "4 in a box", UnitPrice = (decimal)12.37, SupplierId = 1 };
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
+                    RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 201, apiResult.Content);
 
-                    ProductRowApiO sqlResult = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    ProductRowApiModel sqlResult = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                     Assert.True(sqlResult.ProductName == apiResult.Result.ProductName 
                                     && sqlResult.CategoryId == apiResult.Result.CategoryId 
                                     && sqlResult.QuantityPerUnit == apiResult.Result.QuantityPerUnit
-                                    && sqlResult.ProductId == apiResult.Result.ProductId);
+                                    && sqlResult.RowId == apiResult.Result.RowId);
                 }
             }
         }
@@ -127,8 +127,8 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                ProductRowApiO newItem = new ProductRowApiO() { ProductName = string.Empty, UnitPrice = 0, SupplierId = -3, CategoryId = -4 };
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
+                ProductRowApiModel newItem = new ProductRowApiModel() { ProductName = string.Empty, UnitPrice = 0, SupplierId = -3, CategoryId = -4 };
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Product", RestSharp.Method.PUT, jsonBody: newItem, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400, apiResult.Content);
             }
         }
@@ -141,27 +141,27 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO existing = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel existing = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
 
                 if (existing == null)
                 {
                     this.Create();
-                    existing = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    existing = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existing);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    ProductRowApiO updated = existing;
+                    ProductRowApiModel updated = existing;
                     updated.UnitPrice = 123;
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBody: updated, headerParameters: Headers);
+                    RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product", RestSharp.Method.PATCH, jsonBody: updated, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                     Assert.True(apiResult.Result.UnitPrice == 123, "The updated value was not returned");
                 }
 
-                ProductRowApiO dbValue = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel dbValue = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 Assert.True(dbValue.UnitPrice == 123, "The updated value was not returned");
             }
         }
@@ -174,9 +174,9 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                string partialJson = "{ \"ProductId\": -12345, \"CategoryId\": 2, \"SupplierId\":1, \"UnitPrice\": 0 }";
+                string partialJson = "{ \"RowId\": -12345, \"CategoryId\": 2, \"SupplierId\":1, \"UnitPrice\": 0 }";
 
-                RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }
@@ -189,23 +189,23 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO existing = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel existing = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
 
                 if (existing == null)
                 {
                     this.Create();
-                    existing = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    existing = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existing);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    string partialJson = "{ \"ProductId\": " + existing.ProductId + ", \"CategoryId\": 2, \"SupplierId\": 1, \"UnitPrice\": 32.1 }";
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                    string partialJson = "{ \"RowId\": " + existing.RowId + ", \"CategoryId\": 2, \"SupplierId\": 1, \"UnitPrice\": 32.1 }";
+                    RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
 
-                    ProductRowApiO dbValue = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    ProductRowApiModel dbValue = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                     Assert.True(dbValue.UnitPrice == (decimal)32.1, "Incorrect text was saved.");
                 }
             }
@@ -219,25 +219,25 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO existingCategory = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel existingCategory = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    string partialJson = "{ \"ProductId\": " + existingCategory.ProductId + " }";
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                    string partialJson = "{ \"RowId\": " + existingCategory.RowId + " }";
+                    RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     
                     Assert.False(apiResult.StatusCode == 200, apiResult.Content);
                 }
 
-                ProductRowApiO dbValue = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel dbValue = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 Assert.False(dbValue.ProductName == string.Empty, "Incorrect text was saved.");
             }
         }
@@ -250,12 +250,12 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                ProductRowApiO existingCategory = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel existingCategory = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
@@ -264,14 +264,14 @@ namespace Northwind.IntegrationTests
                 {
                     List<KeyValuePair<string, string>> routeParams = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("key", existingCategory.ProductId.ToString())
+                        new KeyValuePair<string, string>("key", existingCategory.RowId.ToString())
                     };
 
-                    RestResult<ProductRowApiO> apiResult = restClient.Execute<ProductRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
+                    RestResult<ProductRowApiModel> apiResult = restClient.Execute<ProductRowApiModel>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 301, apiResult.Content);
                 }
 
-                ProductRowApiO dbValue = sqlClient.Fill<ProductRowApiO>(GetRecordSql);
+                ProductRowApiModel dbValue = sqlClient.Fill<ProductRowApiModel>(GetRecordSql);
                 Assert.Null(dbValue);
             }
         }
@@ -289,7 +289,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("key", "-1234")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Product/{key}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 500 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }

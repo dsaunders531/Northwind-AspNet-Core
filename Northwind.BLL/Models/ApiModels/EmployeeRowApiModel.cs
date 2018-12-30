@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Northwind.BLL.Validators;
+using Northwind.DAL.Attributes;
 using mezzanine.Attributes;
+using Northwind.DAL.Models;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class EmployeeRowApiModel
+    public class EmployeeRowApiModel : IApiModel<int>, IEmployee
     {
-        [Required]
-        public int EmployeeId { get; set; }
-
         [Required]
         [MaxLength(20)]
         [SqlInjectionCheck]
@@ -80,5 +79,8 @@ namespace Northwind.BLL.Models
         [SqlInjectionCheck]
         [MaxLength(255)]
         public string PhotoPath { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

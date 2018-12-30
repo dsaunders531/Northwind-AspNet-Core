@@ -8,7 +8,7 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The territory repository.
     /// </summary>
-    public sealed class TerritoryRepository : Repository<TerritoryDbModel, string>
+    public sealed class TerritoryRepository : Repository<TerritoryDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -45,19 +45,14 @@ namespace Northwind.DAL.Repositories
             this.Context.Remove(item);
         }
 
-        public override TerritoryDbModel Fetch(string territoryId)
+        public override TerritoryDbModel Fetch(int territoryId)
         {
-            return (from TerritoryDbModel t in this.FetchAll where t.TerritoryId == territoryId select t).FirstOrDefault();
+            return (from TerritoryDbModel t in this.FetchAll where t.RowId == territoryId select t).FirstOrDefault();
         }
 
         public IQueryable<TerritoryDbModel> FetchByRegionId(int regionId)
         {
             return (from TerritoryDbModel t in this.FetchAll where t.RegionId == regionId select t);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

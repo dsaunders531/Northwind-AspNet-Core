@@ -8,33 +8,37 @@ using mezzanine.EF;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
+    /// <summary>
+    /// ValidationAttribute to see if a category exists.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class ValidProductAttribute : Attribute, IModelValidator
+    public class ValidCategoryAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The product id does not exist";
+        public string ErrorMessage { get; set; } = "The category id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
-        {
+        {            
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
 
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<ProductDbModel, int> products = new ProductRepository(dbContext);
+                IRepository<CategoryDbModel, int> categories = new CategoryRepository(dbContext);
 
-                int? value = context.Model as int?; 
+                int? value = context.Model as int?; // get the value of supplier (the type must match the column type)
 
                 if (value == null)
                 {
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A product id must be provided") };
+                    // a supplier id must be supplied
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A category id must be provided") };
                 }
                 else
                 {
-                    ProductDbModel category = products.Fetch(value.Value);
+                    CategoryDbModel category = categories.Fetch(value.Value);
 
                     if (category == null)
                     {

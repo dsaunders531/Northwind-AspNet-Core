@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
+using Northwind.DAL.Services;
 
 namespace Northwind.DAL
 {
@@ -53,9 +54,9 @@ namespace Northwind.DAL
             services.AddDbContext<NorthwindDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Content)); // Application data
 
             services.AddTransient<IRepository<CategoryDbModel, int>, CategoryRepository>();
-            services.AddTransient<IRepository<CustomerDemographicDbModel, string>, CustomerDemographicRepository>();
-            services.AddTransient<IRepository<CustomerCustomerDemoDbModel, string>, CustomerCustomerDemoRepository>();
-            services.AddTransient<IRepository<CustomerDbModel, string>, CustomerRepository>();
+            services.AddTransient<IRepository<CustomerDemographicDbModel, long>, CustomerDemographicRepository>();
+            services.AddTransient<IRepository<CustomerCustomerDemoDbModel, long>, CustomerCustomerDemoRepository>();
+            services.AddTransient<IRepository<CustomerDbModel, int>, CustomerRepository>();
             services.AddTransient<IRepository<EmployeeDbModel, int>, EmployeeRepository>();
             services.AddTransient<IRepository<EmployeeTerritoryDbModel, int>, EmployeeTerritoryRepository>();
             services.AddTransient<IRepository<OrderDetailDbModel, int>, OrderDetailRepository>();
@@ -64,7 +65,15 @@ namespace Northwind.DAL
             services.AddTransient<IRepository<RegionDbModel, int>, RegionRepository>();
             services.AddTransient<IRepository<ShipperDbModel, int>, ShipperRepository>();
             services.AddTransient<IRepository<SupplierDbModel, int>, SupplierRepository>();
-            services.AddTransient<IRepository<TerritoryDbModel, string>, TerritoryRepository>();
+            services.AddTransient<IRepository<TerritoryDbModel, int>, TerritoryRepository>();
+            services.AddTransient<IRepository<ProductHistoryDbModel, long>, ProductHistoryRepository>();
+            services.AddTransient<IRepository<CustomerHistoryDbModel, long>, CustomerHistoryRepository>();
+            services.AddTransient<IRepository<EmployeeHistoryDbModel, long>, EmployeeHistoryRepository>();
+
+            // History Services
+            services.AddTransient<IHistoryService<CustomerDbModel, int, CustomerHistoryDbModel>, CustomerHistoryService>();
+            services.AddTransient<IHistoryService<ProductDbModel, int, ProductHistoryDbModel>, ProductHistoryService>();
+            services.AddTransient<IHistoryService<EmployeeDbModel, int, EmployeeHistoryDbModel>, EmployeeHistoryService>();
         }
 
         public static void Configure(IApplicationBuilder app)

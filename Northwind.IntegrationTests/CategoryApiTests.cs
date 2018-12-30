@@ -18,7 +18,7 @@ namespace Northwind.IntegrationTests
         {
             get
             {
-                return "SELECT CategoryID as CategoryId, CategoryName, Description FROM Categories WHERE CategoryName = '" + TestCategoryName + "' ORDER BY CategoryID";
+                return "SELECT RowId, CategoryName, Description FROM Categories WHERE CategoryName = '" + TestCategoryName + "' ORDER BY RowId";
             }
         }
 
@@ -30,13 +30,13 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                RestResult<List<CategoryRowApiO>> apiResult = restClient.Execute<List<CategoryRowApiO>>("Category", RestSharp.Method.GET, headerParameters: Headers);
+                RestResult<List<CategoryRowApiModel>> apiResult = restClient.Execute<List<CategoryRowApiModel>>("Category", RestSharp.Method.GET, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult.Result);
 
                 using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
                 {
-                    List<CategoryRowApiO> sqlResult = sqlClient.Fill<List<CategoryRowApiO>>("SELECT CategoryID, CategoryName, Description FROM Categories ORDER BY CategoryID");
+                    List<CategoryRowApiModel> sqlResult = sqlClient.Fill<List<CategoryRowApiModel>>("SELECT RowId, CategoryName, Description FROM Categories ORDER BY RowId");
                     Assert.NotNull(sqlResult);
 
                     Assert.True(apiResult.Result.Count == sqlResult.Count, "The record counts do not match.");
@@ -57,15 +57,15 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "2")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST,routeParameters: routeParams, headerParameters: Headers);
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category/{CategoryId}", RestSharp.Method.POST,routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.Success, apiResult.Content);
                 Assert.NotNull(apiResult);
 
                 using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
                 {
-                    CategoryRowApiO sqlResult = sqlClient.Fill<CategoryRowApiO>("SELECT CategoryID as CategoryId, CategoryName, Description FROM Categories WHERE CategoryId = 2 ORDER BY CategoryID");
+                    CategoryRowApiModel sqlResult = sqlClient.Fill<CategoryRowApiModel>("SELECT RowId, CategoryName, Description FROM Categories WHERE RowId = 2 ORDER BY RowId");
                     Assert.NotNull(sqlResult);
-                    Assert.True(apiResult.Result.CategoryId == sqlResult.CategoryId && apiResult.Result.CategoryName == sqlResult.CategoryName, "The records do not match.");
+                    Assert.True(apiResult.Result.RowId == sqlResult.RowId && apiResult.Result.CategoryName == sqlResult.CategoryName, "The records do not match.");
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "1000")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category/{CategoryId}", RestSharp.Method.POST, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 204, apiResult.Content);
                 Assert.Null(apiResult.Result);                            
             }
@@ -97,7 +97,7 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                CategoryRowApiO existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 if (existingCategory != null)
                 {
                     this.Delete();
@@ -105,15 +105,15 @@ namespace Northwind.IntegrationTests
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    CategoryRowApiO newCategory = new CategoryRowApiO() { CategoryName = TestCategoryName, Description = "Some text about the item" };
+                    CategoryRowApiModel newCategory = new CategoryRowApiModel() { CategoryName = TestCategoryName, Description = "Some text about the item" };
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
+                    RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 201, apiResult.Content);
 
-                    CategoryRowApiO sqlResult = sqlClient.Fill<CategoryRowApiO>("SELECT CategoryID as CategoryId, CategoryName, Description FROM Categories WHERE CategoryName = '" + newCategory.CategoryName + "' ORDER BY CategoryID");
+                    CategoryRowApiModel sqlResult = sqlClient.Fill<CategoryRowApiModel>("SELECT RowId, CategoryName, Description FROM Categories WHERE CategoryName = '" + newCategory.CategoryName + "' ORDER BY RowId");
                     Assert.True(sqlResult.CategoryName == apiResult.Result.CategoryName 
                                 && sqlResult.Description == apiResult.Result.Description 
-                                && sqlResult.CategoryId == apiResult.Result.CategoryId);
+                                && sqlResult.RowId == apiResult.Result.RowId);
                 }
             }
         }
@@ -126,8 +126,8 @@ namespace Northwind.IntegrationTests
         {
             using (RESTClient restClient = new RESTClient(BaseUrl))
             {
-                CategoryRowApiO newCategory = new CategoryRowApiO() { CategoryName = string.Empty, Description = "Some text about the item" };
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
+                CategoryRowApiModel newCategory = new CategoryRowApiModel() { CategoryName = string.Empty, Description = "Some text about the item" };
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PUT, jsonBody: newCategory, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400, apiResult.Content);
             }
         }
@@ -140,27 +140,27 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                CategoryRowApiO existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    CategoryRowApiO updatedCategory = existingCategory;
+                    CategoryRowApiModel updatedCategory = existingCategory;
                     updatedCategory.Description += " More text.";
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBody: updatedCategory, headerParameters: Headers);
+                    RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PATCH, jsonBody: updatedCategory, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                     Assert.True(apiResult.Result.Description.EndsWith(" More text."), "The updated text was not returned");
                 }
 
-                CategoryRowApiO dbCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel dbCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 Assert.True(dbCategory.Description.EndsWith(" More text."), "The updated text was not returned");
             }
         }
@@ -175,7 +175,7 @@ namespace Northwind.IntegrationTests
             {
                 string partialJson = "{ \"CategoryId\": -12345, \"Description\": \"All about more text\" }";
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 406 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }
@@ -188,24 +188,24 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                CategoryRowApiO existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    string partialJson = "{ \"CategoryId\": " + existingCategory.CategoryId + ", \"Description\": \"All about more text\" }";
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                    string partialJson = "{ \"RowId\": " + existingCategory.RowId + ", \"Description\": \"All about more text\" }";
+                    RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                 }
 
-                CategoryRowApiO dbCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel dbCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 Assert.True(dbCategory.Description == "All about more text", "Incorrect text was saved.");
             }
         }
@@ -218,26 +218,26 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                CategoryRowApiO existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
 
                 using (RESTClient restClient = new RESTClient(BaseUrl))
                 {
-                    string partialJson = "{ \"CategoryId\": " + existingCategory.CategoryId + " }";
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
+                    string partialJson = "{ \"RowId\": " + existingCategory.RowId + " }";
+                    RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category", RestSharp.Method.PATCH, jsonBodyPartial: partialJson, headerParameters: Headers);
                     
                     // the assert should be false. The model we are working with is simple and has only 1 required parameter.
                     Assert.True(apiResult.StatusCode == 200, apiResult.Content);
                 }
 
-                CategoryRowApiO dbCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel dbCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 Assert.False(dbCategory.CategoryName == string.Empty, "Incorrect text was saved.");
             }
         }
@@ -250,12 +250,12 @@ namespace Northwind.IntegrationTests
         {
             using (MSSQLDbClient sqlClient = new MSSQLDbClient(ConnectionString))
             {
-                CategoryRowApiO existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
 
                 if (existingCategory == null)
                 {
                     this.Create();
-                    existingCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                    existingCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 }
 
                 Assert.NotNull(existingCategory);
@@ -264,14 +264,14 @@ namespace Northwind.IntegrationTests
                 {
                     List<KeyValuePair<string, string>> routeParams = new List<KeyValuePair<string, string>>
                     {
-                        new KeyValuePair<string, string>("CategoryId", existingCategory.CategoryId.ToString())
+                        new KeyValuePair<string, string>("CategoryId", existingCategory.RowId.ToString())
                     };
 
-                    RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
+                    RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                     Assert.True(apiResult.StatusCode == 301, apiResult.Content);
                 }
 
-                CategoryRowApiO dbCategory = sqlClient.Fill<CategoryRowApiO>(GetRecordSql);
+                CategoryRowApiModel dbCategory = sqlClient.Fill<CategoryRowApiModel>(GetRecordSql);
                 Assert.Null(dbCategory);
             }
         }
@@ -289,7 +289,7 @@ namespace Northwind.IntegrationTests
                     new KeyValuePair<string, string>("CategoryId", "-1234")
                 };
 
-                RestResult<CategoryRowApiO> apiResult = restClient.Execute<CategoryRowApiO>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
+                RestResult<CategoryRowApiModel> apiResult = restClient.Execute<CategoryRowApiModel>("Category/{CategoryId}", RestSharp.Method.DELETE, routeParameters: routeParams, headerParameters: Headers);
                 Assert.True(apiResult.StatusCode == 500 || apiResult.StatusCode == 400 || apiResult.StatusCode == 204, apiResult.Content);
             }
         }

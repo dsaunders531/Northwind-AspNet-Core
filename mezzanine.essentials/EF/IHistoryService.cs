@@ -9,7 +9,7 @@ namespace mezzanine.EF
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="THistoricModel"></typeparam>
-    public interface IHistoricRepository<TModel, TKey, THistoricModel> : IRepository<TModel, TKey>
+    public interface IHistoryService<TModel, TKey, THistoricModel> : IRepository<TModel, TKey>
     {
         IQueryable<THistoricModel> FetchHistory(TKey modelId);
 

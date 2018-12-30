@@ -163,7 +163,7 @@ namespace mezzanine.Tests
             historyService.Delete(test1);
             historyService.Commit();
 
-            Assert.True(historyService.FetchAll.Count() == 1, "The model was not deleted.");
+            Assert.True(historyService.Fetch(test1.RowId) == null, "The model was not deleted.");
             Assert.True(historyService.FetchHistory(rowId).Count() == 3, "A historic record was not created.");
 
             historicRecord = historyService.FetchHistoric(rowId, DateTime.Now);

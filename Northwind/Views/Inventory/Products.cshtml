@@ -20,7 +20,7 @@ public IDictionary<string, string> RouteParams(int productId)
 
 @foreach (ProductApiModel item in Model.ViewData)
 {
-    <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.ProductId)">
+    <a asp-area="" asp-controller="Inventory" asp-action="Product" asp-all-route-data="@RouteParams(item.RowId)">
         <div class="col-sm-6 panel panel-custom">
             <div class="panel-heading">
                 <h4>@item.ProductName</h4>

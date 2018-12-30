@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Northwind.BLL.Validators;
+using Northwind.DAL.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class OrderDetailRowApiModel
+    public class OrderDetailRowApiModel : IApiModel<int>
     {
         [Required]
         [ValidOrder()]
@@ -23,5 +24,8 @@ namespace Northwind.BLL.Models
         public short Quantity { get; set; } = 1;
 
         public float Discount { get; set; } = 0;
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

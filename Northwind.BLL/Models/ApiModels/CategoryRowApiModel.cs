@@ -1,4 +1,5 @@
 ﻿using mezzanine.Attributes;
+using mezzanine.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,11 +12,8 @@ namespace Northwind.BLL.Models
     /// The public api version of Category
     /// </summary>
     [NotMapped]
-    public class CategoryRowApiModel
+    public class CategoryRowApiModel : IApiModel<int>
     {
-        [Required]
-        public int CategoryId { get; set; }
-
         [MaxLength(15), MinLength(1)]
         [SqlInjectionCheck]
         public string CategoryName { get; set; }
@@ -23,5 +21,8 @@ namespace Northwind.BLL.Models
         [DataType(DataType.MultilineText)]
         [SqlInjectionCheck]
         public string Description { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

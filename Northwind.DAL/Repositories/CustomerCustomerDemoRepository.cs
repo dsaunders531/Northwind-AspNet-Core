@@ -8,7 +8,7 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The customer demographic repository
     /// </summary>
-    public sealed class CustomerCustomerDemoRepository : Repository<CustomerCustomerDemoDbModel, string>
+    public sealed class CustomerCustomerDemoRepository : Repository<CustomerCustomerDemoDbModel, long>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -36,17 +36,17 @@ namespace Northwind.DAL.Repositories
             this.Context.Remove(item);
         }
 
-        public override CustomerCustomerDemoDbModel Fetch(string id)
+        public override CustomerCustomerDemoDbModel Fetch(long id)
         {
             return (from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
         }
 
-        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerId(string customerId)
+        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerId(long customerId)
         {
             return from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerId == customerId select c;
         }
 
-        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerTypeId(string customerTypeId)
+        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerTypeId(long customerTypeId)
         {
             return (from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerTypeId == customerTypeId select c);
         }
@@ -60,11 +60,6 @@ namespace Northwind.DAL.Repositories
             this.Context.Attach(item.CustomerType);
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

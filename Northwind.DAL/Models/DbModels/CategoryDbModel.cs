@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Categories")]
-    public partial class CategoryDbModel
+    public partial class CategoryDbModel : DbModel<int>
     {
         public CategoryDbModel()
         {
             Products = new HashSet<ProductDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("CategoryID")]
-        [Required]
-        public int CategoryId { get; set; }
 
         [Required]
         [MaxLength(15), MinLength(1)]

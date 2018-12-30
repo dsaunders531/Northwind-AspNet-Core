@@ -7,7 +7,7 @@ namespace mezzanine.EF
     /// The respository interface.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepository<TModel, TKey> : IDisposable
+    public interface IRepository<TModel, TKey>
     {
         void Commit();
         void Create(TModel item);

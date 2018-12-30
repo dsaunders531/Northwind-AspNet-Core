@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Northwind.DAL.Repositories
 {
-    public sealed class EmployeeTerritoryRepository : Repository<EmployeeTerritoryDbModel, int>
+    internal sealed class EmployeeTerritoryRepository : Repository<EmployeeTerritoryDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -42,7 +42,7 @@ namespace Northwind.DAL.Repositories
             return from EmployeeTerritoryDbModel t in this.FetchAll where employeeId == t.EmployeeId select t;
         }
 
-        public IQueryable<EmployeeTerritoryDbModel> FetchByTerritoryId(string territoryId)
+        public IQueryable<EmployeeTerritoryDbModel> FetchByTerritoryId(int territoryId)
         {
             return from EmployeeTerritoryDbModel t in this.FetchAll where territoryId == t.TerritoryId select t;
         }
@@ -53,11 +53,6 @@ namespace Northwind.DAL.Repositories
             this.Context.Attach(item.Territory);
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

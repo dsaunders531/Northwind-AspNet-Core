@@ -144,6 +144,8 @@ namespace mezzanine.WorkerPattern
 
                             this.Repository.Create(dbModel);
 
+                            this.Repository.Commit();
+
                             result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
                     }
@@ -202,6 +204,8 @@ namespace mezzanine.WorkerPattern
                             // update the item
                             this.Repository.Update(dbModel);
 
+                            this.Repository.Commit();
+
                             result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
                     }
@@ -234,15 +238,9 @@ namespace mezzanine.WorkerPattern
             else
             {
                 this.Repository.Delete(dbModel);
-            }
-        }
 
-        /// <summary>
-        /// Saves the changes to the database
-        /// </summary>
-        public void Commit()
-        {
-            this.Repository.Commit();
+                this.Repository.Commit();
+            }
         }
     }
 }

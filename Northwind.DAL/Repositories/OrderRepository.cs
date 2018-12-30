@@ -41,10 +41,10 @@ namespace Northwind.DAL.Repositories
 
         public override OrderDbModel Fetch(int id)
         {
-            return (from OrderDbModel o in this.FetchAll where o.OrderId == id select o).FirstOrDefault();
+            return (from OrderDbModel o in this.FetchAll where o.RowId == id select o).FirstOrDefault();
         }
 
-        public IQueryable<OrderDbModel> FetchByCustomerId(string customerId)
+        public IQueryable<OrderDbModel> FetchByCustomerId(int customerId)
         {
             return (from OrderDbModel o in this.FetchAll where o.CustomerId == customerId select o);
         }
@@ -64,11 +64,6 @@ namespace Northwind.DAL.Repositories
             this.Context.Attach(item.ShipViaNavigation);
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

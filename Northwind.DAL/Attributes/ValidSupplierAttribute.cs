@@ -8,35 +8,39 @@ using mezzanine.EF;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
+    /// <summary>
+    /// Validation attribute to check the supplier exists.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class ValidTerritoryAttribute : Attribute, IModelValidator
+    public class ValidSupplierAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The territory id does not exist";
+        public string ErrorMessage { get; set; } = "The supplier id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
-
+            
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<TerritoryDbModel, string> territories = new TerritoryRepository(dbContext);
+                IRepository<SupplierDbModel, int> suppliers = new SupplierRepository(dbContext);
 
-                string value = context.Model as string; 
+                int? value = context.Model as int?; // get the value of supplier (the type must match the column type)
 
                 if (value == null)
                 {
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A territory id must be provided") };
+                    // a supplier id must be supplied
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A supplier id must be provided") };
                 }
                 else
                 {
-                    TerritoryDbModel territory = territories.Fetch(value);
+                    SupplierDbModel supplier = suppliers.Fetch(value.Value);
 
-                    if (territory == null)
+                    if (supplier == null)
                     {
                         result = new List<ModelValidationResult>() { new ModelValidationResult("", ErrorMessage) };
                     }

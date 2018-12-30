@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Territories")]
-    public partial class TerritoryDbModel
+    public partial class TerritoryDbModel : DbModel<int>
     {
         public TerritoryDbModel()
         {
             EmployeeTerritories = new HashSet<EmployeeTerritoryDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
 
-        [Key]
-        [Column("TerritoryID")]
-        [MaxLength(20)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required]
+        [MaxLength(10)]
         [SqlInjectionCheck]
         public string TerritoryId { get; set; }
 

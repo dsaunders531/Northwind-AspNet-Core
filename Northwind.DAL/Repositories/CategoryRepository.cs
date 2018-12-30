@@ -44,7 +44,7 @@ namespace Northwind.DAL.Repositories
 
         public override CategoryDbModel Fetch(int id)
         {
-            return (from CategoryDbModel c in this.FetchAll where c.CategoryId == id select c).FirstOrDefault();
+            return (from CategoryDbModel c in this.FetchAll where c.RowId == id select c).FirstOrDefault();
         }
 
         public override void Update(CategoryDbModel item)
@@ -56,11 +56,6 @@ namespace Northwind.DAL.Repositories
             this.Context.AttachRange(item.Products.Select(b => b.OrderDetails.Select(m => m.Order)));
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

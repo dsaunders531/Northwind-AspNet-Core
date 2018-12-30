@@ -127,7 +127,7 @@ namespace Northwind.BLL.Workers
                     if (dbModel != null)
                     {
                         // the item already exists
-                        throw new RecordFoundException(string.Format("A record for '{0}' already exists!", apiModel.CategoryId.ToString()));
+                        throw new RecordFoundException(string.Format("A record for '{0}' already exists!", apiModel.RowId.ToString()));
                     }
                     else
                     {
@@ -168,12 +168,12 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // find the item
-                    CategoryDbModel dbModel = this.CategoryRepository.Fetch(apiModel.CategoryId);
+                    CategoryDbModel dbModel = this.CategoryRepository.Fetch(apiModel.RowId);
 
                     if (dbModel == null)
                     {
                         // item was not found!
-                        throw new RecordNotFoundException("Could not find a item with id '{0}'", apiModel.CategoryId.ToString());
+                        throw new RecordNotFoundException("Could not find a item with id '{0}'", apiModel.RowId.ToString());
                     }
                     else
                     {

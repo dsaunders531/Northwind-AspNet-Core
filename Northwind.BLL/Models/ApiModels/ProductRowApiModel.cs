@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using mezzanine.Attributes;
-using Northwind.BLL.Validators;
+using mezzanine.EF;
+using Northwind.DAL.Attributes;
+using Northwind.DAL.Models;
 
 namespace Northwind.BLL.Models
 {
-    /// <summary>
-    /// The public api version of Product
-    /// </summary>
     [NotMapped]
-    public class ProductApiModel
+    public class ProductRowApiModel : IProduct, IApiModel<int>
     {
-        [Required]
-        public int ProductId { get; set; }
-
-        [MaxLength(40)]
-        [SqlInjectionCheck]
+        [MaxLength(40), MinLength(1)]
         public string ProductName { get; set; }
 
         [Required]
@@ -28,40 +22,6 @@ namespace Northwind.BLL.Models
         [Required]
         [ValidCategory()]
         public int? CategoryId { get; set; }
-
-        [SqlInjectionCheck]
-        public string QuantityPerUnit { get; set; }
-
-        [DataType(DataType.Currency)]
-        public decimal? UnitPrice { get; set; } = 0;
-
-        public short? UnitsInStock { get; set; } = 0;
-
-        public short? UnitsOnOrder { get; set; } = 0;
-
-        public short? ReorderLevel { get; set; } = 0;
-
-        public bool Discontinued { get; set; }
-
-        public CategoryRowApiModel Category { get; set; }
-    }
-
-    [NotMapped]
-    public class ProductRowApiModel
-    {
-        [Required]
-        public int ProductId { get; set; }
-
-        [MaxLength(40), MinLength(1)]
-        public string ProductName { get; set; }
-
-        [Required]
-        [ValidSupplier()]
-        public int SupplierId { get; set; }
-
-        [Required]
-        [ValidCategory()]
-        public int CategoryId { get; set; }
 
         public string QuantityPerUnit { get; set; }
 
@@ -75,5 +35,8 @@ namespace Northwind.BLL.Models
         public short? ReorderLevel { get; set; }
 
         public bool Discontinued { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

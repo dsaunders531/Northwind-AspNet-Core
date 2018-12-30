@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180829105526_InitialCreate.cs" />
     <Compile Remove="Migrations\20180829165850_RenameModels.cs" />
     <Compile Remove="Migrations\20180911120233_CategoryApiUpdate.cs" />
     <Compile Remove="Migrations\20180912103309_ProductUpdate.cs" />
     <Compile Remove="Migrations\20181013184329_test.cs" />
     <Compile Remove="Migrations\20181013185213_MigrateToAnnotations.cs" />
+    <Compile Remove="Migrations\20181013185515_MigrateToAnnotations.cs" />
+    <Compile Remove="Migrations\20181224202056_NewEFpattern.cs" />
+    <Compile Remove="Migrations\20181228182640_SetDefaultRowVersion.cs" />
     <Compile Remove="Migrations\IdentityDb\20180917170352_AuthenticationCreate.cs" />
     <Compile Remove="Migrations\IdentityDb\20180917175217_AuthenticationCreate.cs" />
     <Compile Remove="Migrations\IdentityDb\20180917201432_AuthenticationUpdate.cs" />

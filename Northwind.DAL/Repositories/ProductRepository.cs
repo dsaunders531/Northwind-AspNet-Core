@@ -8,7 +8,7 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The product repository
     /// </summary>
-    public sealed class ProductRepository : Repository<ProductDbModel, int>
+    internal sealed class ProductRepository : Repository<ProductDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -49,7 +49,7 @@ namespace Northwind.DAL.Repositories
 
         public override ProductDbModel Fetch(int id)
         {
-            return (from ProductDbModel p in this.FetchAll where p.ProductId == id select p).FirstOrDefault();
+            return (from ProductDbModel p in this.FetchAll where p.RowId == id select p).FirstOrDefault();
         }
 
         public IQueryable<ProductDbModel> FetchBySupplierId(int supplierId)
@@ -60,11 +60,6 @@ namespace Northwind.DAL.Repositories
         public IQueryable<ProductDbModel> FetchByCategoryId(int categoryId)
         {
             return (from ProductDbModel p in this.FetchAll where p.CategoryId == categoryId select p);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

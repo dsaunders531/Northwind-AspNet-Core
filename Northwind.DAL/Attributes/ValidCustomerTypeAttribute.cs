@@ -9,14 +9,14 @@ using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 using mezzanine.Attributes;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class ValidCustomerAttribute : Attribute, IModelValidator
+    public class ValidCustomerTypeAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The customer id does not exist";
+        public string ErrorMessage { get; set; } = "The customer type id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
@@ -25,17 +25,17 @@ namespace Northwind.BLL.Validators
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<CustomerDbModel, string> repository = new CustomerRepository(dbContext);
+                IRepository<CustomerDemographicDbModel, long> repository = new CustomerDemographicRepository(dbContext);
 
-                string value = context.Model as string;
+                long? value = (long?)context.Model; 
 
                 if (value == null)
                 {
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A customer id must be provided") };
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A customer type id must be provided") };
                 }
                 else
                 {
-                    CustomerDbModel model = repository.Fetch(value);
+                    CustomerDemographicDbModel model = repository.Fetch(value.Value);
 
                     if (model == null)
                     {

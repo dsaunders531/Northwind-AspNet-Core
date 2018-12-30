@@ -46,7 +46,7 @@ namespace Northwind.BLL
             services.AddTransient<RetailInventoryService, RetailInventoryService>();
             services.AddTransient<CategoryService, CategoryService>();
             services.AddTransient<IGenericWorker<ProductDbModel, ProductRowApiModel, int>, ProductRowWorker>();
-            services.AddTransient<IGenericWorker<CustomerDbModel, CustomerRowApiModel, string>, CustomerRowWorker>();
+            services.AddTransient<IGenericWorker<CustomerDbModel, CustomerRowApiModel, int>, CustomerRowWorker>();
             services.AddTransient<IGenericWorker<CustomerDemographicDbModel, CustomerDemographicRowApiModel, string>, CustomerDemographicRowWorker>();
             services.AddTransient<IGenericWorker<EmployeeDbModel, EmployeeRowApiModel, int>, EmployeeRowWorker>();
             services.AddTransient<IGenericWorker<EmployeeTerritoryDbModel, EmployeeTerritoryRowApiModel, int>, EmployeeTerritoryRowWorker>();

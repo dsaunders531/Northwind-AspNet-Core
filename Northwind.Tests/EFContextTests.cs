@@ -12,7 +12,7 @@ namespace Northwind.Tests
 {
     public class EFContextTests
     {
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+        private const string ConnectionString = "Server=LAPTOP10\\SQLEXPRESS;Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
 
         /// <summary>
         /// Create the nortwind context.

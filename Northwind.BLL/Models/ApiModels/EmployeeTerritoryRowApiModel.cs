@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Northwind.BLL.Validators;
+using Northwind.DAL.Attributes;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class EmployeeTerritoryRowApiModel
+    public class EmployeeTerritoryRowApiModel : IApiModel<int>
     {
         [Required]
         [ValidEmployee()]
@@ -18,6 +19,9 @@ namespace Northwind.BLL.Models
         [MaxLength(20)]
         [ValidTerritory()]
         [SqlInjectionCheck]
-        public string TerritoryId { get; set; }
+        public int TerritoryId { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

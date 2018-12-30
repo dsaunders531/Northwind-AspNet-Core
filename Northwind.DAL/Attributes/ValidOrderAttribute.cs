@@ -9,7 +9,7 @@ using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 using mezzanine.Attributes;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class ValidOrderAttribute : Attribute, IModelValidator

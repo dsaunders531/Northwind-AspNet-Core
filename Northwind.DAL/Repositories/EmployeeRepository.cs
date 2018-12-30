@@ -8,7 +8,7 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The employee repository
     /// </summary>
-    public sealed class EmployeeRepository : Repository<EmployeeDbModel, int>
+    internal sealed class EmployeeRepository : Repository<EmployeeDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -47,7 +47,7 @@ namespace Northwind.DAL.Repositories
 
         public override EmployeeDbModel Fetch(int id)
         {
-            return (from EmployeeDbModel e in this.FetchAll where e.EmployeeId == id select e).FirstOrDefault();
+            return (from EmployeeDbModel e in this.FetchAll where e.RowId == id select e).FirstOrDefault();
         }
 
         public override void Update(EmployeeDbModel item)
@@ -64,11 +64,6 @@ namespace Northwind.DAL.Repositories
             this.Context.AttachRange(item.Orders.Select(n => n.ShipViaNavigation));
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Products")]
-    public partial class ProductDbModel
+    public partial class ProductDbModel : DbModel<int>, IProduct
     {
         public ProductDbModel()
         {
             OrderDetails = new HashSet<OrderDetailDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Required]
-        [Column("ProductID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ProductId { get; set; }
 
         [Required]
         [MaxLength(40)]

@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Suppliers")]
-    public partial class SupplierDbModel
+    public partial class SupplierDbModel : DbModel<int>
     {
         public SupplierDbModel()
         {
             Products = new HashSet<ProductDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Column("SupplierID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int SupplierId { get; set; }
 
         [Required]
         [MaxLength(40)]

@@ -19,9 +19,9 @@ namespace Northwind.BLL.Workers
 
         private IRepository<CategoryDbModel, int> CategoryRepository { get; set; }
 
-        public RetailInventoryWorker(IRepository<ProductDbModel, int> products, IRepository<CategoryDbModel, int> categories)
+        public RetailInventoryWorker(IHistoryService<ProductDbModel, int, ProductHistoryDbModel> products, IRepository<CategoryDbModel, int> categories)
         {
-            this.ProductRepository = products;
+            this.ProductRepository = products; // As we are using interfaces, the history service can be mapped to an IRepository.
             this.CategoryRepository = categories;
         }
 

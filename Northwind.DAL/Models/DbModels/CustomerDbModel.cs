@@ -2,25 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Customers")]
-    public partial class CustomerDbModel
+    public partial class CustomerDbModel : DbModel<int>, ICustomer
     {
         public CustomerDbModel()
         {
             CustomerCustomerDemo = new HashSet<CustomerCustomerDemoDbModel>();
             Orders = new HashSet<OrderDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
 
-        [Key]
         [Column("CustomerID")]
         [MaxLength(5)]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [SqlInjectionCheck]
-        public string CustomerId { get; set; }
+        public string CustomerKey { get; set; }
 
         [Required]
         [MaxLength(40)]

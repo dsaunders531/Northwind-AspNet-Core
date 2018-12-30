@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Order Details")]
-    public partial class OrderDetailDbModel
+    public partial class OrderDetailDbModel : DbModel<int>
     {
-        [Key]
+        public OrderDetailDbModel()
+        {
+            Deleted = false;
+            RowVersion = 1;
+        }
+
         [Column("OrderID")]
         public int OrderId { get; set; }
 

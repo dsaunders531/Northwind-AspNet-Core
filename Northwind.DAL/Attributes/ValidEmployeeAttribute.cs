@@ -9,14 +9,14 @@ using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 using mezzanine.Attributes;
 
-namespace Northwind.BLL.Validators
+namespace Northwind.DAL.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
-    public class ValidRegionAttribute : Attribute, IModelValidator
+    public class ValidEmployeeAttribute : Attribute, IModelValidator
     {
         public bool IsRequired => true;
 
-        public string ErrorMessage { get; set; } = "The region id does not exist";
+        public string ErrorMessage { get; set; } = "The employee id does not exist";
 
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
@@ -25,17 +25,17 @@ namespace Northwind.BLL.Validators
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindDbContext dbContext = DAL.Startup.NorthwindContext)
             {
-                IRepository<RegionDbModel, int> repository = new RegionRepository(dbContext);
+                IRepository<EmployeeDbModel, int> repository = new EmployeeRepository(dbContext);
 
                 int? value = context.Model as int?; 
 
                 if (value == null)
                 {
-                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "A region id must be provided") };
+                    result = new List<ModelValidationResult>() { new ModelValidationResult("", "An employee id must be provided") };
                 }
                 else
                 {
-                    RegionDbModel model = repository.Fetch(value.Value);
+                    EmployeeDbModel model = repository.Fetch(value.Value);
 
                     if (model == null)
                     {

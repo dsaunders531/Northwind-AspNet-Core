@@ -8,7 +8,7 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The customer repository
     /// </summary>
-    public sealed class CustomerRepository : Repository<CustomerDbModel, string>
+    internal sealed class CustomerRepository : Repository<CustomerDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
         private new NorthwindDbContext Context { get; set; }
@@ -44,9 +44,9 @@ namespace Northwind.DAL.Repositories
             this.Context.Remove(item);
         }
 
-        public override CustomerDbModel Fetch(string id)
+        public override CustomerDbModel Fetch(int id)
         {
-            return (from CustomerDbModel c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
+            return (from CustomerDbModel c in this.FetchAll where c.RowId == id select c).FirstOrDefault();
         }
         
         public override void Update(CustomerDbModel item)
@@ -61,11 +61,6 @@ namespace Northwind.DAL.Repositories
             this.Context.AttachRange(item.Orders.Select(e => e.Employee));
 
             this.Context.Update(item);
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
         }
     }
 }

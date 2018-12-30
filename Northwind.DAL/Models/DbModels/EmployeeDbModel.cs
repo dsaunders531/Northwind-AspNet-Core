@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Employees")]
-    public partial class EmployeeDbModel
+    public partial class EmployeeDbModel : DbModel<int>, IEmployee
     {
         public EmployeeDbModel()
         {
             EmployeeTerritories = new HashSet<EmployeeTerritoryDbModel>();
             InverseReportsToNavigation = new HashSet<EmployeeDbModel>();
             Orders = new HashSet<OrderDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Column("EmployeeID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int EmployeeId { get; set; }
-
+   
         [Required]
         [MaxLength(20)]
         [SqlInjectionCheck]

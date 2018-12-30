@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using mezzanine.Attributes;
-using Northwind.BLL.Validators;
+using mezzanine.EF;
+using Northwind.DAL.Attributes;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerCustomerDemoRowApiModel
+    public class CustomerCustomerDemoRowApiModel : IApiModel<long>
     {
         [Required]
-        [SqlInjectionCheck]
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
         [ValidCustomerType()]
-        [MaxLength(10)]
-        [SqlInjectionCheck]
-        public string CustomerTypeId { get; set; }
+        public long CustomerTypeId { get; set; }
+
+        [Required]
+        public long RowId { get; set; }
     }
 }

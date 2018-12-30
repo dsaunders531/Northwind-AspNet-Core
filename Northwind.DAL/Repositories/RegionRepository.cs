@@ -47,12 +47,7 @@ namespace Northwind.DAL.Repositories
 
         public override RegionDbModel Fetch(int id)
         {
-            return (from RegionDbModel r in this.FetchAll where r.RegionId == id select r).FirstOrDefault();
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
+            return (from RegionDbModel r in this.FetchAll where r.RowId == id select r).FirstOrDefault();
         }
     }
 }

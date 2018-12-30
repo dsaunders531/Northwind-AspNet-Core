@@ -53,12 +53,7 @@ namespace Northwind.DAL.Repositories
 
         public override ShipperDbModel Fetch(int id)
         {
-            return (from ShipperDbModel s in this.FetchAll where s.ShipperId == id select s).FirstOrDefault();
-        }
-
-        public override void Dispose()
-        {
-            this.Context.Dispose();
+            return (from ShipperDbModel s in this.FetchAll where s.RowId == id select s).FirstOrDefault();
         }
     }
 }

@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using mezzanine.Attributes;
-using Northwind.BLL.Validators;
+using mezzanine.EF;
+using Northwind.DAL.Attributes;
+using Northwind.DAL.Models;
 
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerRowApiModel
+    public class CustomerRowApiModel : IApiModel<int>, ICustomer
     {
         [Required]
-        [MaxLength(5)]
         [SqlInjectionCheck]
-        public string CustomerId { get; set; }
+        [MaxLength(5)]
+        public string CustomerKey { get; set; }
 
         [Required]
         [MaxLength(40)]
@@ -61,5 +63,8 @@ namespace Northwind.BLL.Models
         [DataType(DataType.PhoneNumber)]
         [SqlInjectionCheck]
         public string Fax { get; set; }
+
+        [Required]
+        public int RowId { get; set; }
     }
 }

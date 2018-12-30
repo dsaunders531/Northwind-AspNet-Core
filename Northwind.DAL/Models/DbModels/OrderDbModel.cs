@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using mezzanine.Attributes;
+using mezzanine.EF;
 
 namespace Northwind.DAL.Models
 {
     [Table("Orders")]
-    public partial class OrderDbModel
+    public partial class OrderDbModel : DbModel<int>
     {
         public OrderDbModel()
         {
             OrderDetails = new HashSet<OrderDetailDbModel>();
+            Deleted = false;
+            RowVersion = 1;
         }
-
-        [Key]
-        [Column("OrderID")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int OrderId { get; set; }
 
         [Column("CustomerID")]
         [MaxLength(5)]
         [SqlInjectionCheck]
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         [Column("EmployeeID")]
         public int? EmployeeId { get; set; }

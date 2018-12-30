@@ -23,6 +23,9 @@ namespace Northwind.DAL
         public virtual DbSet<ShipperDbModel> Shippers { get; set; }
         public virtual DbSet<SupplierDbModel> Suppliers { get; set; }
         public virtual DbSet<TerritoryDbModel> Territories { get; set; }
+        public virtual DbSet<CustomerHistoryDbModel> CustomerHistory { get; set; }
+        public virtual DbSet<ProductHistoryDbModel> ProductHistory { get; set; }
+        public virtual DbSet<EmployeeHistoryDbModel> EmployeeHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +67,21 @@ namespace Northwind.DAL
                     .HasName("Region");
             });
 
+            modelBuilder.Entity<CustomerHistoryDbModel>(entity =>
+            {
+                entity.HasIndex(e => e.City)
+                    .HasName("City");
+
+                entity.HasIndex(e => e.CompanyName)
+                    .HasName("CompanyName");
+
+                entity.HasIndex(e => e.PostalCode)
+                    .HasName("PostalCode");
+
+                entity.HasIndex(e => e.Region)
+                    .HasName("Region");
+            });
+
             modelBuilder.Entity<EmployeeDbModel>(entity =>
             {
                 entity.HasIndex(e => e.LastName)
@@ -76,6 +94,15 @@ namespace Northwind.DAL
                     .WithMany(p => p.InverseReportsToNavigation)
                     .HasForeignKey(d => d.ReportsTo)
                     .HasConstraintName("FK_Employees_Employees");
+            });
+
+            modelBuilder.Entity<EmployeeHistoryDbModel>(entity =>
+            {
+                entity.HasIndex(e => e.LastName)
+                    .HasName("LastName");
+
+                entity.HasIndex(e => e.PostalCode)
+                    .HasName("PostalCode");
             });
 
             modelBuilder.Entity<EmployeeTerritoryDbModel>(entity =>
@@ -174,6 +201,24 @@ namespace Northwind.DAL
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.SupplierId)
                     .HasConstraintName("FK_Products_Suppliers");
+            });
+
+            modelBuilder.Entity<ProductHistoryDbModel>(entity =>
+            {
+                entity.HasIndex(e => e.CategoryId)
+                    .HasName("CategoryID");
+
+                entity.HasIndex(e => e.ProductName)
+                    .HasName("ProductName");
+
+                entity.HasIndex(e => e.SupplierId)
+                    .HasName("SuppliersProducts");
+                entity.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
+                entity.Property(e => e.UnitPrice).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.UnitsInStock).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.UnitsOnOrder).HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<SupplierDbModel>(entity =>

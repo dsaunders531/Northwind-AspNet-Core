@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace mezzanine.EF
 {
@@ -12,7 +14,7 @@ namespace mezzanine.EF
     {
         public Repository(DbContext context)
         {
-            if ( ! (typeof(TModel).BaseType == typeof(DbModel<TKey>) || typeof(TModel).BaseType == typeof(HistoricDbModel<TKey>)))
+            if ( ! (typeof(TModel).BaseType == typeof(DbModel<TKey>) || typeof(TModel).BaseType.Name.Contains("HistoricDbModel") == true))
             {
                 throw new ApplicationException("The model must derive from DbModel or HistoricDbModel");
             }
@@ -44,8 +46,7 @@ namespace mezzanine.EF
 
         public virtual void Dispose()
         {
-            this.Context.Dispose();
-            this.Context = null;
+            // Does nothing - only need this for a using statement
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Northwind.BLL.Workers
 
         public override RegionRowApiModel Update(RegionRowApiModel apiRowModel)
         {
-            return base.Update(apiRowModel, model => model.RegionId == apiRowModel.RegionId);
+            return base.Update(apiRowModel, model => model.RowId == apiRowModel.RowId);
         }
     }
 }
