@@ -21,5 +21,7 @@ namespace mezzanine.DbClient
         int RunStoredProc(DbCommand command);
         int RunTransaction(List<string> strsSql, string transactionName);
         int RunTransaction(List<DbCommand> commands, string transactionName);
+        int RunDML(string strSQL);
+        int RunDML(DbCommand strSQL);
     }
 }

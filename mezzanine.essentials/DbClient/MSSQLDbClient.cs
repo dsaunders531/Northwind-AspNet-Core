@@ -436,6 +436,53 @@ namespace mezzanine.DbClient
             return this.RunStoredProc((SqlCommand)command);
         }
 
+        public override int RunDML(string strText)
+        {
+            int result = default(int);
+
+            using (SqlCommand com = new SqlCommand(strText) { CommandType = CommandType.Text })
+            {
+                result = this.RunDML(com);
+            }
+
+            return result;
+        }
+
+        public override int RunDML(DbCommand command)
+        {
+            return this.RunDML((SqlCommand)command);
+        }
+
+        /// <summary>
+        /// Run the database manipulation command (
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public int RunDML(SqlCommand command)
+        {
+            int result = default(int);
+
+            if (this.IsValidSqlParameters(command.Parameters) == true)
+            {
+                using (SqlConnection con = this.CreateConnection)
+                {
+                    con.Open();
+
+                    command.Connection = con;
+
+                    result = command.ExecuteNonQuery();
+   
+                    if (con.State != System.Data.ConnectionState.Closed)
+                    {
+                        con.Close();
+                    }
+                }
+                
+            }
+
+            return result;
+        }
+
         public override int RunTransaction(List<string> sqlTexts, string transactionName)
         {
             List<SqlCommand> commands = new List<SqlCommand>();

@@ -118,6 +118,8 @@ namespace mezzanine.DbClient
         public abstract int RunTransaction(List<DbCommand> commands, string transactionName);
         public abstract int RunUpsert(string strSql);
         public abstract int RunUpsert(DbCommand command);
+        public abstract int RunDML(string strSQL);
+        public abstract int RunDML(DbCommand strSQL);   
         #endregion
 
 
