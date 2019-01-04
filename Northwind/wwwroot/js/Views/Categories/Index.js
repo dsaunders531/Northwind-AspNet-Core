@@ -8,7 +8,7 @@ var CategoryModel = function (categories) {
     self.categories = ko.observableArray(categories);   
 
     // Pagination items
-    this.itemsPerPage = 3;
+    this.itemsPerPage = 5;
     this.currentPage = ko.observable(1);
     this.pages = ko.computed(function () {
         var result = Math.round(self.categories().length / self.itemsPerPage);

@@ -35,13 +35,13 @@
         <tbody data-bind="foreach: pageData">
             <tr>
                 <td>
-                    <input type="text" data-bind="value: categoryId" class="form-control"  readonly />
+                    <input type="text" data-bind="value: rowId" class="form-control"  readonly />
                 </td>
                 <td>
                     <input type="text" data-bind="value: categoryName" class="form-control" readonly />
                 </td>
                 <td align="right">
-                    <button data-toggle="modal" data-target="#editCategory" data-bind="id: categoryId" class="btn btn-default"><i class="fa fa-edit"></i> Edit</button>
+                    <button data-toggle="modal" data-target="#editCategory" data-bind="id: rowId" class="btn btn-default"><i class="fa fa-edit"></i> Edit</button>
                 </td>
             </tr>
         </tbody>
