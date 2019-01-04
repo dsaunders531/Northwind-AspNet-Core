@@ -238,6 +238,8 @@ namespace Northwind.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Territories_Region");
             });
+
+            SeedData.EnsurePopulated(modelBuilder);
         }
     }
 }
