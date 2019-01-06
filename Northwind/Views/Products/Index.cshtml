@@ -1,0 +1,58 @@
+﻿@model ViewModel<EmptyResult>
+
+<h2>Products</h2>
+
+<div id="pageData"></div>
+
+I AM HERE
+@* The pagination data is added automatically. 
+    It does not provide the required functionality. 
+    The click events need to fire a js event.
+    Change the tag helper so there is a js on click handler.
+    implement the functionality here.
+    also for move previous and move next.
+
+    Also change the default behavoir from links to js only.
+
+    Move the pagination partial out of the layout. Add it to required pages.
+
+    Maybe a differnt flavour via a view component is required.
+
+    Add js wait parts & find.
+    *@
+
+
+@section Scripts
+{
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetPage(1);
+    });
+
+    function GetPage(pageNo) {
+        try {
+            $.ajax({
+                url: '/api/ViewComponents/ProductList',
+                type: 'GET',
+                success: function (data, textStatus, jqXHR) { get_result(jqXHR, textStatus, data); },
+                error: function (jqXHR, textStatus, errorThrown) { get_error(jqXHR, textStatus, errorThrown); }
+            });
+        } catch (e) {
+            get_error(e);
+        }
+    }
+
+    function get_result(jqXHR, textStatus, data) {
+        try {
+            document.getElementById("pageData").innerHTML = data;
+        } catch (e) {
+            get_error(e);
+        }
+    }
+
+    function get_error(jqXHR, textStatus, data) {
+        document.getElementById("pageData").innerText = textStatus + " " + JSON.stringify(data) + " " + jqXHR.responseText;
+    }
+
+</script>
+}

@@ -1,0 +1,36 @@
+﻿@model  List<ProductApiModel>
+
+@functions
+{
+    private Dictionary<string, string> RouteData(ProductApiModel item)
+    {
+        Dictionary<string, string> routeData = new Dictionary<string, string>();
+        routeData.Add("ProductId", item.RowId.ToString());
+
+        return routeData;
+    }
+}
+
+<div id="pagedProducts" class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-header">
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td align="right">Price</td>
+                <td align="right">Edit</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductApiModel item in Model)
+            {
+                <tr>
+                    <td>@item.RowId.ToString()</td>
+                    <td>@item.ProductName</td>
+                    <td align="right">@item.UnitPrice.Value.ToString("c")</td>
+                    <td align="right"><a class="btn btn-primary" asp-area="" asp-controller="Product" asp-action="Edit" asp-all-route-data="this.RouteData(@item)"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
