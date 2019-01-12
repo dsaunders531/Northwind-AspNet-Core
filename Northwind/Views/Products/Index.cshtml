@@ -1,4 +1,4 @@
-﻿@model ViewModel<EmptyResult>
+﻿@model ListViewModel<EmptyResult>
 
 <h2>Products</h2>
 
@@ -21,6 +21,7 @@ I AM HERE
     Add js wait parts & find.
     *@
 
+<partial name="_Pagination" model="Model.Pagination" />
 
 @section Scripts
 {

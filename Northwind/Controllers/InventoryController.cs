@@ -34,10 +34,10 @@ namespace Northwind.Controllers
         public IActionResult Categories([FromQuery] int page = 1)
         {
             int itemsPerPage = 4;
-            ViewModel<List<CategoryRowApiModel>> result = new ViewModel<List<CategoryRowApiModel>>()
+            ListViewModel<CategoryRowApiModel> result = new ListViewModel<CategoryRowApiModel>()
             {
                 Pagination = this.RetailInventoryService.CategoriesPages("Categories", itemsPerPage),
-                ViewData = this.RetailInventoryService.GetCategoriesPaged(itemsPerPage, page)                                
+                ViewList = this.RetailInventoryService.GetCategoriesPaged(itemsPerPage, page)                                
             };
         
             result.Pagination.CurrentPage = page;
@@ -52,10 +52,10 @@ namespace Northwind.Controllers
         /// <returns></returns>
         public IActionResult Products([FromQuery] int itemsPerPage = 10, [FromQuery] int page = 1)
         {
-            ViewModel<List<ProductApiModel>> result = new ViewModel<List<ProductApiModel>>()
+            ListViewModel<ProductApiModel> result = new ListViewModel<ProductApiModel>()
             {
                 Pagination = this.RetailInventoryService.ProductsPages("Products", itemsPerPage),
-                ViewData = this.RetailInventoryService.GetProductsPaged(itemsPerPage, page)
+                ViewList = this.RetailInventoryService.GetProductsPaged(itemsPerPage, page)
             };
 
             result.Pagination.CurrentPage = page;
@@ -71,17 +71,17 @@ namespace Northwind.Controllers
         [Route("Inventory/Category/{categoryId}")]
         public IActionResult Category([FromRoute] int categoryId, [FromQuery] int itemsPerPage = 10, [FromQuery] int page = 1)
         {
-            ViewModel<CategoryAppModel> result = new ViewModel<CategoryAppModel>()
+            ParentChildViewModel<CategoryRowApiModel, ProductApiModel> result = new ParentChildViewModel<CategoryRowApiModel, ProductApiModel>
             {
-               Pagination = this.RetailInventoryService.CategoryProductsPages(categoryId, "Category/" + categoryId.ToString() + "/", itemsPerPage),
-               ViewData = new CategoryAppModel()
-               {
-                   Category = this.RetailInventoryService.GetCategory(categoryId),
-                   Products = this.RetailInventoryService.GetCategoryProductsPaged(categoryId, itemsPerPage, page)
-               }               
+                ViewData = this.RetailInventoryService.GetCategory(categoryId),
+                Children = new ListViewModel<ProductApiModel>()
+                {
+                    ViewList = this.RetailInventoryService.GetCategoryProductsPaged(categoryId, itemsPerPage, page),
+                    Pagination = this.RetailInventoryService.CategoryProductsPages(categoryId, "Category/" + categoryId.ToString() + "/", itemsPerPage)
+                }              
             };
 
-            result.Pagination.CurrentPage = page;
+            result.Children.Pagination.CurrentPage = page;
 
             return View(result);
         }

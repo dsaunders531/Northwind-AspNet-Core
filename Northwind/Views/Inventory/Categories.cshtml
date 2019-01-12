@@ -1,4 +1,4 @@
-﻿@model ViewModel<List<CategoryRowApiModel>>
+﻿@model ListViewModel<CategoryRowApiModel>
 
 @{
     // Setup some basic defaults for the page.
@@ -19,7 +19,7 @@ public IDictionary<string, string> RouteParams(int categoryId)
 }
 }
 
-@foreach (CategoryRowApiModel item in Model.ViewData)
+@foreach (CategoryRowApiModel item in Model.ViewList)
 {
     <a asp-area="" asp-controller="Inventory" asp-action="Category" asp-all-route-data="@RouteParams(item.RowId)">
         <div class="col-sm-6 panel panel-custom">
@@ -33,3 +33,5 @@ public IDictionary<string, string> RouteParams(int categoryId)
         </div>
     </a>
 }
+
+<partial name="_Pagination" model="Model.Pagination" />

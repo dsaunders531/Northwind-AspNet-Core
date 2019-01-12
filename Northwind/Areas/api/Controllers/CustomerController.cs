@@ -26,7 +26,7 @@ namespace Northwind.Areas.api.Controllers
         [HttpDelete("{key}")]
         public ActionResult Delete([FromRoute] string key)
         {
-            return base.BaseDelete(key);
+            return base.BaseDelete(base.BasePost(key).Value);
         }
 
         [HttpGet()]

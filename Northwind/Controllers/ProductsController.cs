@@ -26,7 +26,7 @@ namespace Northwind.Controllers
         {
             PaginationModel pages = RetailInventoryService.ProductsPages(string.Empty, 10);
 
-            return View(new ViewModel<EmptyResult>() { Pagination = pages });
+            return View(new ListViewModel<EmptyResult>() { Pagination = pages });
         }
     }
 }

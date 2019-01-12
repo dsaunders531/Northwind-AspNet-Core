@@ -28,8 +28,7 @@
     @await Html.PartialAsync("_Navigation", Model)
     <content class="content">
         <div class="container">
-            @RenderBody()
-            @await Html.PartialAsync("_Pagination", Model.Pagination)
+            @RenderBody()            
         </div>
     </content>
     @await Html.PartialAsync("_Footer", appInfo)
