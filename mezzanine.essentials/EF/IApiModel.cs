@@ -7,5 +7,7 @@
     public interface IApiModel<TKey>
     {
         TKey RowId { get; set; }
+        bool Deleteable { get; set; }
+        bool Readonly { get; set; }
     }
 }

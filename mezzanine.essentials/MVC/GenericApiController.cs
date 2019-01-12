@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using mezzanine.EF;
 
 namespace mezzanine.MVC
 {
     /// <summary>
     /// The generic api controller.
     /// </summary>
-    /// <typeparam name="TGenericWorker"></typeparam>
+    /// <typeparam name="TDbModel"></typeparam>
     /// <typeparam name="TApiRowModel"></typeparam>
     /// <typeparam name="TDbModelKey"></typeparam>    
     [ApiController]
@@ -98,13 +99,13 @@ namespace mezzanine.MVC
             {
                 // expectation failed - field is missing
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(StatusCodes.Status417ExpectationFailed);
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
             }
             catch (ModelStateException e)
             {
                 // not acceptable
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(StatusCodes.Status406NotAcceptable);
+                return BadRequest(e.ModelState);           
             }
             catch (RecordFoundException e)
             {
@@ -154,11 +155,20 @@ namespace mezzanine.MVC
                 {
                     if (ModelState.IsValid)
                     {
-                        TApiRowModel result = this.WorkerService.Update(apiRowModel);
+                        IApiModel<TDbModelKey> apiModel = (IApiModel<TDbModelKey>)apiRowModel;
 
-                        // Updated
-                        Response.StatusCode = 200; // OK
-                        return result;
+                        if (apiModel.Readonly == false)
+                        {
+                            TApiRowModel result = this.WorkerService.Update(apiRowModel);
+
+                            // Updated
+                            Response.StatusCode = 200; // OK
+                            return result;
+                        }
+                        else
+                        {
+                            throw new ModelStateException(string.Format("{0} cannot be updated.", apiRowModel.GetType().ToString()), ModelState);
+                        }                        
                     }
                     else
                     {
@@ -167,20 +177,18 @@ namespace mezzanine.MVC
                 }
                 else
                 {
-                    throw new ArgumentException("No json body could be found.");
+                    throw new ArgumentNullException("No json body could be found.");
                 }
             }
             catch (ArgumentNullException e)
             {
-                // expectation failed - field is missing
                 Response.AddBody(e.Message);
-                return new StatusCodeResult(417);
+                return new StatusCodeResult(204); // no content
             }
             catch (ModelStateException e)
             {
-                // not acceptable
-                Response.AddBody(e.Message);
-                return new StatusCodeResult(406);
+                ModelState.AddModelError(string.Empty, e.Message);
+                return BadRequest(ModelState);
             }
             catch (RecordNotFoundException e)
             {
@@ -198,19 +206,78 @@ namespace mezzanine.MVC
         /// <summary>
         /// Remove a record.
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="apiRowModel"></param>
         /// <returns></returns>       
-        public ActionResult BaseDelete(TDbModelKey key)
+        public ActionResult BaseDelete(TApiRowModel apiRowModel)
         {
             try
             {
-                this.WorkerService.Delete(key);
-                return new StatusCodeResult(301);
+                if (apiRowModel == null)
+                {
+                    // See if a partial has been sent.
+                    using (StreamReader sr = new StreamReader(Request.Body))
+                    {
+                        string requestBody = sr.ReadToEnd();
+
+                        if (requestBody != null)
+                        {
+                            if (requestBody.Length > 0)
+                            {
+                                using (JSONSerializer serialiser = new JSONSerializer())
+                                {
+                                    // The request may contain a partial so work around this.
+                                    apiRowModel = serialiser.Deserialize<TApiRowModel>(requestBody);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (apiRowModel != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        IApiModel<TDbModelKey> apiModel = (IApiModel<TDbModelKey>)apiRowModel;
+
+                        if (apiModel.Deleteable == true)
+                        {
+                            this.WorkerService.Delete(apiModel.RowId);
+                            return new StatusCodeResult(301);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("You cannot delete this record.");
+                        }
+                    }
+                    else
+                    {
+                        throw new ModelStateException(string.Format("Validation Failed, the {0} contains invalid data.", apiRowModel.GetType().ToString()), ModelState);                        
+                    }                    
+                }
+                else
+                {
+                    throw new ArgumentNullException("No json body could be found.");
+                }
             }
             catch (RecordNotFoundException e)
             {
                 Response.AddBody(e.Message);
                 return new StatusCodeResult(204); // no content
+            }
+            catch(ArgumentNullException e)
+            {
+                Response.AddBody(e.Message);
+                return new StatusCodeResult(204); // no content
+            }
+            catch (ArgumentException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return BadRequest(ModelState);
+            }
+            catch (ModelStateException e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return BadRequest(ModelState);
             }
             catch (Exception e)
             {

@@ -7,8 +7,7 @@ namespace mezzanine.ViewModel
     /// </summary>
     public interface IViewModel
     {        
-        IPageMeta PageMeta { get; set; }
-
-        IPagination Pagination { get; set; }
+        IPageMeta PageMeta { get; set; }         
+        string ReturnUrl { get; set; }
     }    
 }

@@ -18,5 +18,7 @@ namespace mezzanine.ApiDiscovery
         public IPageMeta PageMeta { get; set; }
 
         public IPagination Pagination { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }
