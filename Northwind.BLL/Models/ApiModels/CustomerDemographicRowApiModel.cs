@@ -7,7 +7,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerDemographicRowApiModel : IApiModel<int>
+    public class CustomerDemographicRowApiModel : ApiModel<int>
     {
         [Required]
         public long CustomerTypeId { get; set; }
@@ -15,8 +15,5 @@ namespace Northwind.BLL.Models
         [Required]
         [SqlInjectionCheck]
         public string CustomerDesc { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

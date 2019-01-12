@@ -9,7 +9,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class EmployeeTerritoryRowApiModel : IApiModel<int>
+    public class EmployeeTerritoryRowApiModel : ApiModel<int>
     {
         [Required]
         [ValidEmployee()]
@@ -20,8 +20,5 @@ namespace Northwind.BLL.Models
         [ValidTerritory()]
         [SqlInjectionCheck]
         public int TerritoryId { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

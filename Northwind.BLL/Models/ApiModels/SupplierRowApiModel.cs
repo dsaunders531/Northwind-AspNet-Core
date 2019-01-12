@@ -8,7 +8,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class SupplierRowApiModel : IApiModel<int>
+    public class SupplierRowApiModel : ApiModel<int>
     {
         [Required]
         [MaxLength(40)]
@@ -59,8 +59,5 @@ namespace Northwind.BLL.Models
         [DataType(DataType.Url)]
         [SqlInjectionCheck]
         public string HomePage { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

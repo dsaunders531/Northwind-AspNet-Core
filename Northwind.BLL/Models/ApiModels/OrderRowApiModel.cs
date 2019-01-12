@@ -9,7 +9,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class OrderRowApiModel : IApiModel<int>
+    public class OrderRowApiModel : ApiModel<int>
     {
         [Required]
         [ValidCustomer()]
@@ -63,8 +63,5 @@ namespace Northwind.BLL.Models
         [MaxLength(15)]
         [SqlInjectionCheck]
         public string ShipCountry { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

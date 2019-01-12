@@ -9,7 +9,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class TerritoryRowApiModel : IApiModel<int>
+    public class TerritoryRowApiModel : ApiModel<int>
     {
         [Required]
         [MaxLength(10)]
@@ -24,8 +24,5 @@ namespace Northwind.BLL.Models
         [Required]
         [ValidRegion()]
         public int RegionId { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

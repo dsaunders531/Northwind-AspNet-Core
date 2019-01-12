@@ -10,7 +10,7 @@ using Northwind.DAL.Models;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class ProductRowApiModel : IProduct, IApiModel<int>
+    public class ProductRowApiModel : ApiModel<int>, IProduct
     {
         [MaxLength(40), MinLength(1)]
         public string ProductName { get; set; }
@@ -35,8 +35,5 @@ namespace Northwind.BLL.Models
         public short? ReorderLevel { get; set; }
 
         public bool Discontinued { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

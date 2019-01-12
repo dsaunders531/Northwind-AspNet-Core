@@ -12,7 +12,7 @@ namespace Northwind.BLL.Models
     /// The public api version of Category
     /// </summary>
     [NotMapped]
-    public class CategoryRowApiModel : IApiModel<int>
+    public class CategoryRowApiModel : ApiModel<int>
     {
         [MaxLength(15), MinLength(1)]
         [SqlInjectionCheck]
@@ -21,8 +21,5 @@ namespace Northwind.BLL.Models
         [DataType(DataType.MultilineText)]
         [SqlInjectionCheck]
         public string Description { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

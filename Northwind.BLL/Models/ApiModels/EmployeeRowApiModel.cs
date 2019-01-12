@@ -10,7 +10,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class EmployeeRowApiModel : IApiModel<int>, IEmployee
+    public class EmployeeRowApiModel : ApiModel<int>, IEmployee
     {
         [Required]
         [MaxLength(20)]
@@ -79,8 +79,5 @@ namespace Northwind.BLL.Models
         [SqlInjectionCheck]
         [MaxLength(255)]
         public string PhotoPath { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Northwind.BLL.Models
     /// The public api version of Product
     /// </summary>
     [NotMapped]
-    public class ProductApiModel : IProduct, IApiModel<int>
+    public class ProductApiModel : ApiModel<int>, IProduct
     {       
         [MaxLength(40)]
         [SqlInjectionCheck]
@@ -40,7 +40,5 @@ namespace Northwind.BLL.Models
         public bool Discontinued { get; set; }
 
         public CategoryRowApiModel Category { get; set; }
-
-        public int RowId { get; set; }
     }
 }

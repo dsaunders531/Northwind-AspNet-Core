@@ -7,7 +7,7 @@ using Northwind.DAL.Attributes;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerCustomerDemoRowApiModel : IApiModel<long>
+    public class CustomerCustomerDemoRowApiModel : ApiModel<long>
     {
         [Required]
         public int CustomerId { get; set; }
@@ -15,8 +15,5 @@ namespace Northwind.BLL.Models
         [Required]
         [ValidCustomerType()]
         public long CustomerTypeId { get; set; }
-
-        [Required]
-        public long RowId { get; set; }
     }
 }

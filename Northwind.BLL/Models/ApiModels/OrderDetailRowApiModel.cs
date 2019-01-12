@@ -8,7 +8,7 @@ using mezzanine.EF;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class OrderDetailRowApiModel : IApiModel<int>
+    public class OrderDetailRowApiModel : ApiModel<int>
     {
         [Required]
         [ValidOrder()]
@@ -24,8 +24,5 @@ namespace Northwind.BLL.Models
         public short Quantity { get; set; } = 1;
 
         public float Discount { get; set; } = 0;
-
-        [Required]
-        public int RowId { get; set; }
     }
 }

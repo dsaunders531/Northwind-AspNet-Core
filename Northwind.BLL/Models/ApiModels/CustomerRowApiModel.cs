@@ -11,7 +11,7 @@ using Northwind.DAL.Models;
 namespace Northwind.BLL.Models
 {
     [NotMapped]
-    public class CustomerRowApiModel : IApiModel<int>, ICustomer
+    public class CustomerRowApiModel : ApiModel<int>, ICustomer
     {
         [Required]
         [SqlInjectionCheck]
@@ -63,8 +63,5 @@ namespace Northwind.BLL.Models
         [DataType(DataType.PhoneNumber)]
         [SqlInjectionCheck]
         public string Fax { get; set; }
-
-        [Required]
-        public int RowId { get; set; }
     }
 }
