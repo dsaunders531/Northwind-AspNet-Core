@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-Northwind2-D63ACC5A-2761-4A9E-986B-8F7545C383CC</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\duncans.tooling\duncans.tooling.csproj" />
+    <ProjectReference Include="..\Northwind.BLL\Northwind.BLL.csproj" />
+    <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
