@@ -1,14 +1,27 @@
-﻿using System;
+﻿// <copyright file="IPointInTimeService.cs" company="Duncan Saunders">
+// Copyright (c) Duncan Saunders. All rights reserved.
+// </copyright>
+
+using System;
 using System.Linq;
 
 namespace mezzanine.EF
 {
-    public interface IPointInTimeService<THistoricDbModel, TKey>
+    /// <summary>
+    /// Interface for the point in time repository service.
+    /// </summary>
+    /// <typeparam name="THistoricModel"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    public interface IPointInTimeService<THistoricModel, TKey>
     {
-        THistoricDbModel Fetch(TKey modelId, DateTime dateTime);
+        THistoricModel Fetch(TKey modelId, DateTime dateTime);
 
-        IQueryable<THistoricDbModel> FetchAll(DateTime dateTime);
+        IQueryable<THistoricModel> FetchAll(DateTime dateTime);
 
-        THistoricDbModel Update(THistoricDbModel model);
+        THistoricModel MakeHistory(IHistoricDbModel<TKey> model);
+
+        IQueryable<THistoricModel> FetchRaw();
+
+        void Commit();
     }
 }
