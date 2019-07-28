@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "duncans.tooling", "duncans.tooling.csproj", "{8C7741DC-CCAF-4A49-9B4F-462023D1FA12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C7741DC-CCAF-4A49-9B4F-462023D1FA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7741DC-CCAF-4A49-9B4F-462023D1FA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7741DC-CCAF-4A49-9B4F-462023D1FA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7741DC-CCAF-4A49-9B4F-462023D1FA12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FC8ABDC-F39E-430E-9068-CF7BFBADEF20}
+	EndGlobalSection
+EndGlobal
