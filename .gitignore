@@ -18,3 +18,8 @@
 /mezzanine.essentials/bin/Debug/netcoreapp2.1
 /mezzanine.essentials/obj
 *.user
+/duncans.tooling/.vs/duncans.tooling/v15
+/duncans.tooling/bin/Debug/netstandard2.0
+/duncans.tooling/obj
+/Northwind.BLL/bin/Debug/netstandard2.0
+/Northwind.DAL/bin/Debug/netstandard2.0
