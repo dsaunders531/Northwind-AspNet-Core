@@ -1,4 +1,4 @@
-﻿using mezzanine.EF;
+﻿using duncans.EF;
 using Microsoft.EntityFrameworkCore;
 using Northwind.DAL.Models;
 using System.Linq;
@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The region repository
     /// </summary>
-    public sealed class RegionRepository : Repository<Region, int>
+    public sealed class RegionRepository : EFRepositoryBase<RegionDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public RegionRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public RegionRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Region> FetchAll
+        public override IQueryable<RegionDbModel> FetchAll
         {
             get
             {
@@ -26,28 +26,43 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Region item)
+        public override IQueryable<RegionDbModel> FetchRaw => throw new System.NotImplementedException();
+
+        public override void Create(RegionDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(Region item)
+        public override void Update(RegionDbModel item)
+        {
+            this.IgnoreRelations(item);
+
+            this.Context.Update(item);
+        }
+
+        public override void Delete(RegionDbModel item)
+        {
+            this.IgnoreRelations(item);
+
+            this.Context.Remove(item);
+        }
+
+        public override RegionDbModel Fetch(int id)
+        {
+            return (from RegionDbModel r in this.FetchAll where r.RowId == id select r).FirstOrDefault();
+        }
+
+        public override void Ignore(RegionDbModel item)
+        {
+            this.Context.Attach(item);
+        }
+
+        protected override void IgnoreRelations(RegionDbModel item)
         {
             this.Context.AttachRange(item.Territories);
             this.Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories));
             this.Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories.Select(a => a.Employee)));
 
-            this.Context.Update(item);
-        }
-
-        public override void Delete(Region item)
-        {
-            this.Context.Remove(item);
-        }
-
-        public override Region Fetch(int id)
-        {
-            return (from Region r in this.FetchAll where r.RegionId == id select r).FirstOrDefault();
         }
     }
 }

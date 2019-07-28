@@ -1,4 +1,4 @@
-﻿using mezzanine.EF;
+﻿using duncans.EF;
 using Microsoft.EntityFrameworkCore;
 using Northwind.DAL.Models;
 using System.Linq;
@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The product repository
     /// </summary>
-    public sealed class ProductRepository : Repository<Product, int>
+    internal sealed class ProductRepository : EFRepositoryBase<ProductDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public ProductRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public ProductRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Product> FetchAll
+        public override IQueryable<ProductDbModel> FetchAll
         {
             get
             {
@@ -27,39 +27,51 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Product item)
+        public override IQueryable<ProductDbModel> FetchRaw => throw new System.NotImplementedException();
+
+        public override void Create(ProductDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Update(Product item)
+        public override void Update(ProductDbModel item)
+        {
+            this.IgnoreRelations(item);
+            this.Context.Update(item);
+        }
+
+        public override void Delete(ProductDbModel item)
+        {
+            this.IgnoreRelations(item);
+            this.Context.Remove(item);
+        }
+
+        public override ProductDbModel Fetch(int id)
+        {
+            return (from ProductDbModel p in this.FetchAll where p.RowId == id select p).FirstOrDefault();
+        }
+
+        public IQueryable<ProductDbModel> FetchBySupplierId(int supplierId)
+        {
+            return (from ProductDbModel p in this.FetchAll where p.SupplierId == supplierId select p);
+        }
+
+        public IQueryable<ProductDbModel> FetchByCategoryId(int categoryId)
+        {
+            return (from ProductDbModel p in this.FetchAll where p.CategoryId == categoryId select p);
+        }
+
+        public override void Ignore(ProductDbModel item)
+        {
+            this.Context.Attach(item);
+        }
+
+        protected override void IgnoreRelations(ProductDbModel item)
         {
             this.Context.Attach(item.Category);
             this.Context.Attach(item.Supplier);
             this.Context.AttachRange(item.OrderDetails);
             this.Context.AttachRange(item.OrderDetails.Select(o => o.Order));
-
-            this.Context.Update(item);
-        }
-
-        public override void Delete(Product item)
-        {
-            this.Context.Remove(item);
-        }
-
-        public override Product Fetch(int id)
-        {
-            return (from Product p in this.FetchAll where p.ProductId == id select p).FirstOrDefault();
-        }
-
-        public IQueryable<Product> FetchBySupplierId(int supplierId)
-        {
-            return (from Product p in this.FetchAll where p.SupplierId == supplierId select p);
-        }
-
-        public IQueryable<Product> FetchByCategoryId(int categoryId)
-        {
-            return (from Product p in this.FetchAll where p.CategoryId == categoryId select p);
         }
     }
 }

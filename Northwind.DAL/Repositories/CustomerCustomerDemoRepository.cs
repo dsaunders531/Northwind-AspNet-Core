@@ -1,4 +1,4 @@
-﻿using mezzanine.EF;
+﻿using duncans.EF;
 using Microsoft.EntityFrameworkCore;
 using Northwind.DAL.Models;
 using System.Linq;
@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The customer demographic repository
     /// </summary>
-    public sealed class CustomerCustomerDemoRepository : Repository<CustomerCustomerDemo, string>
+    public sealed class CustomerCustomerDemoRepository : EFRepositoryBase<CustomerCustomerDemoDbModel, long>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public CustomerCustomerDemoRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public CustomerCustomerDemoRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<CustomerCustomerDemo> FetchAll
+        public override IQueryable<CustomerCustomerDemoDbModel> FetchAll
         {
             get
             {
@@ -26,40 +26,52 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(CustomerCustomerDemo item)
+        public override IQueryable<CustomerCustomerDemoDbModel> FetchRaw => throw new System.NotImplementedException();
+
+        public override void Create(CustomerCustomerDemoDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(CustomerCustomerDemo item)
+        public override void Delete(CustomerCustomerDemoDbModel item)
         {
             this.Context.Remove(item);
         }
 
-        public override CustomerCustomerDemo Fetch(string id)
+        public override CustomerCustomerDemoDbModel Fetch(long id)
         {
-            return (from CustomerCustomerDemo c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
+            return (from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
         }
 
-        public IQueryable<CustomerCustomerDemo> FetchByCustomerId(string customerId)
+        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerId(long customerId)
         {
-            return from CustomerCustomerDemo c in this.FetchAll where c.CustomerId == customerId select c;
+            return from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerId == customerId select c;
         }
 
-        public IQueryable<CustomerCustomerDemo> FetchByCustomerTypeId(string customerTypeId)
+        public IQueryable<CustomerCustomerDemoDbModel> FetchByCustomerTypeId(long customerTypeId)
         {
-            return (from CustomerCustomerDemo c in this.FetchAll where c.CustomerTypeId == customerTypeId select c);
+            return (from CustomerCustomerDemoDbModel c in this.FetchAll where c.CustomerTypeId == customerTypeId select c);
         }
 
-        public override void Update(CustomerCustomerDemo item)
+        public override void Update(CustomerCustomerDemoDbModel item)
         {
             // Update the database but ignore all the linked data ( Includes and ThenIncludes )
+            this.IgnoreRelations(item);
+            this.Context.Update(item);
+        }
+
+        public override void Ignore(CustomerCustomerDemoDbModel item)
+        {
+            this.Context.Attach(item);
+        }
+
+        protected override void IgnoreRelations(CustomerCustomerDemoDbModel item)
+        {
             this.Context.Attach(item.Customer);
             this.Context.AttachRange(item.Customer.Orders);
             this.Context.AttachRange(item.Customer.Orders.Select(o => o.OrderDetails));
             this.Context.Attach(item.CustomerType);
 
-            this.Context.Update(item);
         }
     }
 }

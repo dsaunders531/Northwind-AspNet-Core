@@ -1,22 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <Compile Remove="Migrations\20180829165850_RenameModels.cs" />
-    <Compile Remove="Migrations\20180911120233_CategoryApiUpdate.cs" />
-    <Compile Remove="Migrations\20180912103309_ProductUpdate.cs" />
-    <Compile Remove="Migrations\20181013184329_test.cs" />
-    <Compile Remove="Migrations\20181013185213_MigrateToAnnotations.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917170352_AuthenticationCreate.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917175217_AuthenticationCreate.cs" />
-    <Compile Remove="Migrations\AuthenticationDb\20180917201432_AuthenticationUpdate.cs" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+    <ProjectReference Include="..\duncans.tooling\duncans.tooling.csproj" />
   </ItemGroup>
-
 </Project>

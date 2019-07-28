@@ -1,4 +1,4 @@
-﻿using mezzanine.EF;
+﻿using duncans.EF;
 using Microsoft.EntityFrameworkCore;
 using Northwind.DAL.Models;
 using System.Linq;
@@ -8,14 +8,14 @@ namespace Northwind.DAL.Repositories
     /// <summary>
     /// The employee repository
     /// </summary>
-    public sealed class EmployeeRepository : Repository<Employee, int>
+    internal sealed class EmployeeRepository : EFRepositoryBase<EmployeeDbModel, int>
     {
         // Override the context so the DbSet tables are visible.
-        private new NorthwindContext Context { get; set; }
+        private new NorthwindDbContext Context { get; set; }
 
-        public EmployeeRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public EmployeeRepository(NorthwindDbContext context) : base(context) { this.Context = context; }
 
-        public override IQueryable<Employee> FetchAll
+        public override IQueryable<EmployeeDbModel> FetchAll
         {
             get
             {
@@ -35,24 +35,38 @@ namespace Northwind.DAL.Repositories
             }
         }
 
-        public override void Create(Employee item)
+        public override IQueryable<EmployeeDbModel> FetchRaw => throw new System.NotImplementedException();
+
+        public override void Create(EmployeeDbModel item)
         {
             this.Context.Add(item);
         }
 
-        public override void Delete(Employee item)
+        public override void Delete(EmployeeDbModel item)
         {
+            this.IgnoreRelations(item);
             this.Context.Remove(item);
         }
 
-        public override Employee Fetch(int id)
+        public override EmployeeDbModel Fetch(int id)
         {
-            return (from Employee e in this.FetchAll where e.EmployeeId == id select e).FirstOrDefault();
+            return (from EmployeeDbModel e in this.FetchAll where e.RowId == id select e).FirstOrDefault();
         }
 
-        public override void Update(Employee item)
+        public override void Update(EmployeeDbModel item)
         {
             // Update the database but ignore all the linked data(Includes and ThenIncludes )
+            this.IgnoreRelations(item);
+            this.Context.Update(item);
+        }
+
+        public override void Ignore(EmployeeDbModel item)
+        {
+            this.Context.Attach(item);
+        }
+
+        protected override void IgnoreRelations(EmployeeDbModel item)
+        {
             this.Context.Attach(item.ReportsToNavigation);
             this.Context.AttachRange(item.EmployeeTerritories);
             this.Context.AttachRange(item.EmployeeTerritories.Select(T => T.Territory));
@@ -62,8 +76,6 @@ namespace Northwind.DAL.Repositories
             this.Context.AttachRange(item.Orders.Select(d => d.OrderDetails.Select(p => p.Product)));
             this.Context.AttachRange(item.Orders.Select(c => c.Customer));
             this.Context.AttachRange(item.Orders.Select(n => n.ShipViaNavigation));
-
-            this.Context.Update(item);
         }
     }
 }
