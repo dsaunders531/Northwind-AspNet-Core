@@ -6,6 +6,14 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\lib\w3css\w3-theme-dark-grey.min.css" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -18,6 +26,11 @@
     <ProjectReference Include="..\duncans.tooling\duncans.tooling.csproj" />
     <ProjectReference Include="..\Northwind.BLL\Northwind.BLL.csproj" />
     <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
   </ItemGroup>
 
 </Project>
