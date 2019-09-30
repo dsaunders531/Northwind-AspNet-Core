@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Northwind2.Models;
+using System.Diagnostics;
 
 namespace Northwind2.Controllers
 {
@@ -25,5 +21,35 @@ namespace Northwind2.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Form()
+        {            
+                return View(new TestModel()
+                {
+                    AString = "Hello There",
+                    ANumber = 123.45m,
+                    Article = "Lots of words and stuff.",
+                    AList = new string[] { "Cheese", "Hamster", "Yoghurt", "Wallaby", "Dingo", "Unicorn" }
+                });
+            
+        }
+
+        [HttpPost]
+        public IActionResult Form(TestModel model)
+        {
+            return Ok();
+        }
     }
+    
+
+    public class TestModel
+    {
+        public string AString { get; set; }
+
+        public decimal ANumber { get; set; }
+
+        public string Article { get; set; }
+
+        public string[] AList { get; set; }
+    }    
 }
