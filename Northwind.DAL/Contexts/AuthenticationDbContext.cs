@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
 using System;
 using System.Collections.Generic;
+
 using System.Threading.Tasks;
 
 namespace Northwind.DAL
@@ -14,15 +15,13 @@ namespace Northwind.DAL
     /// </summary>
     public class AuthenticationDbContext : IdentityDbContext<UserProfileModel>
     {
-        public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options) : base(options)
-        {
-            // Nothing to add yet...
-        }
+        public AuthenticationDbContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.HasDefaultSchema("Identity");
-            base.OnModelCreating(builder);
+            modelBuilder.HasDefaultSchema("Identity");
+
+            base.OnModelCreating(modelBuilder);
         }
 
         /// <summary>

@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Northwind.DAL.Models;
 
 namespace Northwind
 {
     public class Startup
-    {
+    {        
         private IHostingEnvironment Environment { get; set; } = null;
         private Northwind.BLL.Services.AppConfigurationService ConfigurationService { get; set; }
         private AppConfigurationModel AppConfiguration { get => ConfigurationService.AppConfiguration; }
@@ -60,7 +61,7 @@ namespace Northwind
             // Business logic services - this also configures the database services & Identity services
             Northwind.BLL.Startup.ConfigureServices(AppConfiguration, services, Environment);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(o => o.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,9 +75,9 @@ namespace Northwind
 
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
                 app.UseStatusCodePages();
 
                 //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
@@ -113,10 +114,10 @@ namespace Northwind
 
         private void ConfigureLogger(ILoggerFactory loggerFactory)
         {
-            if (AppConfiguration.Logging.StdOutEnabled == true)
-            {
-                loggerFactory.AddConsole(AppConfiguration.Logging.StdOutLevel.ToLogLevel());
-            }
+            //if (AppConfiguration.Logging.StdOutEnabled == true)
+            //{
+            //    loggerFactory.AddProvider(new ConsoleLoggerProvider());
+            //}
 
             if (AppConfiguration.Logging.LogXMLEnabled == true)
             {

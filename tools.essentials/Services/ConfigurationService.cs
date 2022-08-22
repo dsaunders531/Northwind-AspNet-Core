@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 
@@ -48,7 +49,7 @@ namespace tools.Services
             Env = env;
 
             Configuration = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(env.ContentRootPath)                                
                 .AddJsonFile(ConfigFileName, false, false)
                 .Build();
 

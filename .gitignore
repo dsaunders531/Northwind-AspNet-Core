@@ -22,3 +22,9 @@
 /tools.essentials/obj
 /tools.utility/bin/Debug/netcoreapp2.1
 /tools.utility/obj
+/Northwind/bin/Debug/netcoreapp3.1
+/Northwind.BLL/bin/Debug/netcoreapp3.1
+/Northwind.DAL/bin/Debug/netcoreapp3.1
+/Northwind.Tests/bin/Debug/netcoreapp3.1
+/tools.essentials/bin/Debug/netcoreapp3.1
+/tools.utility/bin/Debug/netcoreapp3.1

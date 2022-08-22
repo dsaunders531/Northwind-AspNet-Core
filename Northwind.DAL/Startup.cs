@@ -1,11 +1,12 @@
 ﻿using tools.EF;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Northwind.DAL
 {
@@ -88,7 +89,7 @@ namespace Northwind.DAL
 
             services.AddSingleton<IRepository<ApiSessionModel, string>, ApiLoginRepository>(); // The api logins repository
 
-            // Setup the password validation requirements eg: Password1!
+            // Setup the password validation requirements eg: Password1!            
             services.AddIdentity<UserProfileModel, IdentityRole>(
                     opts =>
                     {
