@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+    <ProjectReference Include="..\tools.essentials\tools.essentials.csproj" />
+    <ProjectReference Include="..\tools.utility\tools.utility.csproj" />
   </ItemGroup>
 
 </Project>

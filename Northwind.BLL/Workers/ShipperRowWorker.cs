@@ -1,5 +1,5 @@
-﻿using mezzanine.EF;
-using mezzanine.WorkerPattern;
+﻿using tools.EF;
+using tools.WorkerPattern;
 using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System.Collections.Generic;

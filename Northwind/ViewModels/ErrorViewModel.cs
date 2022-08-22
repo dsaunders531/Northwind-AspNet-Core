@@ -1,4 +1,4 @@
-using mezzanine.ViewModels;
+using tools.ViewModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Northwind.ViewModels

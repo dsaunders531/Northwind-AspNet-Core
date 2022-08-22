@@ -1,7 +1,7 @@
-﻿using mezzanine.EF;
-using mezzanine.Exceptions;
-using mezzanine.Utility;
-using mezzanine.WorkerPattern;
+﻿using tools.EF;
+using tools.Exceptions;
+using tools.Utility;
+using tools.WorkerPattern;
 using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System;

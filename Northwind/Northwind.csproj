@@ -8,9 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TypeScripts\cookieManager.ts" />
-    <None Remove="TypeScripts\navbar.ts" />
-    <None Remove="TypeScripts\site.ts" />
+    <Compile Remove="TypeScripts\**" />
+    <Content Remove="TypeScripts\**" />
+    <EmbeddedResource Remove="TypeScripts\**" />
+    <None Remove="TypeScripts\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -151,8 +152,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.essentials\mezzanine.essentials.csproj" />
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
     <ProjectReference Include="..\Northwind.BLL\Northwind.BLL.csproj" />
     <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
   </ItemGroup>
@@ -250,10 +249,6 @@
     <Content Update="Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TypeScripts\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

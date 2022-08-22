@@ -1,7 +1,7 @@
-﻿using mezzanine.EF;
-using mezzanine.Models;
-using mezzanine.Utility;
-using mezzanine.WorkerPattern;
+﻿using tools.EF;
+using tools.Models;
+using tools.Utility;
+using tools.WorkerPattern;
 using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System.Collections.Generic;

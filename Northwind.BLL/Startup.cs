@@ -1,5 +1,5 @@
-﻿using mezzanine.Services;
-using mezzanine.WorkerPattern;
+﻿using tools.Services;
+using tools.WorkerPattern;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
