@@ -1,0 +1,55 @@
+﻿@* All the links in _css and _scripts can be included here.
+        
+*@
+
+<environment include="Development">
+    <link rel="preload" as="style" href="~/lib/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="preload" as="style" href="~/lib/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+    <link rel="preload" as="style" href="~/lib/Font.Awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="preload" as="style" href="~/css/site.min.css" asp-append-version="true" />
+
+    <link rel="preload" as="script" href="~/lib/jquery/3.3.1/jquery-3.3.1.min.js">
+    <link rel="preload" as="script" href="~/lib/bootstrap/3.3.7/js/bootstrap.min.js">
+    <link rel="preload" as="script" href="~/js/navbar.js">
+    <link rel="preload" as="script" href="~/js/cookieManager.js">
+
+</environment>
+
+<environment exclude="Development">
+    <link rel="preload" as="style" href="~/lib/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous"
+          asp-fallback-href="~/lib/bootstrap/3.3.7/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
+    <link rel="preload" as="style" href="~/lib/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous"
+          asp-fallback-href="~/lib/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
+    <link rel="preload" as="style" href="~/lib/Font.Awesome/4.7.0/css/font-awesome.min.css" />
+
+    @* Add js scripts we are going to need *@
+    <link rel="preload" as="script" href="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"
+          asp-fallback-src="~/lib/jquery/3.3.1/jquery-3.3.1.min.js"
+          asp-fallback-test="window.jQuery" />
+
+    <link rel="preload" as="script" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"
+          asp-fallback-src="~/lib/bootstrap/3.3.7/js/bootstrap.min.js"
+          asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal" />
+
+    <link rel="preload" as="script" href="~/css/site.min.css" />
+
+    <link rel="preload" as="script" href="~/js/bundle.min.js" />
+
+</environment>
+
+@* because they are used in the layout *@
+<link rel="preload" as="image" href="~/images/_MG_0340_fotarchiwumBA-kap-borch.jpg" />
+<link rel="preload" as="image" href="~/images/compass_rose_site.png" />
+<link rel="preload" as="image" href="~/images/Northwind-Logo.png" />

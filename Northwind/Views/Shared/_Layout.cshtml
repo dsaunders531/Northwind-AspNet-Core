@@ -11,7 +11,9 @@
     @* Use the meta tag helper to add the meta tags to the page *@
     <meta meta-model="@Model.PageMeta" meta-user-culture-name="@userCultureName" />
     <base href="~/" />
+    @await Html.PartialAsync("_preloads")
     @await Html.PartialAsync("_css")
+    @await RenderSectionAsync("css", required: false)
 </head>
 <body>
     <noscript>
@@ -32,6 +34,6 @@
     @await Html.PartialAsync("_Footer", appInfo)
     @await Html.PartialAsync("_CookieConsentPartial")
     @await Html.PartialAsync("_Scripts")
-    @RenderSection("scripts", required: false)
+    @await RenderSectionAsync("scripts", required: false)
 </body>
 </html>
