@@ -19,6 +19,12 @@ namespace Northwind.DAL
             // Nothing to add yet...
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.HasDefaultSchema("Identity");
+            base.OnModelCreating(builder);
+        }
+
         /// <summary>
         /// Create default roles on application startup.
         /// </summary>
