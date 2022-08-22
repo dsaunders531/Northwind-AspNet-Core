@@ -8,7 +8,7 @@ namespace mezzanine.Models
     {
         public ApiControllersViewModel() : base()
         {
-            this.Controllers = new List<ApiControllerModel>();            
+            Controllers = new List<ApiControllerModel>();
         }
 
         public List<ApiControllerModel> Controllers { get; set; }

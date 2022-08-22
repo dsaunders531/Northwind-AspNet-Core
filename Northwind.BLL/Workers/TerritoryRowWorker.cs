@@ -14,7 +14,7 @@ namespace Northwind.BLL.Workers
 
         public override TerritoryRowApiO Create(TerritoryRowApiO apiRowModel)
         {
-            return base.Create(apiRowModel, model => model.RegionId == apiRowModel.RegionId 
+            return base.Create(apiRowModel, model => model.RegionId == apiRowModel.RegionId
                                                     && model.TerritoryDescription == apiRowModel.TerritoryDescription);
         }
 

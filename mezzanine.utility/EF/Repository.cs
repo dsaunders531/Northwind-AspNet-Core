@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace mezzanine.EF
 {
@@ -14,12 +14,12 @@ namespace mezzanine.EF
 
         public Repository(DbContext context)
         {
-            this.Context = context;
+            Context = context;
         }
 
         public virtual void Save()
         {
-            this.Context.SaveChanges();
+            Context.SaveChanges();
         }
 
         public abstract void Create(TModel item);

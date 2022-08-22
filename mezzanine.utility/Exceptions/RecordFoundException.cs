@@ -9,8 +9,8 @@ namespace mezzanine.Exceptions
     [Serializable]
     public class RecordFoundException : Exception
     {
-        private string value1;
-        private string value2;
+        private readonly string value1;
+        private readonly string value2;
 
         public RecordFoundException()
         {

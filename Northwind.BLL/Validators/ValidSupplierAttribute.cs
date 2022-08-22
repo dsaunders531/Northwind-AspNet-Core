@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using mezzanine.EF;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Northwind.DAL;
+using Northwind.DAL.Models;
+using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Northwind.DAL;
-using mezzanine.EF;
-using Northwind.DAL.Models;
-using Northwind.DAL.Repositories;
 
 namespace Northwind.BLL.Validators
 {
@@ -22,7 +21,7 @@ namespace Northwind.BLL.Validators
         public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
         {
             IEnumerable<ModelValidationResult> result = Enumerable.Empty<ModelValidationResult>();
-            
+
             // Dependancy injection does not work with attributes so manually wire up the database context.
             using (NorthwindContext dbContext = DAL.Startup.NorthwindContext)
             {

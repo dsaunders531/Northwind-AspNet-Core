@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using mezzanine.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.ViewModels;
 
 namespace Northwind.BLL.ViewModels.Authentication
 {
@@ -13,13 +13,13 @@ namespace Northwind.BLL.ViewModels.Authentication
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Your Name")]
-        [MinLength(4, ErrorMessage ="The name is too short!")]
+        [MinLength(4, ErrorMessage = "The name is too short!")]
         [MaxLength(256, ErrorMessage = "The name is too long!")]
         public string Name { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Address")]        
+        [Display(Name = "Email Address")]
         public string Email { get; set; }
 
         [Required]

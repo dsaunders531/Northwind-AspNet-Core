@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using mezzanine.EF;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Northwind.DAL;
+using Northwind.DAL.Models;
+using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Northwind.DAL;
-using mezzanine.EF;
-using Northwind.DAL.Models;
-using Northwind.DAL.Repositories;
-using mezzanine.Filters;
 
 namespace Northwind.BLL.Validators
 {
@@ -26,11 +24,11 @@ namespace Northwind.BLL.Validators
             {
                 IRepository<Order, int> repository = new OrderRepository(dbContext);
 
-                int? value = context.Model as int?; 
+                int? value = context.Model as int?;
 
                 if (value == null)
                 {
-    
+
                     result = new List<ModelValidationResult>() { new ModelValidationResult("", "A order id must be provided") };
                 }
                 else

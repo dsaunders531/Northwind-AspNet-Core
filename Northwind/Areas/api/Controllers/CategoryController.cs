@@ -24,7 +24,7 @@ namespace Northwind.Areas.api.Controllers
 
         public CategoryController(CategoryService categoryService)
         {
-            this.CategoryService = categoryService;
+            CategoryService = categoryService;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Northwind.Areas.api.Controllers
         {
             try
             {
-                return this.CategoryService.FetchAll();
+                return CategoryService.FetchAll();
             }
             catch (Exception e)
             {
@@ -58,7 +58,7 @@ namespace Northwind.Areas.api.Controllers
         {
             try
             {
-                return this.CategoryService.Fetch(categoryId);
+                return CategoryService.Fetch(categoryId);
             }
             catch (RecordNotFoundException e)
             {
@@ -89,11 +89,11 @@ namespace Northwind.Areas.api.Controllers
                 {
                     CategoryRowApiO result = default(CategoryRowApiO);
 
-                    result = this.CategoryService.Create(category);
+                    result = CategoryService.Create(category);
 
-                    this.CategoryService.Commit(); // Save the record to get the new id
+                    CategoryService.Commit(); // Save the record to get the new id
 
-                    result = this.CategoryService.Fetch(category);
+                    result = CategoryService.Fetch(category);
 
                     Response.StatusCode = StatusCodes.Status201Created; // created
 
@@ -102,7 +102,7 @@ namespace Northwind.Areas.api.Controllers
                 else
                 {
                     throw new ModelStateException(string.Format("Validation Failed, the {0} contains invalid data.", category.GetType().ToString()), ModelState);
-                }                
+                }
             }
             catch (ArgumentNullException e)
             {
@@ -129,7 +129,7 @@ namespace Northwind.Areas.api.Controllers
                 return new StatusCodeResult(500);
             }
         }
-        
+
         /// <summary>
         /// Updates a category
         /// </summary>
@@ -168,8 +168,8 @@ namespace Northwind.Areas.api.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        CategoryRowApiO result = this.CategoryService.Update(category);
-                        this.CategoryService.Commit();
+                        CategoryRowApiO result = CategoryService.Update(category);
+                        CategoryService.Commit();
 
                         // Updated
                         Response.StatusCode = 200; // OK
@@ -178,12 +178,12 @@ namespace Northwind.Areas.api.Controllers
                     else
                     {
                         throw new ModelStateException(string.Format("Validation Failed, the {0} contains invalid data.", category.GetType().ToString()), ModelState);
-                    }                    
+                    }
                 }
                 else
                 {
                     throw new ArgumentException("No json body could be found.");
-                }                
+                }
             }
             catch (ArgumentNullException e)
             {
@@ -221,8 +221,8 @@ namespace Northwind.Areas.api.Controllers
         {
             try
             {
-                this.CategoryService.Delete(categoryId);
-                this.CategoryService.Commit();
+                CategoryService.Delete(categoryId);
+                CategoryService.Commit();
                 return new StatusCodeResult(301);
             }
             catch (RecordNotFoundException e)

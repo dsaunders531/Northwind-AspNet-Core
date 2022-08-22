@@ -19,7 +19,7 @@ namespace mezzanine.Models
 
         public void AddKeyword(string value)
         {
-            this.KeywordsList.Add(value);
+            KeywordsList.Add(value);
         }
 
         public string Keywords

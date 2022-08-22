@@ -22,7 +22,7 @@ namespace Northwind.BLL.Workers
 
         public CategoryWorker(IRepository<Category, int> categories)
         {
-            this.CategoryRepository = categories;
+            CategoryRepository = categories;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Northwind.BLL.Workers
         /// <returns></returns>
         public List<CategoryRowApiO> FetchAll()
         {
-            List<Category> categories = this.CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
+            List<Category> categories = CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
             List<CategoryRowApiO> result = new List<CategoryRowApiO>();
 
             using (Transposition transposition = new Transposition())
@@ -52,7 +52,7 @@ namespace Northwind.BLL.Workers
         /// <returns></returns>
         public CategoryRowApiO Fetch(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            Category category = CategoryRepository.Fetch(categoryId);
 
             if (category == null)
             {
@@ -78,7 +78,7 @@ namespace Northwind.BLL.Workers
         /// <returns></returns>
         public CategoryRowApiO Fetch(CategoryRowApiO category)
         {
-            Category categoryDb = this.CategoryRepository.FetchAll.Where(f => f.CategoryName.Substring(0, category.CategoryName.Length) == category.CategoryName 
+            Category categoryDb = CategoryRepository.FetchAll.Where(f => f.CategoryName.Substring(0, category.CategoryName.Length) == category.CategoryName
                                                                             && f.Description.Substring(0, category.Description.Length) == category.Description).FirstOrDefault();
 
             if (categoryDb == null)
@@ -122,7 +122,7 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // check the item does not already exist
-                    Category dbModel = this.CategoryRepository.FetchAll.Where(cat => cat.CategoryName == apiModel.CategoryName).FirstOrDefault();
+                    Category dbModel = CategoryRepository.FetchAll.Where(cat => cat.CategoryName == apiModel.CategoryName).FirstOrDefault();
 
                     if (dbModel != null)
                     {
@@ -132,13 +132,13 @@ namespace Northwind.BLL.Workers
                     else
                     {
                         dbModel = new Category();
-                        
+
                         // map the item and add it
                         using (Transposition transposition = new Transposition())
                         {
                             dbModel = transposition.Transpose<Category>(apiModel, dbModel);
 
-                            this.CategoryRepository.Create(dbModel);
+                            CategoryRepository.Create(dbModel);
 
                             result = transposition.Transpose<CategoryRowApiO>(dbModel, apiModel);
                         }
@@ -168,7 +168,7 @@ namespace Northwind.BLL.Workers
                 else
                 {
                     // find the item
-                    Category dbModel = this.CategoryRepository.Fetch(apiModel.CategoryId);
+                    Category dbModel = CategoryRepository.Fetch(apiModel.CategoryId);
 
                     if (dbModel == null)
                     {
@@ -183,9 +183,9 @@ namespace Northwind.BLL.Workers
                             dbModel = transposition.Transpose<Category>(apiModel, dbModel);
 
                             // update the item
-                            this.CategoryRepository.Update(dbModel);
+                            CategoryRepository.Update(dbModel);
 
-                            result = transposition.Transpose<CategoryRowApiO>(dbModel, apiModel);                        
+                            result = transposition.Transpose<CategoryRowApiO>(dbModel, apiModel);
                         }
                     }
                 }
@@ -196,7 +196,7 @@ namespace Northwind.BLL.Workers
 
         public void Delete(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            Category category = CategoryRepository.Fetch(categoryId);
 
             if (category == null)
             {
@@ -205,13 +205,13 @@ namespace Northwind.BLL.Workers
             }
             else
             {
-                this.CategoryRepository.Delete(category);
+                CategoryRepository.Delete(category);
             }
         }
 
         public void Commit()
         {
-            this.CategoryRepository.Save();            
+            CategoryRepository.Save();
         }
     }
 }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.IO;
-using System.Reflection;
-using System.Xml;
 
 namespace mezzanine.Utility
 {
@@ -22,10 +18,10 @@ namespace mezzanine.Utility
 
         private SqlConnection CreateConnection
         {
-           get
-           {
+            get
+            {
                 return new SqlConnection(base.ConnectionString);
-           }
+            }
         }
 
         /// <summary>
@@ -49,9 +45,9 @@ namespace mezzanine.Utility
         {
             T result = default(T);
 
-            if (this.IsValidStatement(command.CommandText) == true)
+            if (IsValidStatement(command.CommandText) == true)
             {
-                DataTable table = this.GetDataTable(command, "result");
+                DataTable table = GetDataTable(command, "result");
 
                 result = base.DataTableToT<T>(table);
 
@@ -62,20 +58,20 @@ namespace mezzanine.Utility
                 throw new ArgumentException("The command contained invalid text");
             }
 
-            return result;        
+            return result;
         }
 
         public override T Fill<T>(string sqlText)
         {
             using (SqlCommand com = new SqlCommand(sqlText) { CommandType = CommandType.Text })
             {
-                return this.Fill<T>(com);
+                return Fill<T>(com);
             }
         }
 
         public override T Fill<T>(DbCommand command)
         {
-            return this.Fill<T>((SqlCommand)command);
+            return Fill<T>((SqlCommand)command);
         }
 
         public override DataTable GetDataTable(string sqlText, string tableName)
@@ -84,9 +80,9 @@ namespace mezzanine.Utility
 
             using (SqlCommand com = new SqlCommand(sqlText) { CommandType = CommandType.Text })
             {
-                result = this.GetDataTable(com, tableName);
+                result = GetDataTable(com, tableName);
             }
-            
+
             return result;
         }
 
@@ -94,7 +90,7 @@ namespace mezzanine.Utility
         {
             //DataSet dataSet = new DataSet(tableName);
             DataTable result = new DataTable(tableName); //dataSet.Tables.Add(tableName);
-            string transactionName = this.GenerateTransactionName();
+            string transactionName = GenerateTransactionName();
 
             using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command)
             {
@@ -108,11 +104,11 @@ namespace mezzanine.Utility
             {
                 // Note you can use text right to make the update, insert, delete statements in .Net proper (its not in Core) System.Data.SqlClient.SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
 
-                if (this.IsValidStatement(command.CommandText, false)
+                if (IsValidStatement(command.CommandText, false)
                     && (command.CommandType == CommandType.Text || command.CommandType == CommandType.TableDirect)
-                    && this.IsValidSqlParameters(command.Parameters) == true)
+                    && IsValidSqlParameters(command.Parameters) == true)
                 {
-                    using (SqlConnection con = this.CreateConnection)
+                    using (SqlConnection con = CreateConnection)
                     {
                         try
                         {
@@ -163,7 +159,7 @@ namespace mezzanine.Utility
 
         public override DataTable GetDataTable(DbCommand command, string tableName)
         {
-            return this.GetDataTable((SqlCommand)command, tableName);
+            return GetDataTable((SqlCommand)command, tableName);
         }
 
         /// <summary>
@@ -178,7 +174,7 @@ namespace mezzanine.Utility
             T result = default(T);
             using (SqlCommand com = new SqlCommand(sqlText) { CommandType = CommandType.Text })
             {
-                result = this.GetOneField<T>(com, noLock);
+                result = GetOneField<T>(com, noLock);
             }
             return result;
         }
@@ -186,7 +182,7 @@ namespace mezzanine.Utility
         public T GetOneField<T>(SqlCommand command, bool noLock = true)
         {
             T result;
-            object value = this.GetOneField(command, noLock);
+            object value = GetOneField(command, noLock);
 
             if (typeof(T).IsValueType == true && value == null)
             {
@@ -197,13 +193,13 @@ namespace mezzanine.Utility
             {
                 result = (T)Convert.ChangeType(value, typeof(T));
             }
-            
+
             return result;
         }
 
         public override T GetOneField<T>(DbCommand command, bool noLock)
         {
-            return this.GetOneField<T>((SqlCommand)command, noLock);
+            return GetOneField<T>((SqlCommand)command, noLock);
         }
 
         private object GetOneField(string sqlText, bool noLock = true)
@@ -212,22 +208,22 @@ namespace mezzanine.Utility
 
             using (SqlCommand com = new SqlCommand(sqlText) { CommandType = CommandType.Text })
             {
-                result = this.GetOneField(com, noLock);
+                result = GetOneField(com, noLock);
             }
 
             return result;
         }
 
-       /// <summary>
-       /// Return 1 value (first row, first column).
-       /// </summary>
-       /// <param name="command">The command you want to run.</param>
-       /// <param name="noLock">Lock the database when doing the read.</param>
-       /// <returns>An object representing the result.</returns>
+        /// <summary>
+        /// Return 1 value (first row, first column).
+        /// </summary>
+        /// <param name="command">The command you want to run.</param>
+        /// <param name="noLock">Lock the database when doing the read.</param>
+        /// <returns>An object representing the result.</returns>
         private object GetOneField(SqlCommand command, bool noLock = true)
         {
             object result = null;
-            string transactionName = this.GenerateTransactionName();
+            string transactionName = GenerateTransactionName();
 
             System.Data.IsolationLevel dataIsolocationLevel = System.Data.IsolationLevel.Snapshot;
 
@@ -236,11 +232,11 @@ namespace mezzanine.Utility
                 dataIsolocationLevel = System.Data.IsolationLevel.Serializable;
             }
 
-            if (this.IsValidStatement(command.CommandText) && command.CommandType == CommandType.Text)
+            if (IsValidStatement(command.CommandText) && command.CommandType == CommandType.Text)
             {
-                if (this.IsValidSqlParameters(command.Parameters) == true)
+                if (IsValidSqlParameters(command.Parameters) == true)
                 {
-                    using (SqlConnection con = this.CreateConnection)
+                    using (SqlConnection con = CreateConnection)
                     {
                         try
                         {
@@ -265,7 +261,7 @@ namespace mezzanine.Utility
                             con.Close();
                         }
                         catch (Exception ex)
-                        {                           
+                        {
                             throw new ApplicationException("Transaction failed. See inner exception for more details.", ex);
                         }
                         finally
@@ -280,7 +276,7 @@ namespace mezzanine.Utility
                 else
                 {
                     throw new ArgumentException("The parameters contained invalid text.");
-                }                
+                }
             }
             else
             {
@@ -292,7 +288,7 @@ namespace mezzanine.Utility
 
             return result;
         }
-        
+
         /// <summary>
         /// Run a database update, insert or delete command.
         /// </summary>
@@ -301,13 +297,13 @@ namespace mezzanine.Utility
         public int RunUpsert(SqlCommand command)
         {
             int result = default(int);
-            string transactionName = this.GenerateTransactionName();
+            string transactionName = GenerateTransactionName();
 
-            if (this.IsValidStatement(command.CommandText, true))
+            if (IsValidStatement(command.CommandText, true))
             {
-                if (this.IsValidSqlParameters(command.Parameters) == true)
+                if (IsValidSqlParameters(command.Parameters) == true)
                 {
-                    using (SqlConnection con = this.CreateConnection)
+                    using (SqlConnection con = CreateConnection)
                     {
                         try
                         {
@@ -348,7 +344,7 @@ namespace mezzanine.Utility
                 else
                 {
                     throw new ArgumentException("The sqlText contained an invalid string paramter.");
-                }                
+                }
             }
             else
             {
@@ -363,7 +359,7 @@ namespace mezzanine.Utility
 
         public override int RunUpsert(DbCommand command)
         {
-            return this.RunUpsert((SqlCommand)command);
+            return RunUpsert((SqlCommand)command);
         }
 
         public override int RunUpsert(string sqlText)
@@ -372,7 +368,7 @@ namespace mezzanine.Utility
 
             using (SqlCommand com = new SqlCommand(sqlText) { CommandType = CommandType.Text })
             {
-                result = this.RunUpsert(com);
+                result = RunUpsert(com);
             }
 
             return result;
@@ -392,9 +388,9 @@ namespace mezzanine.Utility
             {
                 throw new ArgumentException("The command is not a stored procedure type.");
             }
-            
+
             // the command text should be 1 word for a stored proc.
-            if (this.IsValidStatement(command.CommandText) == false)
+            if (IsValidStatement(command.CommandText) == false)
             {
                 throw new ArgumentException("The command is not a stored procedure.");
             }
@@ -405,20 +401,20 @@ namespace mezzanine.Utility
                 throw new ArgumentException("The command is not a stored procedure.");
             }
 
-            if (this.IsValidSqlParameters(command.Parameters) == false)
+            if (IsValidSqlParameters(command.Parameters) == false)
             {
                 // the command is more than 1 word - which is not a stored proc.
                 throw new ArgumentException("The command has a parameter with invalid values.");
             }
 
-            result = this.RunUpsert(command);
+            result = RunUpsert(command);
 
             return result;
         }
 
         public override int RunStoredProc(DbCommand command)
         {
-            return this.RunStoredProc((SqlCommand)command);
+            return RunStoredProc((SqlCommand)command);
         }
 
         public override int RunTransaction(List<string> sqlTexts, string transactionName)
@@ -430,7 +426,7 @@ namespace mezzanine.Utility
                 commands.Add(new SqlCommand(item));
             }
 
-            return this.RunTransaction(commands, transactionName);
+            return RunTransaction(commands, transactionName);
         }
 
         /// <summary>
@@ -441,16 +437,16 @@ namespace mezzanine.Utility
         /// <remarks>If any of the commands fails the previous commands will be rolled back.</remarks>
         public int RunTransaction(List<SqlCommand> commands, string transactionName)
         {
-            int retVal = 0;            
+            int retVal = 0;
 
             if (transactionName == string.Empty)
             {
-                transactionName = this.GenerateTransactionName();
+                transactionName = GenerateTransactionName();
             }
 
             try
             {
-                using (SqlConnection con = this.CreateConnection)
+                using (SqlConnection con = CreateConnection)
                 {
                     con.Open();
 
@@ -462,9 +458,9 @@ namespace mezzanine.Utility
                             {
                                 if (command != null)
                                 {
-                                    if (this.IsValidStatement(command.CommandText, true) == true)
+                                    if (IsValidStatement(command.CommandText, true) == true)
                                     {
-                                        if (this.IsValidSqlParameters(command.Parameters) == true)
+                                        if (IsValidSqlParameters(command.Parameters) == true)
                                         {
                                             command.Connection = con;
                                             command.Transaction = tran;
@@ -519,12 +515,12 @@ namespace mezzanine.Utility
                 sqlCommands.Add((SqlCommand)command);
             }
 
-            return this.RunTransaction(sqlCommands, transactionName);
+            return RunTransaction(sqlCommands, transactionName);
         }
 
         private string GenerateTransactionName()
         {
-            return this.CreateConnection.WorkstationId + DateTime.Now.Ticks.ToString();
+            return CreateConnection.WorkstationId + DateTime.Now.Ticks.ToString();
         }
 
         /// <summary>
@@ -542,10 +538,10 @@ namespace mezzanine.Utility
                 {
                     foreach (SqlParameter item in parameters)
                     {
-                        if (item.SqlDbType == SqlDbType.NText || item.SqlDbType == SqlDbType.NVarChar 
+                        if (item.SqlDbType == SqlDbType.NText || item.SqlDbType == SqlDbType.NVarChar
                             || item.SqlDbType == SqlDbType.Text || item.SqlDbType == SqlDbType.VarChar)
                         {
-                            result = this.IsValidSqlParameter((string)item.Value);
+                            result = IsValidSqlParameter((string)item.Value);
                             if (result == false)
                             {
                                 break;
@@ -569,7 +565,7 @@ namespace mezzanine.Utility
 
             if (result == false)
             {
-                result = !this.IsValidStatement(value);
+                result = !IsValidStatement(value);
             }
 
             return !result; // NB the reversal of result value
@@ -585,8 +581,8 @@ namespace mezzanine.Utility
         {
             // ALTER, CREATE, DROP, GRANT, ; (DELETE, INSERT, UPDATE)
             sqlText = sqlText.Trim().ToUpper();
-            bool result = sqlText.Contains(";") == true || sqlText.StartsWith("ALTER") == true 
-                          || sqlText.StartsWith("CREATE") == true || sqlText.StartsWith("DROP") == true 
+            bool result = sqlText.Contains(";") == true || sqlText.StartsWith("ALTER") == true
+                          || sqlText.StartsWith("CREATE") == true || sqlText.StartsWith("DROP") == true
                           || sqlText.StartsWith("GRANT") == true;
 
             if (result == false && allowUpdates == false)

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using mezzanine.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using mezzanine.Extensions;
 
 namespace mezzanine.TagHelpers
 {
@@ -15,13 +15,13 @@ namespace mezzanine.TagHelpers
     [HtmlTargetElement("ul", Attributes = "page-model")]
     public sealed class PagianationTagHelper : TagHelper // : TagHelpersBase
     {
-        private IUrlHelperFactory _urlHelperFactory;
+        private readonly IUrlHelperFactory _urlHelperFactory;
 
-        private string _pageAction = string.Empty;
+        private readonly string _pageAction = string.Empty;
 
         public PagianationTagHelper(IUrlHelperFactory helperFactory)
         {
-            this._urlHelperFactory = helperFactory;
+            _urlHelperFactory = helperFactory;
         }
 
         public IPagination PageModel { get; set; }
@@ -79,26 +79,26 @@ namespace mezzanine.TagHelpers
             TagBuilder result = null;
             TagBuilder tmpTag = null;
 
-            if (this.PageModel.PageCount() > 1)
+            if (PageModel.PageCount() > 1)
             {
                 result = new TagBuilder("ul");
-                result.AddCssClass(this.PageClass);
+                result.AddCssClass(PageClass);
 
                 // Add the previous button
-                if (this.PageShowPreviousNext == true)
+                if (PageShowPreviousNext == true)
                 {
                     tmpTag = new TagBuilder("li");
-                    
-                    if (this.PageModel.CurrentPage <= 1)
+
+                    if (PageModel.CurrentPage <= 1)
                     {
                         tmpTag.AddCssClass("disabled");
                         tmpTag.Attributes["disabled"] = "disabled";
-                        tmpTag = this.AddLink(ref tmpTag, urlHelper.Action(this.PageModel.PageAction, new { page = 1 }), this.PagePreviousText, string.Empty);
+                        tmpTag = AddLink(ref tmpTag, urlHelper.Action(PageModel.PageAction, new { page = 1 }), PagePreviousText, string.Empty);
                     }
                     else
                     {
-                        tmpTag = this.AddLink(ref tmpTag, urlHelper.Action(this.PageModel.PageAction, new { page = this.PageModel.CurrentPage - 1 }), 
-                                                this.PagePreviousText, string.Empty);
+                        tmpTag = AddLink(ref tmpTag, urlHelper.Action(PageModel.PageAction, new { page = PageModel.CurrentPage - 1 }),
+                                                PagePreviousText, string.Empty);
 
                     }
 
@@ -108,41 +108,41 @@ namespace mezzanine.TagHelpers
                 }
 
                 // Add the pages
-                for (int i = 1; i <= this.PageModel.PageCount(); i++)
+                for (int i = 1; i <= PageModel.PageCount(); i++)
                 {
                     tmpTag = new TagBuilder("li");
 
-                    if (this.PageModel.CurrentPage == i)
+                    if (PageModel.CurrentPage == i)
                     {
-                        tmpTag.AddCssClass(this.PageClassSelected);
+                        tmpTag.AddCssClass(PageClassSelected);
                     }
                     else
                     {
-                        tmpTag.AddCssClass(this.PageClassNormal);
+                        tmpTag.AddCssClass(PageClassNormal);
                     }
 
                     // Create the link
-                    tmpTag = this.AddLink(ref tmpTag, urlHelper.Action(this.PageModel.PageAction, new { page = i }),
+                    tmpTag = AddLink(ref tmpTag, urlHelper.Action(PageModel.PageAction, new { page = i }),
                                                i.ToString(), string.Empty);
 
                     result.InnerHtml.AppendHtml(tmpTag);
                 }
 
                 // Add the next button
-                if (this.PageShowPreviousNext == true)
+                if (PageShowPreviousNext == true)
                 {
                     tmpTag = new TagBuilder("li");
-                    
-                    if (this.PageModel.CurrentPage >= this.PageModel.PageCount())
+
+                    if (PageModel.CurrentPage >= PageModel.PageCount())
                     {
                         tmpTag.AddCssClass("disabled");
                         tmpTag.Attributes["disabled"] = "disabled";
-                        tmpTag = this.AddLink(ref tmpTag, urlHelper.Action(this.PageModel.PageAction, new { page = this.PageModel.PageCount().ToString()}), this.PageNextText, string.Empty);
+                        tmpTag = AddLink(ref tmpTag, urlHelper.Action(PageModel.PageAction, new { page = PageModel.PageCount().ToString() }), PageNextText, string.Empty);
                     }
                     else
                     {
-                        tmpTag = this.AddLink(ref tmpTag, urlHelper.Action(this.PageModel.PageAction, new { page = this.PageModel.CurrentPage + 1 }),
-                                                this.PageNextText, string.Empty);
+                        tmpTag = AddLink(ref tmpTag, urlHelper.Action(PageModel.PageAction, new { page = PageModel.CurrentPage + 1 }),
+                                                PageNextText, string.Empty);
                     }
 
                     tmpTag.AddCssClass("next");
@@ -156,7 +156,7 @@ namespace mezzanine.TagHelpers
                     output.Content.AppendHtml(result.InnerHtml);
                 }
             }
-            
+
             // tidy up
             result = null;
             tmpTag = null;

@@ -58,7 +58,7 @@ namespace mezzanine.Extensions
         /// <remarks>If you want to seperate the location from the culture. You will need to use a reverse geolocation service and use it to set the region info.</remarks>
         public static RegionInfo Region(this HttpRequest request)
         {
-            RegionInfo result = request.Culture().GetRegions().FirstOrDefault();            
+            RegionInfo result = request.Culture().GetRegions().FirstOrDefault();
             return result;
         }
     }

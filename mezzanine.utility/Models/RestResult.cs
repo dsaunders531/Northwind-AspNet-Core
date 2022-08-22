@@ -10,8 +10,8 @@ namespace mezzanine.Models
     {
         public RestResult()
         {
-            this.Headers = new List<Parameter>();
-            this.Cookies = new List<RestResponseCookie>();
+            Headers = new List<Parameter>();
+            Cookies = new List<RestResponseCookie>();
         }
 
         public int StatusCode { get; set; } = -1;

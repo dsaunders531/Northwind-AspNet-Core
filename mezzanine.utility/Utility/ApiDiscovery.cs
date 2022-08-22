@@ -1,6 +1,6 @@
 ﻿using mezzanine.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using mezzanine.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace mezzanine.Utility
 
         public ApiDiscovery(Assembly assembly)
         {
-            this.Assembly = assembly;
+            Assembly = assembly;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace mezzanine.Utility
         public ApiControllersViewModel Discover()
         {
             ApiControllersViewModel result = new ApiControllersViewModel();
-            System.Type[] assemblyTypes = this.Assembly.GetTypes();
+            System.Type[] assemblyTypes = Assembly.GetTypes();
 
             for (long i = 0; i < assemblyTypes.LongLength; i++)
             {
@@ -36,22 +36,22 @@ namespace mezzanine.Utility
 
                 // get the controller base types
                 if (assemblyType.BaseType == typeof(Microsoft.AspNetCore.Mvc.Controller) || assemblyType.BaseType?.BaseType == typeof(Microsoft.AspNetCore.Mvc.Controller))
-                {                                    
+                {
                     string controllerName = string.Empty;
                     string controllerRoute = string.Empty;
                     bool addController = false;
-                    
-                    addController = this.HasApiAttrs(assemblyType, out controllerName, out controllerRoute);
+
+                    addController = HasApiAttrs(assemblyType, out controllerName, out controllerRoute);
 
                     if (addController == true)
                     {
                         ApiControllerModel apiController = new ApiControllerModel() { Name = controllerName, Route = controllerRoute };
                         MethodInfo[] methods = assemblyType.GetMethods();
-                        
+
                         // get the attributes
                         foreach (MethodInfo method in methods)
                         {
-                            ApiActionModel apiActionModel = this.GetApiActionModel(method, controllerRoute);
+                            ApiActionModel apiActionModel = GetApiActionModel(method, controllerRoute);
 
                             if (apiActionModel != null)
                             {
@@ -100,7 +100,7 @@ namespace mezzanine.Utility
                     attrName = assemblyType.Name;
                     result = true;
                     break;
-                }                
+                }
             }
 
             // loop through attributes and find the route
@@ -111,7 +111,7 @@ namespace mezzanine.Utility
                     if (attr.AttributeType == typeof(Microsoft.AspNetCore.Mvc.RouteAttribute))
                     {
                         // add controller to list and look at its action methods.                            
-                        route = this.RouteAttributeValue(attr.ConstructorArguments);
+                        route = RouteAttributeValue(attr.ConstructorArguments);
 
                         if (route.Contains("[controller]"))
                         {
@@ -150,7 +150,7 @@ namespace mezzanine.Utility
             if (methodAttr != null)
             {
                 apiMethod = ApiMethod.GET;
-                routeInfo = this.GetRouteAttributeValue(method, typeof(HttpGetAttribute), controllerRoute);
+                routeInfo = GetRouteAttributeValue(method, typeof(HttpGetAttribute), controllerRoute);
                 result = true;
             }
             else
@@ -160,7 +160,7 @@ namespace mezzanine.Utility
                 if (methodAttr != null)
                 {
                     apiMethod = ApiMethod.POST;
-                    routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPostAttribute), controllerRoute);
+                    routeInfo = GetRouteAttributeValue(method, typeof(HttpPostAttribute), controllerRoute);
                     result = true;
                 }
                 else
@@ -170,7 +170,7 @@ namespace mezzanine.Utility
                     if (methodAttr != null)
                     {
                         apiMethod = ApiMethod.PUT;
-                        routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
+                        routeInfo = GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
                         result = true;
                     }
                     else
@@ -180,7 +180,7 @@ namespace mezzanine.Utility
                         if (methodAttr != null)
                         {
                             apiMethod = ApiMethod.PATCH;
-                            routeInfo = this.GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
+                            routeInfo = GetRouteAttributeValue(method, typeof(HttpPutAttribute), controllerRoute);
                             result = true;
                         }
                         else
@@ -190,13 +190,13 @@ namespace mezzanine.Utility
                             if (methodAttr != null)
                             {
                                 apiMethod = ApiMethod.DELETE;
-                                routeInfo = this.GetRouteAttributeValue(method, typeof(HttpDeleteAttribute), controllerRoute);
+                                routeInfo = GetRouteAttributeValue(method, typeof(HttpDeleteAttribute), controllerRoute);
                                 result = true;
                             }
                         }
                     }
                 }
-            }           
+            }
 
             return result;
         }
@@ -209,7 +209,7 @@ namespace mezzanine.Utility
         /// <returns></returns>
         private string GetRouteAttributeValue(MethodInfo method, Type targetType, string controllerRoute)
         {
-            string result = this.GetDefaultAttributeValue(method, targetType);           
+            string result = GetDefaultAttributeValue(method, targetType);
 
             if (result == string.Empty)
             {
@@ -234,11 +234,11 @@ namespace mezzanine.Utility
             {
                 if (attr.AttributeType == targetType)
                 {
-                    result = this.RouteAttributeValue(attr.ConstructorArguments);
+                    result = RouteAttributeValue(attr.ConstructorArguments);
                     break;
                 }
             }
-          
+
             return result;
         }
 
@@ -251,11 +251,11 @@ namespace mezzanine.Utility
         {
             ApiActionModel result = new ApiActionModel() { Signature = method.ToString(), Name = method.Name };
             bool addAction = false;
-            
+
             // determing the method
             ApiMethod apiMethod = ApiMethod.GET; // default
             string routeInfo = string.Empty;
-            addAction = this.FindApiMethod(method, controllerRoute, out apiMethod, out routeInfo);
+            addAction = FindApiMethod(method, controllerRoute, out apiMethod, out routeInfo);
 
             if (addAction == false)
             {
@@ -272,7 +272,7 @@ namespace mezzanine.Utility
 
                 if (methodAttr != null)
                 {
-                    result.SucessResponseCode = Convert.ToInt32(this.GetDefaultAttributeValue(method, typeof(ProducesResponseTypeAttribute)));
+                    result.SucessResponseCode = Convert.ToInt32(GetDefaultAttributeValue(method, typeof(ProducesResponseTypeAttribute)));
                 }
 
                 // Get the input parameters                
@@ -280,20 +280,20 @@ namespace mezzanine.Utility
 
                 foreach (ParameterInfo p in parameters)
                 {
-                    ApiActionParameterType parameterType = this.FindActionParameterType(p);                    
+                    ApiActionParameterType parameterType = FindActionParameterType(p);
 
                     if (parameterType != ApiActionParameterType.indeterminate)
                     {
                         ApiActionParameterModel parameter = new ApiActionParameterModel()
-                                                        {
-                                                            Name = p.Name,
-                                                            Type = p.ParameterType,
-                                                            IsNullable =  p.IsOptional || p.ParameterType.ToString().Contains("Nullable"),
-                                                            ParameterType = parameterType
-                                                        };
+                        {
+                            Name = p.Name,
+                            Type = p.ParameterType,
+                            IsNullable = p.IsOptional || p.ParameterType.ToString().Contains("Nullable"),
+                            ParameterType = parameterType
+                        };
 
                         if (parameterType == ApiActionParameterType.jsonBody)
-                        {                           
+                        {
                             parameter.DefaultValue = p.ParameterType.JSONExample().UnMinify();
                         }
                         else
@@ -309,7 +309,7 @@ namespace mezzanine.Utility
                 if (method.ReturnType.IsGenericType)
                 {
                     // assuming the return type is always a single type.
-                    result.ReturnType = method.ReturnType.GenericTypeArguments[0];                     
+                    result.ReturnType = method.ReturnType.GenericTypeArguments[0];
                 }
                 else
                 {
@@ -319,7 +319,7 @@ namespace mezzanine.Utility
                 if (result.ReturnType.IsAbstract == false)
                 {
                     result.ReturnBody = result.ReturnType.JSONExample().UnMinify();
-                }                                        
+                }
             }
 
             return result;
@@ -379,7 +379,7 @@ namespace mezzanine.Utility
                 CustomAttributeTypedArgument item = namedArguments.First();
                 result = item.Value.ToString();
             }
-            
+
             return result;
         }
     }

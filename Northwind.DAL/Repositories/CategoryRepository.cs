@@ -13,7 +13,7 @@ namespace Northwind.DAL.Repositories
         // Override the context so the DbSet tables are visible.
         private new NorthwindContext Context { get; set; }
 
-        public CategoryRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public CategoryRepository(NorthwindContext context) : base(context) { Context = context; }
 
         public override IQueryable<Category> FetchAll
         {
@@ -33,29 +33,29 @@ namespace Northwind.DAL.Repositories
 
         public override void Create(Category item)
         {
-            this.Context.Add(item);
-            this.Context.Add<Category>(item);
+            Context.Add(item);
+            Context.Add<Category>(item);
         }
 
         public override void Delete(Category item)
         {
-            this.Context.Remove(item);
+            Context.Remove(item);
         }
 
         public override Category Fetch(int id)
         {
-            return (from Category c in this.FetchAll where c.CategoryId == id select c).FirstOrDefault();
+            return (from Category c in FetchAll where c.CategoryId == id select c).FirstOrDefault();
         }
 
         public override void Update(Category item)
         {
             // Update the database but ignore all the linked data ( Includes and ThenIncludes )
-            this.Context.AttachRange(item.Products);
-            this.Context.AttachRange(item.Products.Select(s => s.Supplier));
-            this.Context.AttachRange(item.Products.Select(o => o.OrderDetails));
-            this.Context.AttachRange(item.Products.Select(b => b.OrderDetails.Select(m => m.Order)));
+            Context.AttachRange(item.Products);
+            Context.AttachRange(item.Products.Select(s => s.Supplier));
+            Context.AttachRange(item.Products.Select(o => o.OrderDetails));
+            Context.AttachRange(item.Products.Select(b => b.OrderDetails.Select(m => m.Order)));
 
-            this.Context.Update(item);
+            Context.Update(item);
         }
     }
 }

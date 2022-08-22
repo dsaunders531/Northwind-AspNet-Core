@@ -19,7 +19,7 @@ namespace Northwind.Controllers
 
         public AccountController(IdentityService identityService)
         {
-            this.IdentityService = identityService;
+            IdentityService = identityService;
         }
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace Northwind.Controllers
         public async Task<IActionResult> CreateAccount(CreateAccountViewModel model)
         {
             if (ModelState.IsValid == true)
-            {                
-                IdentityResult result = await this.IdentityService.CreateAccountAsync(model);
+            {
+                IdentityResult result = await IdentityService.CreateAccountAsync(model);
 
                 if (result.Succeeded == true)
                 {
-                    Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password, ReturnUrl = model.ReturnUrl });
+                    Microsoft.AspNetCore.Identity.SignInResult signInResult = await IdentityService.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password, ReturnUrl = model.ReturnUrl });
 
                     if (signInResult.Succeeded == true)
                     {
@@ -50,7 +50,7 @@ namespace Northwind.Controllers
                     {
                         ModelState.AddModelError(string.Empty, "Sorry, we could not log you in");
                         return View(model);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace Northwind.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(model);
+                Microsoft.AspNetCore.Identity.SignInResult signInResult = await IdentityService.LoginAsync(model);
 
                 if (signInResult != null)
                 {
@@ -120,7 +120,7 @@ namespace Northwind.Controllers
         [Authorize]
         public async Task<IActionResult> Logout(string returnUrl)
         {
-            await this.IdentityService.LogoutAsync();
+            await IdentityService.LogoutAsync();
 
             return Redirect(returnUrl ?? "/");
         }

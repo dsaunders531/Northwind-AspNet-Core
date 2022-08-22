@@ -22,7 +22,7 @@ namespace mezzanine.MVC
 
         public GenericApiController(IGenericWorker<TDbModel, TApiRowModel, TDbModelKey> workerService)
         {
-            this.WorkerService = workerService;
+            WorkerService = workerService;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace mezzanine.MVC
         {
             try
             {
-                return this.WorkerService.FetchAll();
+                return WorkerService.FetchAll();
             }
             catch (Exception e)
             {
@@ -52,7 +52,7 @@ namespace mezzanine.MVC
         {
             try
             {
-                return this.WorkerService.Fetch(key);
+                return WorkerService.Fetch(key);
             }
             catch (RecordNotFoundException e)
             {
@@ -82,11 +82,11 @@ namespace mezzanine.MVC
                 {
                     TApiRowModel result = default(TApiRowModel);
 
-                    result = this.WorkerService.Create(apiRowModel);
+                    result = WorkerService.Create(apiRowModel);
 
-                    this.WorkerService.Commit();
+                    WorkerService.Commit();
 
-                    result = this.WorkerService.Fetch(apiRowModel, fetchWithoutKey);
+                    result = WorkerService.Fetch(apiRowModel, fetchWithoutKey);
 
                     Response.StatusCode = StatusCodes.Status201Created; // created
 
@@ -157,8 +157,8 @@ namespace mezzanine.MVC
                 {
                     if (ModelState.IsValid)
                     {
-                        TApiRowModel result = this.WorkerService.Update(apiRowModel);
-                        this.WorkerService.Commit();
+                        TApiRowModel result = WorkerService.Update(apiRowModel);
+                        WorkerService.Commit();
 
                         // Updated
                         Response.StatusCode = 200; // OK
@@ -208,8 +208,8 @@ namespace mezzanine.MVC
         {
             try
             {
-                this.WorkerService.Delete(key);
-                this.WorkerService.Commit();
+                WorkerService.Delete(key);
+                WorkerService.Commit();
                 return new StatusCodeResult(301);
             }
             catch (RecordNotFoundException e)

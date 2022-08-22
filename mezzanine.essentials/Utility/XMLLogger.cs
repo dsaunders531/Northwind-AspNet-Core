@@ -75,7 +75,7 @@ namespace mezzanine.Utility
             long rowCount = 0;
 
             // only log at the specified level and below
-            if ((int)this.LogLevel <= (int)logLevel && logLevel != LogLevel.None)
+            if ((int)LogLevel <= (int)logLevel && logLevel != LogLevel.None)
             {
                 // Make sure requests do not bump into each other.
                 while (Busy == true)
@@ -87,14 +87,14 @@ namespace mezzanine.Utility
 
                 try
                 {
-                    LogDocument = this.LoadOrCreateLogDocument(OutputPath);
+                    LogDocument = LoadOrCreateLogDocument(OutputPath);
                     // Get row information from file.
                     xLogEntries = (from XmlNode xn in LogDocument.ChildNodes where xn.Name == "logEntries" select xn).First();
                     rowCount = Convert.ToInt64(xLogEntries.Attributes.GetNamedItem(@"entryCount").Value);
 
                     if (rowCount > MaxLogRows)
                     {
-                        this.LogRotate();
+                        LogRotate();
 
                         // get the important info again.
                         xLogEntries = null;
@@ -109,7 +109,7 @@ namespace mezzanine.Utility
                     xEleNew.Attributes.Append(xa);
 
                     // Create the object data and serialise it.
-                    LogEntryData le = this.Create_EntryData(logLevel, eventId, state, exception, formatter);
+                    LogEntryData le = Create_EntryData(logLevel, eventId, state, exception, formatter);
 
                     using (XMLSerializer serializer = new XMLSerializer())
                     {
@@ -136,7 +136,7 @@ namespace mezzanine.Utility
                         LogDocument = null;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // TODO own exceptions are being logged!
                     // throw new LoggerException(@"Something went wrong while logging using " + this.GetType().ToString() + " see inner exception for details.", ex);
@@ -168,7 +168,7 @@ namespace mezzanine.Utility
 
             if (exception != null)
             {
-                result.Exception = this.Create_ExceptionData(exception);
+                result.Exception = Create_ExceptionData(exception);
             }
 
             return result;
@@ -187,7 +187,7 @@ namespace mezzanine.Utility
 
             if (ex.InnerException != null)
             {
-                result.InnerException = this.Create_ExceptionData(ex.InnerException);
+                result.InnerException = Create_ExceptionData(ex.InnerException);
             }
 
             return result;
@@ -261,11 +261,11 @@ namespace mezzanine.Utility
             string newPath = OutputPath;
             byte logCounter = 1;
 
-            newPath = this.Create_NewLogPath(logCounter);
+            newPath = Create_NewLogPath(logCounter);
             while (File.Exists(newPath) == true && logCounter <= 255)
             {
                 logCounter++;
-                newPath = this.Create_NewLogPath(logCounter);
+                newPath = Create_NewLogPath(logCounter);
             }
 
             if (logCounter >= 255)
@@ -273,7 +273,7 @@ namespace mezzanine.Utility
                 throw new LoggerException(@"Too many log files! 255 files are supported.");
             }
 
-            this.OutputPath = newPath;
+            OutputPath = newPath;
         }
 
         #region IDisposable Support

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using mezzanine.Utility;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 using System.Data.Common;
-using System.Text;
-using mezzanine.Utility;
-using Microsoft.EntityFrameworkCore;
 
 namespace mezzanine.Extensions
 {
@@ -61,7 +59,7 @@ namespace mezzanine.Extensions
             DbParameter result = context.Database.GetDbConnection().CreateCommand().CreateParameter();
 
             result.ParameterName = parameterName;
-            result.DbType = dbType;            
+            result.DbType = dbType;
             result.Size = size;
             result.Value = value;
 
@@ -73,7 +71,7 @@ namespace mezzanine.Extensions
             DbParameter result = context.Database.GetDbConnection().CreateCommand().CreateParameter();
 
             result.ParameterName = parameterName;
-            result.DbType = dbType;            
+            result.DbType = dbType;
             result.Scale = scale;
             result.Precision = precision;
             result.Value = value;

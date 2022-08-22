@@ -13,13 +13,13 @@ namespace Northwind.DAL.Repositories
         // Override the context so the DbSet tables are visible.
         private new NorthwindContext Context { get; set; }
 
-        public ShipperRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public ShipperRepository(NorthwindContext context) : base(context) { Context = context; }
 
         public override IQueryable<Shipper> FetchAll
         {
             get
             {
-                return this.Context.Shippers
+                return Context.Shippers
                             .Include(o => o.Orders)
                                 .ThenInclude(c => c.Customer)
                             .Include(o => o.Orders)
@@ -32,28 +32,28 @@ namespace Northwind.DAL.Repositories
 
         public override void Create(Shipper item)
         {
-            this.Context.Add(item);
+            Context.Add(item);
         }
 
         public override void Update(Shipper item)
         {
-            this.Context.AttachRange(item.Orders);
-            this.Context.AttachRange(item.Orders.Select(c => c.Customer));
-            this.Context.AttachRange(item.Orders.Select(e => e.Employee));
-            this.Context.AttachRange(item.Orders.Select(d => d.OrderDetails));
-            this.Context.AttachRange(item.Orders.Select(d => d.OrderDetails.Select(p => p.Product)));
+            Context.AttachRange(item.Orders);
+            Context.AttachRange(item.Orders.Select(c => c.Customer));
+            Context.AttachRange(item.Orders.Select(e => e.Employee));
+            Context.AttachRange(item.Orders.Select(d => d.OrderDetails));
+            Context.AttachRange(item.Orders.Select(d => d.OrderDetails.Select(p => p.Product)));
 
-            this.Context.Update(item);
+            Context.Update(item);
         }
 
         public override void Delete(Shipper item)
         {
-            this.Context.Remove(item);
+            Context.Remove(item);
         }
 
         public override Shipper Fetch(int id)
         {
-            return (from Shipper s in this.FetchAll where s.ShipperId == id select s).FirstOrDefault();
+            return (from Shipper s in FetchAll where s.ShipperId == id select s).FirstOrDefault();
         }
     }
 }

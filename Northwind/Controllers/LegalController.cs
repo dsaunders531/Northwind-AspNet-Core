@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using mezzanine.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Northwind.ViewModels;
-using Northwind.BLL.ViewModels;
-using mezzanine.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Northwind.Controllers
 {
     /// <summary>
     /// The legal controller.
     /// </summary>
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public class LegalController : Controller
     {
         /// <summary>

@@ -23,46 +23,46 @@ namespace Northwind.DAL.Repositories
 
         public ApiLoginRepository()
         {
-            this.SavedApiSessions = new List<ApiSessionModel>();
-            this.UnsavedApiSessions = new List<ApiSessionModel>();
+            SavedApiSessions = new List<ApiSessionModel>();
+            UnsavedApiSessions = new List<ApiSessionModel>();
         }
 
         public IQueryable<ApiSessionModel> FetchAll
         {
             get
             {
-                return this.SavedApiSessions.AsQueryable();
+                return SavedApiSessions.AsQueryable();
             }
         }
 
         public void Create(ApiSessionModel item)
         {
-            this.UnsavedApiSessions.Add(item);
+            UnsavedApiSessions.Add(item);
         }
 
         public void Delete(ApiSessionModel item)
         {
-            if (this.UnsavedApiSessions.Contains(item))
+            if (UnsavedApiSessions.Contains(item))
             {
-                this.UnsavedApiSessions.Remove(item);
+                UnsavedApiSessions.Remove(item);
             }
 
-            if (this.SavedApiSessions.Contains(item))
+            if (SavedApiSessions.Contains(item))
             {
-                this.SavedApiSessions.Remove(item);
+                SavedApiSessions.Remove(item);
             }
         }
 
         public ApiSessionModel Fetch(string token)
         {
-            return (from ApiSessionModel l in this.FetchAll
+            return (from ApiSessionModel l in FetchAll
                     where l.Token == token
                     select l).FirstOrDefault();
         }
-        
+
         public ApiSessionModel FetchByLogin(ApiLoginModel model)
         {
-            return (from ApiSessionModel l in this.FetchAll
+            return (from ApiSessionModel l in FetchAll
                     where l.Email == model.Email && l.Password == model.Password
                     select l).FirstOrDefault();
         }
@@ -72,16 +72,16 @@ namespace Northwind.DAL.Repositories
         /// </summary>
         public void ClearExpiredLogins(int timeoutHours)
         {
-            IQueryable<ApiSessionModel> expiredModels = from ApiSessionModel l in this.FetchAll
-                                                where l.SessionStarted < DateTime.Now.AddHours(timeoutHours * -1)
-                                                select l;
+            IQueryable<ApiSessionModel> expiredModels = from ApiSessionModel l in FetchAll
+                                                        where l.SessionStarted < DateTime.Now.AddHours(timeoutHours * -1)
+                                                        select l;
 
             foreach (ApiSessionModel item in expiredModels)
             {
-                this.Delete(item);
+                Delete(item);
             }
 
-            this.Save();
+            Save();
         }
 
         /// <summary>
@@ -90,8 +90,8 @@ namespace Northwind.DAL.Repositories
         /// <param name="item"></param>
         public void Update(ApiSessionModel item)
         {
-            this.Delete(item);
-            this.UnsavedApiSessions.Add(item);
+            Delete(item);
+            UnsavedApiSessions.Add(item);
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace Northwind.DAL.Repositories
         public void Save()
         {
             // Note all we are doing is moving the unsaved sessions to saved sessions.
-            this.SavedApiSessions.AddRange(this.UnsavedApiSessions);
-            this.UnsavedApiSessions.Clear();
+            SavedApiSessions.AddRange(UnsavedApiSessions);
+            UnsavedApiSessions.Clear();
         }
     }
 }

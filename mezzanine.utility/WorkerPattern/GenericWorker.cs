@@ -16,11 +16,11 @@ namespace mezzanine.WorkerPattern
     /// <typeparam name="TFetchSortFieldType"></typeparam>
     public abstract class GenericWorker<TDbModel, TDbModelKey, TApiRowModel, TFetchSortFieldType> : Worker, IGenericWorker<TDbModel, TApiRowModel, TDbModelKey>
     {
-        private IRepository<TDbModel, TDbModelKey> Repository { get; set; }  
+        private IRepository<TDbModel, TDbModelKey> Repository { get; set; }
 
         public GenericWorker(IRepository<TDbModel, TDbModelKey> repository)
         {
-            this.Repository = repository;
+            Repository = repository;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace mezzanine.WorkerPattern
         /// <returns></returns>
         public List<TApiRowModel> FetchAll(Func<TDbModel, TFetchSortFieldType> sortOrder)
         {
-            List<TDbModel> table = this.Repository.FetchAll.OrderBy(sortOrder).ToList();
+            List<TDbModel> table = Repository.FetchAll.OrderBy(sortOrder).ToList();
             List<TApiRowModel> result = new List<TApiRowModel>();
 
             using (Transposition transposition = new Transposition())
@@ -56,7 +56,7 @@ namespace mezzanine.WorkerPattern
         /// <returns></returns>
         public TApiRowModel Fetch(TDbModelKey key)
         {
-            TDbModel row = this.Repository.Fetch(key);
+            TDbModel row = Repository.Fetch(key);
 
             if (row == null)
             {
@@ -82,7 +82,7 @@ namespace mezzanine.WorkerPattern
         /// <returns></returns>        
         public TApiRowModel Fetch(TApiRowModel apiRowModel, Func<TDbModel, bool> fetchSelector)
         {
-            TDbModel row = this.Repository.FetchAll.Where(fetchSelector).FirstOrDefault();
+            TDbModel row = Repository.FetchAll.Where(fetchSelector).FirstOrDefault();
 
             if (row == null)
             {
@@ -127,7 +127,7 @@ namespace mezzanine.WorkerPattern
                 else
                 {
                     // check the item does not already exist
-                    TDbModel dbModel = this.Repository.FetchAll.Where(existingRecordSelector).FirstOrDefault();                    
+                    TDbModel dbModel = Repository.FetchAll.Where(existingRecordSelector).FirstOrDefault();
 
                     if (dbModel != null)
                     {
@@ -143,7 +143,7 @@ namespace mezzanine.WorkerPattern
                         {
                             dbModel = transposition.Transpose<TDbModel>(apiRowModel, dbModel);
 
-                            this.Repository.Create(dbModel);
+                            Repository.Create(dbModel);
 
                             result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
@@ -186,7 +186,7 @@ namespace mezzanine.WorkerPattern
                 else
                 {
                     // find the item
-                    TDbModel dbModel = this.Repository.FetchAll.Where(existingRecordSelector).FirstOrDefault();
+                    TDbModel dbModel = Repository.FetchAll.Where(existingRecordSelector).FirstOrDefault();
 
                     if (dbModel == null)
                     {
@@ -201,7 +201,7 @@ namespace mezzanine.WorkerPattern
                             dbModel = transposition.Transpose<TDbModel>(apiRowModel, dbModel);
 
                             // update the item
-                            this.Repository.Update(dbModel);
+                            Repository.Update(dbModel);
 
                             result = transposition.Transpose<TApiRowModel>(dbModel, apiRowModel);
                         }
@@ -218,14 +218,14 @@ namespace mezzanine.WorkerPattern
         /// <param name="apiRowModel"></param>
         /// <returns></returns>
         public abstract TApiRowModel Update(TApiRowModel apiRowModel);
-   
+
         /// <summary>
         /// Remove a record from the database.
         /// </summary>
         /// <param name="key"></param>
         public void Delete(TDbModelKey key)
         {
-            TDbModel dbModel = this.Repository.Fetch(key);
+            TDbModel dbModel = Repository.Fetch(key);
 
             if (dbModel == null)
             {
@@ -234,7 +234,7 @@ namespace mezzanine.WorkerPattern
             }
             else
             {
-                this.Repository.Delete(dbModel);
+                Repository.Delete(dbModel);
             }
         }
 
@@ -243,7 +243,7 @@ namespace mezzanine.WorkerPattern
         /// </summary>
         public void Commit()
         {
-            this.Repository.Save();
+            Repository.Save();
         }
     }
 }

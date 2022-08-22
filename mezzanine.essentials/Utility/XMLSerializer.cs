@@ -12,12 +12,12 @@ namespace mezzanine.Utility
     {
         public T Deserialize<T>(XmlDocument xmlDocument)
         {
-            return this.Deserialize<T>(xmlDocument, new XmlRootAttribute(base.ObjectNameForXml(typeof(T))));
+            return Deserialize<T>(xmlDocument, new XmlRootAttribute(base.ObjectNameForXml(typeof(T))));
         }
 
         public T Deserialize<T>(XmlDocument xmlDocument, string rootNodeName)
         {
-            return this.Deserialize<T>(xmlDocument, new XmlRootAttribute(rootNodeName));
+            return Deserialize<T>(xmlDocument, new XmlRootAttribute(rootNodeName));
         }
 
         public T Deserialize<T>(XmlDocument xmlDocument, XmlRootAttribute rootAttr)
@@ -44,7 +44,7 @@ namespace mezzanine.Utility
         {
             XmlDocument x = new XmlDocument();
             x.Load(XMLFilePath);
-            return this.Deserialize<T>(x);
+            return Deserialize<T>(x);
         }
 
         /// <summary>
@@ -102,11 +102,11 @@ namespace mezzanine.Utility
         /// <returns></returns>
         public XmlDocument DocumentAttrsToElements(XmlDocument xmlDocument)
         {
-            this.AttributesToElements(xmlDocument.DocumentElement);
+            AttributesToElements(xmlDocument.DocumentElement);
 
             foreach (XmlElement item in xmlDocument.DocumentElement.ChildNodes)
             {
-                this.AttributesToElements(item);
+                AttributesToElements(item);
             }
 
             return xmlDocument;

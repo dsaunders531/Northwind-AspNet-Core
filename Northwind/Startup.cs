@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,26 +15,26 @@ namespace Northwind
     {
         private IHostingEnvironment Environment { get; set; } = null;
         private Northwind.BLL.Services.AppConfigurationService ConfigurationService { get; set; }
-        private AppConfigurationModel AppConfiguration { get => this.ConfigurationService.AppConfiguration; }
+        private AppConfigurationModel AppConfiguration { get => ConfigurationService.AppConfiguration; }
 
         public IConfiguration Configuration { get; private set; }
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
-            this.Configuration = configuration;
-            this.Environment = environment;
-            this.ConfigurationService = new Northwind.BLL.Services.AppConfigurationService(environment);
+            Configuration = configuration;
+            Environment = environment;
+            ConfigurationService = new Northwind.BLL.Services.AppConfigurationService(environment);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string applicationName = this.Environment.ApplicationName.Replace(" ", string.Empty).Trim();
+            string applicationName = Environment.ApplicationName.Replace(" ", string.Empty).Trim();
 
             // Built-in services
             services.AddMemoryCache();
 
-            services.AddSession(options => 
+            services.AddSession(options =>
                 {
                     options.Cookie.Name = string.Format(".{0}.Session", applicationName);
                 }
@@ -55,11 +54,11 @@ namespace Northwind
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
-                options.ConsentCookie.Name = string.Format(".{0}.Consent", this.Environment.ApplicationName.Replace(" ", string.Empty).Trim());
+                options.ConsentCookie.Name = string.Format(".{0}.Consent", Environment.ApplicationName.Replace(" ", string.Empty).Trim());
             });
 
             // Business logic services - this also configures the database services & Identity services
-            Northwind.BLL.Startup.ConfigureServices(this.AppConfiguration, services, this.Environment);
+            Northwind.BLL.Startup.ConfigureServices(AppConfiguration, services, Environment);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -68,10 +67,10 @@ namespace Northwind
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Configure the custom logger.
-            this.ConfigureLogger(loggerFactory);
+            ConfigureLogger(loggerFactory);
 
             // Business Logic Configuration - this also configures database services & Identity services
-            Northwind.BLL.Startup.Configure(this.AppConfiguration, app);
+            Northwind.BLL.Startup.Configure(AppConfiguration, app);
 
             if (env.IsDevelopment())
             {
@@ -99,7 +98,7 @@ namespace Northwind
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                        name: "areas", 
+                        name: "areas",
                         template: "{area:exists}/{controller=Home}/{action=Index}");
 
                 routes.MapRoute(
@@ -114,16 +113,16 @@ namespace Northwind
 
         private void ConfigureLogger(ILoggerFactory loggerFactory)
         {
-            if (this.AppConfiguration.Logging.StdOutEnabled == true)
+            if (AppConfiguration.Logging.StdOutEnabled == true)
             {
-                loggerFactory.AddConsole(this.AppConfiguration.Logging.StdOutLevel.ToLogLevel());
+                loggerFactory.AddConsole(AppConfiguration.Logging.StdOutLevel.ToLogLevel());
             }
 
-            if (this.AppConfiguration.Logging.LogXMLEnabled == true)
+            if (AppConfiguration.Logging.LogXMLEnabled == true)
             {
-                loggerFactory.AddProvider(new XMLLoggerProvider(this.AppConfiguration.Logging.LogXMLLevel.ToLogLevel(),
-                                                                this.ConfigurationService.WebRootPath + this.AppConfiguration.Logging.LogXMLPath,
-                                                                this.AppConfiguration.Logging.LogRotateMaxEntries));
+                loggerFactory.AddProvider(new XMLLoggerProvider(AppConfiguration.Logging.LogXMLLevel.ToLogLevel(),
+                                                                ConfigurationService.WebRootPath + AppConfiguration.Logging.LogXMLPath,
+                                                                AppConfiguration.Logging.LogRotateMaxEntries));
             }
         }
     }

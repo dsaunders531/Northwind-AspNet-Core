@@ -4,22 +4,21 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
-using System.Text;
 
 namespace mezzanine.Utility
 {
     public abstract class DbClient : IDbClient
     {
-        internal string ConnectionString { set;  get; }
+        internal string ConnectionString { set; get; }
 
         public DbClient(string connectionString)
         {
-            this.ConnectionString = connectionString;
+            ConnectionString = connectionString;
         }
 
         public DbClient(DbConnection connection)
         {
-            this.ConnectionString = connection.ConnectionString;
+            ConnectionString = connection.ConnectionString;
         }
 
         public virtual void Dispose()
@@ -36,7 +35,7 @@ namespace mezzanine.Utility
         public T DataTableToT<T>(DataTable table)
         {
             T result = default(T);
-            
+
             if (table != null)
             {
                 if (table.Rows.Count > 0)
@@ -56,14 +55,14 @@ namespace mezzanine.Utility
                         {
                             // create object
                             dynamic rowItem = Activator.CreateInstance(rowType);
-                            rowItem = this.DataRowToT(row, table.Columns, rowItem);
+                            rowItem = DataRowToT(row, table.Columns, rowItem);
                             // add to list
                             ((IList)result).Add(rowItem);
                         }
                     }
                     else
                     {
-                        result = this.DataRowToT(table.Rows[0], table.Columns, result);
+                        result = DataRowToT(table.Rows[0], table.Columns, result);
                     }
                 }
             }

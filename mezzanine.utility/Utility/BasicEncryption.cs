@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace mezzanine.Utility
@@ -8,29 +8,29 @@ namespace mezzanine.Utility
     /// <summary>
     /// Very simple encryption. Create your own keys!
     /// </summary>
-    public sealed class BasicEncryption: IEncryptionProvider, IDisposable
+    public sealed class BasicEncryption : IEncryptionProvider, IDisposable
     {
         // 16 parts each
-        private byte[] _key = new byte[] { 52, 12, 6, 89, 49, 128, 98, 201, 185, 16, 78, 110, 65, 86, 41, 55 };
+        private readonly byte[] _key = new byte[] { 52, 12, 6, 89, 49, 128, 98, 201, 185, 16, 78, 110, 65, 86, 41, 55 };
         // initialisation vector!
-        private byte[] _IV = new byte[] { 74, 63, 103, 106, 88, 142, 68, 201, 241, 135, 68, 74, 1, 64, 24, 9 };
+        private readonly byte[] _IV = new byte[] { 74, 63, 103, 106, 88, 142, 68, 201, 241, 135, 68, 74, 1, 64, 24, 9 };
 
         private System.Security.Cryptography.Aes _cryptor = null;
-        private Encoding _encoding = Encoding.UTF8;
-        private int _padding = 1024;
+        private readonly Encoding _encoding = Encoding.UTF8;
+        private readonly int _padding = 1024;
 
         public BasicEncryption()
         {
-            this.CreateEncryptor(this._key, this._IV);
+            CreateEncryptor(_key, _IV);
         }
 
         public BasicEncryption(byte[] key, byte[] iv)
         {
-            this.CreateEncryptor(key, iv);
+            CreateEncryptor(key, iv);
         }
 
         private void CreateEncryptor(byte[] key, byte[] iv)
-        {     
+        {
             _cryptor = Aes.Create();
             _cryptor.Key = key;
             _cryptor.IV = iv;
@@ -50,7 +50,7 @@ namespace mezzanine.Utility
             {
                 using (CryptoStream cs = new CryptoStream(ms, et, CryptoStreamMode.Write))
                 {
-                    using (StreamWriter sw = new StreamWriter(cs, this._encoding, this._padding))
+                    using (StreamWriter sw = new StreamWriter(cs, _encoding, _padding))
                     {
                         sw.Write(value);
                         sw.Flush();
@@ -76,13 +76,13 @@ namespace mezzanine.Utility
             }
             else
             {
-                return Convert.ToBase64String(this.EncryptToBytes(value));
+                return Convert.ToBase64String(EncryptToBytes(value));
             }
         }
 
         public string Encrypt(string value)
         {
-            return this.EncryptToString(value);
+            return EncryptToString(value);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace mezzanine.Utility
                 {
                     using (CryptoStream cs = new CryptoStream(ms, et, CryptoStreamMode.Read))
                     {
-                        using (StreamReader sr = new StreamReader(cs, this._encoding, true, this._padding))
+                        using (StreamReader sr = new StreamReader(cs, _encoding, true, _padding))
                         {
                             output = sr.ReadToEnd();
                             sr.Dispose();
@@ -119,7 +119,7 @@ namespace mezzanine.Utility
         {
             if (value != null)
             {
-                return this.DecryptBytes(Convert.FromBase64String(value));
+                return DecryptBytes(Convert.FromBase64String(value));
             }
             else
             {
@@ -129,7 +129,7 @@ namespace mezzanine.Utility
 
         public string Decrypt(string value)
         {
-            return this.DecryptString(value);
+            return DecryptString(value);
         }
 
         #region IDisposable Support

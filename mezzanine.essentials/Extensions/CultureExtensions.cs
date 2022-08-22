@@ -6,7 +6,7 @@ using System.Linq;
 namespace mezzanine.Extensions
 {
     public static class CultureExtensions
-    {       
+    {
         /// <summary>
         /// A list of all supported CultureInfo
         /// </summary>
@@ -14,33 +14,33 @@ namespace mezzanine.Extensions
         /// <returns></returns>
         public static List<CultureInfo> GetCultures(this CultureInfo culture)
         {
-                // ASCII Ucase = 65 -90 Lcase 97-122
-                // Create a list based on 3 letter code, 3-3 letters & 3-3
-                // Make the list dynamically so any changes do not need to manually programmed.
-                List<CultureInfo> result = new List<CultureInfo>();
-                List<string> potentialCultures = potentialCultureStrings;
-                CultureInfo foundCulture = null;
+            // ASCII Ucase = 65 -90 Lcase 97-122
+            // Create a list based on 3 letter code, 3-3 letters & 3-3
+            // Make the list dynamically so any changes do not need to manually programmed.
+            List<CultureInfo> result = new List<CultureInfo>();
+            List<string> potentialCultures = potentialCultureStrings;
+            CultureInfo foundCulture = null;
 
-                foreach (string potentialCulture in potentialCultures)
+            foreach (string potentialCulture in potentialCultures)
+            {
+                try
                 {
-                    try
-                    {
-                        foundCulture = new CultureInfo(potentialCulture);
-                        result.Add(foundCulture);
-                    }
-                    catch (System.Globalization.CultureNotFoundException)
-                    {
-                        // Do nothing combination of characters is invalid.
-                    }
-                    finally
-                    {
-                        foundCulture = null;
-                    }
+                    foundCulture = new CultureInfo(potentialCulture);
+                    result.Add(foundCulture);
                 }
+                catch (System.Globalization.CultureNotFoundException)
+                {
+                    // Do nothing combination of characters is invalid.
+                }
+                finally
+                {
+                    foundCulture = null;
+                }
+            }
 
-                potentialCultures.Clear();
+            potentialCultures.Clear();
 
-                return result;
+            return result;
         }
 
         /// <summary>

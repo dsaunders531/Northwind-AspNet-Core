@@ -186,7 +186,7 @@ namespace Northwind.DAL
             });
 
             modelBuilder.Entity<Territory>(entity =>
-            {              
+            {
                 entity.HasOne(d => d.Region)
                     .WithMany(p => p.Territories)
                     .HasForeignKey(d => d.RegionId)

@@ -22,7 +22,7 @@ namespace mezzanine.Utility
         public object Transpose(object input, object output)
         {
             object result = output;
-            result = this.MapProperties(input.GetType(), input, output.GetType(), output);
+            result = MapProperties(input.GetType(), input, output.GetType(), output);
             return result;
         }
 
@@ -36,7 +36,7 @@ namespace mezzanine.Utility
         public OutputT Transpose<OutputT>(object input, OutputT output)
         {
             OutputT result = output;
-            result = (OutputT)this.MapProperties(input.GetType(), input, output.GetType(), (object)output);
+            result = (OutputT)MapProperties(input.GetType(), input, output.GetType(), output);
             return result;
         }
 
@@ -74,7 +74,7 @@ namespace mezzanine.Utility
         {
             // does the property exists in the output type?
             if (outputType?.GetProperty(propertyName) != null)
-            {                
+            {
                 object outputCurrentValue = outputType?.GetProperty(propertyName)?.GetValue(output);
 
                 if (outputCurrentValue != null && propertyValue == null)
@@ -112,19 +112,19 @@ namespace mezzanine.Utility
                     if (resultType != propertyType && resultType.IsClass == true)
                     {
                         // The types are different and are classes.
-                        object resultValue = this.MapProperties(propertyType, propertyValue, resultType, Activator.CreateInstance(resultType));
-                        this.SetPropertyValue(output, outputType, propertyName, resultValue);
+                        object resultValue = MapProperties(propertyType, propertyValue, resultType, Activator.CreateInstance(resultType));
+                        SetPropertyValue(output, outputType, propertyName, resultValue);
                     }
                     else
                     {
                         if (resultType.IsValueType && propertyValue == null)
                         {
                             object defaultValue = Activator.CreateInstance(resultType);
-                            this.SetPropertyValue(output, outputType, propertyName, defaultValue);
+                            SetPropertyValue(output, outputType, propertyName, defaultValue);
                         }
                         else
                         {
-                            this.SetPropertyValue(output, outputType, propertyName, propertyValue);
+                            SetPropertyValue(output, outputType, propertyName, propertyValue);
                         }
                     }
                 }
@@ -160,8 +160,8 @@ namespace mezzanine.Utility
                     // The types are different and are classes.
                     if (propertyValue != null)
                     {
-                        propertyValue = this.MapProperties(propertyType, propertyValue, resultPropertyType, Activator.CreateInstance(resultPropertyType));
-                        this.SetPropertyValue(result, resultType, propertyName, propertyValue);
+                        propertyValue = MapProperties(propertyType, propertyValue, resultPropertyType, Activator.CreateInstance(resultPropertyType));
+                        SetPropertyValue(result, resultType, propertyName, propertyValue);
                     }
                 }
                 else
@@ -169,11 +169,11 @@ namespace mezzanine.Utility
                     if (resultPropertyType.IsValueType && propertyValue == null)
                     {
                         object defaultValue = property.GetValue(defaultOutput);
-                        this.SetPropertyValue(result, resultType, propertyName, defaultValue);
+                        SetPropertyValue(result, resultType, propertyName, defaultValue);
                     }
                     else
                     {
-                        this.SetPropertyValue(result, resultType, propertyName, propertyValue);
+                        SetPropertyValue(result, resultType, propertyName, propertyValue);
                     }
                 }
             }

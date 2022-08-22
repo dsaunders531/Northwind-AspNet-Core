@@ -21,14 +21,14 @@ namespace Northwind.BLL.Workers
 
         public RetailInventoryWorker(IRepository<Product, int> products, IRepository<Category, int> categories)
         {
-            this.ProductRepository = products;
-            this.CategoryRepository = categories;
+            ProductRepository = products;
+            CategoryRepository = categories;
         }
 
         public List<CategoryRowApiO> GetAllCategories()
         {
-            List<Category> categories = this.CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
-            List <CategoryRowApiO> result = new List<CategoryRowApiO>();
+            List<Category> categories = CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).ToList();
+            List<CategoryRowApiO> result = new List<CategoryRowApiO>();
 
             using (Transposition transposition = new Transposition())
             {
@@ -37,13 +37,13 @@ namespace Northwind.BLL.Workers
                     result.Add(transposition.Transpose<CategoryRowApiO>(item, new CategoryRowApiO()));
                 }
             }
-            
+
             return result;
         }
 
         public List<ProductApiO> GetAllProducts()
         {
-            List<Product> products = this.ProductRepository.FetchAll.OrderBy(o => o.ProductName).ToList();
+            List<Product> products = ProductRepository.FetchAll.OrderBy(o => o.ProductName).ToList();
             List<ProductApiO> result = new List<ProductApiO>();
 
             using (Transposition transposition = new Transposition())
@@ -59,13 +59,13 @@ namespace Northwind.BLL.Workers
 
         public PaginationModel CategoriesPages(string pageAction, int itemsPerPage)
         {
-            return base.CreatePaginationModel(pageAction, itemsPerPage, this.CategoryRepository.FetchAll.Count());
+            return base.CreatePaginationModel(pageAction, itemsPerPage, CategoryRepository.FetchAll.Count());
         }
 
         public List<CategoryRowApiO> GetCategoriesPaged(int itemsPerPage, int page)
         {
             page -= 1;
-            List<Category> pagedCategories = this.CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).Skip(itemsPerPage * page).Take(itemsPerPage).ToList();
+            List<Category> pagedCategories = CategoryRepository.FetchAll.OrderBy(c => c.CategoryName).Skip(itemsPerPage * page).Take(itemsPerPage).ToList();
             List<CategoryRowApiO> result = new List<CategoryRowApiO>();
 
             using (Transposition transposition = new Transposition())
@@ -81,13 +81,13 @@ namespace Northwind.BLL.Workers
 
         public PaginationModel ProductsPages(string pageAction, int itemsPerPage)
         {
-            return base.CreatePaginationModel(pageAction, itemsPerPage, this.ProductRepository.FetchAll.Count());
+            return base.CreatePaginationModel(pageAction, itemsPerPage, ProductRepository.FetchAll.Count());
         }
 
         public List<ProductApiO> GetProductsPaged(int itemsPerPage, int page)
         {
             page -= 1;
-            List<Product> pagedProducts = this.ProductRepository.FetchAll.OrderBy(p => p.ProductName).Skip(itemsPerPage * page).Take(itemsPerPage).ToList();
+            List<Product> pagedProducts = ProductRepository.FetchAll.OrderBy(p => p.ProductName).Skip(itemsPerPage * page).Take(itemsPerPage).ToList();
             List<ProductApiO> result = new List<ProductApiO>();
 
             using (Transposition transposition = new Transposition())
@@ -103,7 +103,7 @@ namespace Northwind.BLL.Workers
 
         public CategoryRowApiO GetCategory(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            Category category = CategoryRepository.Fetch(categoryId);
             CategoryRowApiO result = new CategoryRowApiO();
 
             using (Transposition tranposition = new Transposition())
@@ -116,7 +116,7 @@ namespace Northwind.BLL.Workers
 
         public ProductApiO GetProduct(int productId)
         {
-            Product product = this.ProductRepository.Fetch(productId);
+            Product product = ProductRepository.Fetch(productId);
             ProductApiO result = new ProductApiO();
 
             using (Transposition transposition = new Transposition())
@@ -129,7 +129,7 @@ namespace Northwind.BLL.Workers
 
         public List<ProductRowApiO> GetCategoryProducts(int categoryId)
         {
-            Category category = this.CategoryRepository.Fetch(categoryId);
+            Category category = CategoryRepository.Fetch(categoryId);
             List<ProductRowApiO> result = new List<ProductRowApiO>();
 
             if (category != null)
@@ -140,7 +140,7 @@ namespace Northwind.BLL.Workers
                     {
                         result.Add(transposition.Transpose<ProductRowApiO>(item, new ProductRowApiO()));
                     }
-                }               
+                }
             }
 
             return result;
@@ -148,22 +148,22 @@ namespace Northwind.BLL.Workers
 
         public PaginationModel CategoryProductsPages(int categoryId, string pageAction, int itemsPerPage)
         {
-            return base.CreatePaginationModel(pageAction, itemsPerPage, this.GetCategoryProducts(categoryId).Count());
+            return base.CreatePaginationModel(pageAction, itemsPerPage, GetCategoryProducts(categoryId).Count());
         }
 
         public List<ProductApiO> GetCategoryProductsPaged(int categoryId, int itemsPerPage, int page)
         {
             page -= 1;
-            List<Product> pagedProducts = (from Product p in this.ProductRepository.FetchAll
-                                          where p.CategoryId == categoryId
-                                          orderby p.ProductName
-                                          select p)
+            List<Product> pagedProducts = (from Product p in ProductRepository.FetchAll
+                                           where p.CategoryId == categoryId
+                                           orderby p.ProductName
+                                           select p)
                                           .Skip(itemsPerPage * page).Take(itemsPerPage)
                                           .ToList();
 
             List<ProductApiO> result = new List<ProductApiO>();
 
-            using (Transposition transposition = new Transposition())            
+            using (Transposition transposition = new Transposition())
             {
                 foreach (Product item in pagedProducts)
                 {

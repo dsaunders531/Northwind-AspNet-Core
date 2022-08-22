@@ -11,8 +11,8 @@ namespace mezzanine.ViewModels
     {
         public ViewModel()
         {
-            this.PageMeta = new PageMetaModel();
-            this.Pagination = null; // The default is null (no pagination)
+            PageMeta = new PageMetaModel();
+            Pagination = null; // The default is null (no pagination)
         }
 
         public IPageMeta PageMeta { get; set; }

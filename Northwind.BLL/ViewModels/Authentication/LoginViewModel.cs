@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using mezzanine.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.ViewModels;
 
 namespace Northwind.BLL.ViewModels.Authentication
 {

@@ -42,12 +42,12 @@ namespace mezzanine.Utility
 
                 if (result.Last().ToString() == "y")
                 {
-                    result = result.Replace("y","ies");
+                    result = result.Replace("y", "ies");
                 }
                 else
                 {
                     result += "s";
-                }                
+                }
             }
 
             if (result.Contains(".") == true)

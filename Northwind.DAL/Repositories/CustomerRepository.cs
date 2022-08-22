@@ -13,7 +13,7 @@ namespace Northwind.DAL.Repositories
         // Override the context so the DbSet tables are visible.
         private new NorthwindContext Context { get; set; }
 
-        public CustomerRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public CustomerRepository(NorthwindContext context) : base(context) { Context = context; }
 
         public override IQueryable<Customer> FetchAll
         {
@@ -36,31 +36,31 @@ namespace Northwind.DAL.Repositories
 
         public override void Create(Customer item)
         {
-            this.Context.Add(item);
+            Context.Add(item);
         }
 
         public override void Delete(Customer item)
         {
-            this.Context.Remove(item);
+            Context.Remove(item);
         }
 
         public override Customer Fetch(string id)
         {
-            return (from Customer c in this.FetchAll where c.CustomerId == id select c).FirstOrDefault();
+            return (from Customer c in FetchAll where c.CustomerId == id select c).FirstOrDefault();
         }
-        
+
         public override void Update(Customer item)
         {
             // Update the database but ignore all the linked data ( Includes and ThenIncludes )
-            this.Context.AttachRange(item.CustomerCustomerDemo);
-            this.Context.AttachRange(item.CustomerCustomerDemo.Select(t => t.CustomerType));
-            this.Context.AttachRange(item.Orders);
-            this.Context.AttachRange(item.Orders.Select(d => d.OrderDetails));
-            this.Context.AttachRange(item.Orders.Select(d => d.OrderDetails.Select(p => p.Product)));
-            this.Context.AttachRange(item.Orders.Select(s => s.ShipViaNavigation));
-            this.Context.AttachRange(item.Orders.Select(e => e.Employee));
+            Context.AttachRange(item.CustomerCustomerDemo);
+            Context.AttachRange(item.CustomerCustomerDemo.Select(t => t.CustomerType));
+            Context.AttachRange(item.Orders);
+            Context.AttachRange(item.Orders.Select(d => d.OrderDetails));
+            Context.AttachRange(item.Orders.Select(d => d.OrderDetails.Select(p => p.Product)));
+            Context.AttachRange(item.Orders.Select(s => s.ShipViaNavigation));
+            Context.AttachRange(item.Orders.Select(e => e.Employee));
 
-            this.Context.Update(item);
+            Context.Update(item);
         }
     }
 }

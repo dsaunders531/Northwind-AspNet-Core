@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Northwind.BLL.Validators;
 using System.ComponentModel.DataAnnotations;
-using Northwind.BLL.Validators;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Northwind.BLL.Models
 {

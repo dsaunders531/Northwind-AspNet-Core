@@ -9,8 +9,8 @@ namespace mezzanine.Models
     {
         public ApiActionModel()
         {
-            this.Parameters = new List<ApiActionParameterModel>();
-            this.SucessResponseCode = 200;
+            Parameters = new List<ApiActionParameterModel>();
+            SucessResponseCode = 200;
         }
 
         public ApiMethod Method { get; set; }

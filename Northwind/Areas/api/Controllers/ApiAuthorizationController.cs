@@ -15,7 +15,7 @@ namespace Northwind.Areas.api.Controllers
     [ApiController]
     [Area("api")]
     [Route("api/Authorize/[action]")]
-    [ApiAuthorize( Roles = "Api")]
+    [ApiAuthorize(Roles = "Api")]
     public class ApiAuthorizationController : Controller
     {
         private IdentityService IdentityService { get; set; }
@@ -28,22 +28,22 @@ namespace Northwind.Areas.api.Controllers
 
         public ApiAuthorizationController(IdentityService identityService, IRepository<ApiSessionModel, string> repository)
         {
-            this.IdentityService = identityService;
-            this.Repository = (ApiLoginRepository)repository;
+            IdentityService = identityService;
+            Repository = (ApiLoginRepository)repository;
         }
 
-        [HttpPost()]     
+        [HttpPost()]
         [AllowAnonymous]
         public async Task<ActionResult> Login([FromBody] ApiLoginModel model)
         {
             Repository.ClearExpiredLogins(TimeoutHours);
 
             if (ModelState.IsValid == true)
-            {                
-                Microsoft.AspNetCore.Identity.SignInResult signInResult = await this.IdentityService.LoginAsync(model, mustBeInRole: "Api");
+            {
+                Microsoft.AspNetCore.Identity.SignInResult signInResult = await IdentityService.LoginAsync(model, mustBeInRole: "Api");
 
                 if (signInResult != null)
-                {                   
+                {
                     if (signInResult.Succeeded == true)
                     {
                         ApiSessionModel apiSessionModel = Repository.FetchByLogin(model);
@@ -69,13 +69,13 @@ namespace Northwind.Areas.api.Controllers
 
                         // return magic key                       
                         Response.Headers.Add(new KeyValuePair<string, StringValues>(HeaderTokenName, apiSessionModel.Token));
-                        
-                        return Ok();                        
+
+                        return Ok();
                     }
                     else
                     {
                         return new StatusCodeResult(403); // forbidden
-                    }                    
+                    }
                 }
                 else
                 {
@@ -100,8 +100,8 @@ namespace Northwind.Areas.api.Controllers
                 Repository.Delete(model);
                 Repository.Save();
             }
-            
-            await this.IdentityService.LogoutAsync();
+
+            await IdentityService.LogoutAsync();
 
             return Ok();
         }

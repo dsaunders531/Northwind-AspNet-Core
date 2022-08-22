@@ -53,7 +53,7 @@ namespace Northwind.Areas.api.Filters
                 // see if the user is already authenticated.
                 if (filterContext.HttpContext.User.Identity.IsAuthenticated == true)
                 {
-                    if (identityService.IsInRoles(filterContext.HttpContext.User, this.Roles) == false)
+                    if (identityService.IsInRoles(filterContext.HttpContext.User, Roles) == false)
                     {
                         // The already logged in user is not allowed to access this page.
                         filterContext.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
@@ -97,7 +97,7 @@ namespace Northwind.Areas.api.Filters
                 }
 
                 identityService = null;
-            }            
+            }
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Northwind.Areas.api.Filters
             catch (Exception)
             {
                 // Do nothing               
-            }            
+            }
         }
 
         public void OnResultExecuting(ResultExecutingContext context)

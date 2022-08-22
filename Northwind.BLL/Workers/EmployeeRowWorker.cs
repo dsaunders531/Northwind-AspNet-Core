@@ -19,7 +19,7 @@ namespace Northwind.BLL.Workers
 
         public override List<EmployeeRowApiO> FetchAll()
         {
-            return base.FetchAll(e => e.FirstName + e.FirstName );
+            return base.FetchAll(e => e.FirstName + e.FirstName);
         }
 
         public override EmployeeRowApiO Update(EmployeeRowApiO apiRowModel)

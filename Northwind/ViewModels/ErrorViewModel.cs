@@ -1,6 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Northwind.BLL.ViewModels;
 using mezzanine.ViewModels;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Northwind.ViewModels
 {

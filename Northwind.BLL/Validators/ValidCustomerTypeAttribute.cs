@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using mezzanine.EF;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Northwind.DAL;
+using Northwind.DAL.Models;
+using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Northwind.DAL;
-using mezzanine.EF;
-using Northwind.DAL.Models;
-using Northwind.DAL.Repositories;
-using mezzanine.Filters;
 
 namespace Northwind.BLL.Validators
 {
@@ -26,7 +24,7 @@ namespace Northwind.BLL.Validators
             {
                 IRepository<CustomerDemographic, string> repository = new CustomerDemographicRepository(dbContext);
 
-                string value = context.Model as string; 
+                string value = context.Model as string;
 
                 if (value == null)
                 {

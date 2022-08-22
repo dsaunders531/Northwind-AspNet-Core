@@ -206,13 +206,13 @@
 //     *       }
 //     */
 //    #endregion
-        //#region "Step 6 - Extend the functionality of the repository using extension methods instead of adding to the repository
-        //public static class TestResultRepositoryExtensions
-        //{
-        //    public static TestResult GetByUser(this IRepository<TestResult> me, long foodParcelId, string username)
-        //    {
-        //        return (from TestResult t in me.GetAll where t.FoodParcelId == foodParcelId && t.UserName == username select t).FirstOrDefault();
-        //    }
-        //}
-        //#endregion
+//#region "Step 6 - Extend the functionality of the repository using extension methods instead of adding to the repository
+//public static class TestResultRepositoryExtensions
+//{
+//    public static TestResult GetByUser(this IRepository<TestResult> me, long foodParcelId, string username)
+//    {
+//        return (from TestResult t in me.GetAll where t.FoodParcelId == foodParcelId && t.UserName == username select t).FirstOrDefault();
+//    }
+//}
+//#endregion
 //}

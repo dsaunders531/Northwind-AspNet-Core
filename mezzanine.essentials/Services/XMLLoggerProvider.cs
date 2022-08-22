@@ -19,14 +19,14 @@ namespace mezzanine.Services
             LogLevel = logLevel;
             OutputPath = outputPath;
             DefaultMaxRows = rotateWhenRows;
-        } 
+        }
 
         ILogger ILoggerProvider.CreateLogger(string categoryName)
         {
             // Only 1 instance of logger per logger provider.
             if (Logger == null)
             {
-                Logger = new XMLLogger(LogLevel, categoryName, OutputPath,DefaultMaxRows);
+                Logger = new XMLLogger(LogLevel, categoryName, OutputPath, DefaultMaxRows);
             }
             return Logger;
         }

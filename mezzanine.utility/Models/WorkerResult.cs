@@ -9,9 +9,9 @@ namespace mezzanine.Models
     {
         public WorkerResult()
         {
-            this.Success = true;
-            this.Message = string.Empty;
-            this.Exception = null;
+            Success = true;
+            Message = string.Empty;
+            Exception = null;
         }
 
         public bool Success { get; set; }

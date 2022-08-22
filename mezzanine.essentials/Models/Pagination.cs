@@ -19,20 +19,20 @@ namespace mezzanine.Models
 
         public int PageCount()
         {
-            if (this.ItemsPerPage <=0)
+            if (ItemsPerPage <= 0)
             {
                 throw new IndexOutOfRangeException(@"The quantity of items per page must be greater than zero.");
             }
 
-            int maxPages = this.ItemCount / this.ItemsPerPage;
-            
+            int maxPages = ItemCount / ItemsPerPage;
+
             // When the remainder after division is not a whole number, add one to the page count.
-            if ((this.ItemCount % this.ItemsPerPage) > 0)
+            if ((ItemCount % ItemsPerPage) > 0)
             {
                 maxPages += 1;
             }
 
             return maxPages;
         }
-    }    
+    }
 }

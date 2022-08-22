@@ -1,6 +1,6 @@
-﻿using Northwind.BLL.Models;
+﻿using mezzanine.ViewModels;
+using Northwind.BLL.Models;
 using System.Collections.Generic;
-using mezzanine.ViewModels;
 
 namespace Northwind.BLL.ViewModels
 {

@@ -56,8 +56,8 @@ namespace Northwind.Areas.api.Controllers
         [Consumes("application/json")]
         public ActionResult<CustomerRowApiO> Put([FromBody] CustomerRowApiO apiRowModel)
         {
-            return base.BasePut(apiRowModel, c => c.CompanyName == apiRowModel.CompanyName 
-                                            && c.ContactTitle == apiRowModel.ContactTitle 
+            return base.BasePut(apiRowModel, c => c.CompanyName == apiRowModel.CompanyName
+                                            && c.ContactTitle == apiRowModel.ContactTitle
                                             && c.PostalCode == apiRowModel.PostalCode);
         }
     }

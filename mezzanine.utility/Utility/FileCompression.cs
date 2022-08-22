@@ -32,7 +32,7 @@ namespace mezzanine.Utility
             PackagePart packageP;
             byte[] fileBytes;
 
-            foreach(string f in filePaths)
+            foreach (string f in filePaths)
             {
                 if (f != string.Empty)
                 {
@@ -42,7 +42,7 @@ namespace mezzanine.Utility
                     }
 
                     commitUri = new System.Uri(string.Concat(Path.DirectorySeparatorChar, Path.GetFileName(f)), UriKind.Relative);
-                    
+
                     packageP = zip.CreatePart(commitUri, contentType, CompressionOption.NotCompressed);
                     fileBytes = File.ReadAllBytes(f);
                     packageP.GetStream(FileMode.Append, FileAccess.Write).Write(fileBytes, 0, fileBytes.Length);
@@ -73,10 +73,10 @@ namespace mezzanine.Utility
             Package zip = ZipPackage.Open(inputZipFile, FileMode.Open, FileAccess.Read);
             string partPath = string.Empty;
 
-            foreach(PackagePart p in zip.GetParts())
+            foreach (PackagePart p in zip.GetParts())
             {
                 partPath = p.Uri.OriginalString.Replace(Convert.ToChar(@"/"), Path.DirectorySeparatorChar);
-                this.GetFileFromZipStream(p.GetStream(), extractToDir + partPath);
+                GetFileFromZipStream(p.GetStream(), extractToDir + partPath);
             }
 
             zip.Close();
@@ -138,7 +138,7 @@ namespace mezzanine.Utility
 
             extractPath = extractPath.Replace(Convert.ToChar(@"/"), Path.DirectorySeparatorChar);
 
-            if (this.ListZipContent(inputZipFile).Contains(extractPath) == false)
+            if (ListZipContent(inputZipFile).Contains(extractPath) == false)
             {
                 throw new ArgumentException(string.Format("Path {0} was not found in {1}.", extractPath, inputZipFile));
             }

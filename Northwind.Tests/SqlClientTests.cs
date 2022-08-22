@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using mezzanine.Utility;
+﻿using mezzanine.Utility;
 using Northwind.BLL.Models;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Northwind.Tests
 {
     public class SqlClientTests
     {
-        private const string ConnectionString = "Server=[server]\\[instance];Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
+        private const string ConnectionString = "Server=LAPTOP10\\SQLEXPRESS;Database=Northwind;Trusted_Connection=true;MultipleActiveResultSets=true";
 
         /// <summary>
         /// See that the SqlClient Fill method works with many records.

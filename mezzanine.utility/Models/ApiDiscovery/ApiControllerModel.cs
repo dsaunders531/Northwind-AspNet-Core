@@ -8,7 +8,7 @@ namespace mezzanine.Models
     {
         public ApiControllerModel()
         {
-            this.Actions = new List<ApiActionModel>();
+            Actions = new List<ApiActionModel>();
         }
 
         public string Name { get; set; }

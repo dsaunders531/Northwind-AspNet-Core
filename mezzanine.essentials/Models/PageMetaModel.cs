@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace mezzanine.Models
+﻿namespace mezzanine.Models
 {
     /// <summary>
     /// The page meta model for defining the page meta tags using the meta tag helper.
@@ -12,10 +8,10 @@ namespace mezzanine.Models
         public PageMetaModel()
         {
             // Set the defaults
-            this.AddHtml5Defaults = true;
-            this.AppInfo = new mezzanine.Utility.AssemblyInfo();
-            this.RobotsFollow = true;
-            this.RobotsIndex = true;
+            AddHtml5Defaults = true;
+            AppInfo = new mezzanine.Utility.AssemblyInfo();
+            RobotsFollow = true;
+            RobotsIndex = true;
         }
     }
 }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using mezzanine.Extensions;
+using mezzanine.Utility;
 using Northwind.DAL.Models;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using mezzanine;
-using mezzanine.Utility;
-using mezzanine.Extensions;
-using System.Data.SqlClient;
 
 namespace Northwind.DAL
 {
@@ -33,7 +28,7 @@ namespace Northwind.DAL
                     DataTable table = client.GetDataTable(command, "TenMostExpensiveProducts");
                     result = client.DataTableToT<List<MostExpensiveProduct>>(table);
                 }
-            }                        
+            }
 
             return result;
         }
@@ -51,7 +46,7 @@ namespace Northwind.DAL
             using (DbCommand command = this.CreateCommand("exec [SalesByCategory] @categoryName, @ordYear"))
             {
                 command.Parameters.Add(this.CreateParameter("@categoryName", DbType.String, 15, categoryName));
-                command.Parameters.Add(this.CreateParameter("@ordYear", DbType.String, 4, ordYear.ToString()));                
+                command.Parameters.Add(this.CreateParameter("@ordYear", DbType.String, 4, ordYear.ToString()));
 
                 using (DbClient client = this.GetAdvancedClient())
                 {
@@ -79,7 +74,7 @@ namespace Northwind.DAL
                 command.Parameters.Add(this.CreateParameter("@endingDate", DbType.DateTime, endingDate.Date));
 
                 using (DbClient client = this.GetAdvancedClient())
-                {                    
+                {
                     DataTable table = client.GetDataTable(command, "SalesByYear");
                     result = client.DataTableToT<List<SalesByYear>>(table);
                 }

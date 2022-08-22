@@ -38,7 +38,7 @@ namespace Northwind.BLL
 
             // Application Data - this is a dependant of business logic so we start it here
             Northwind.DAL.Startup.ConfigureServices(appConfiguration, services);
-            
+
             // AspNetCore Identity
             Northwind.DAL.Startup.ConfigureIdentityServices(appConfiguration, services);
             services.AddSingleton<IdentityService, IdentityService>();
@@ -62,7 +62,7 @@ namespace Northwind.BLL
         {
             // Application Data
             Northwind.DAL.Startup.Configure(app);
-            
+
             // AspNetCore Identity
             Northwind.DAL.Startup.ConfigureIdentity(appConfiguration, app);
         }

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Northwind.ViewModels;
 using Northwind.BLL.Services;
 using Northwind.BLL.ViewModels;
 
@@ -18,7 +12,7 @@ namespace Northwind.Controllers
 
         public InventoryController(RetailInventoryService retailInventoryService)
         {
-            this.RetailInventoryService = retailInventoryService;
+            RetailInventoryService = retailInventoryService;
         }
 
         /// <summary>
@@ -40,10 +34,10 @@ namespace Northwind.Controllers
             int itemsPerPage = 4;
             CategoriesViewModel result = new CategoriesViewModel()
             {
-                Pagination = this.RetailInventoryService.CategoriesPages("Categories", itemsPerPage),                
-                Categories = this.RetailInventoryService.GetCategoriesPaged(itemsPerPage, page)                
+                Pagination = RetailInventoryService.CategoriesPages("Categories", itemsPerPage),
+                Categories = RetailInventoryService.GetCategoriesPaged(itemsPerPage, page)
             };
-        
+
             result.Pagination.CurrentPage = page;
 
             return View(result);
@@ -58,8 +52,8 @@ namespace Northwind.Controllers
         {
             ProductsViewModel result = new ProductsViewModel()
             {
-                Pagination = this.RetailInventoryService.ProductsPages("Products", itemsPerPage),
-                Products = this.RetailInventoryService.GetProductsPaged(itemsPerPage, page)
+                Pagination = RetailInventoryService.ProductsPages("Products", itemsPerPage),
+                Products = RetailInventoryService.GetProductsPaged(itemsPerPage, page)
             };
 
             result.Pagination.CurrentPage = page;
@@ -77,9 +71,9 @@ namespace Northwind.Controllers
         {
             CategoryViewModel result = new CategoryViewModel()
             {
-                Category = this.RetailInventoryService.GetCategory(categoryId),
-                Pagination = this.RetailInventoryService.CategoryProductsPages(categoryId, "Category/" + categoryId.ToString() + "/", itemsPerPage),
-                Products = this.RetailInventoryService.GetCategoryProductsPaged(categoryId, itemsPerPage, page)
+                Category = RetailInventoryService.GetCategory(categoryId),
+                Pagination = RetailInventoryService.CategoryProductsPages(categoryId, "Category/" + categoryId.ToString() + "/", itemsPerPage),
+                Products = RetailInventoryService.GetCategoryProductsPaged(categoryId, itemsPerPage, page)
             };
 
             result.Pagination.CurrentPage = page;
@@ -95,7 +89,7 @@ namespace Northwind.Controllers
         [Route("Inventory/Product/{productId}")]
         public IActionResult Product([FromRoute] int productId)
         {
-            return View(new ProductViewModel() { Product = this.RetailInventoryService.GetProduct(productId) });
+            return View(new ProductViewModel() { Product = RetailInventoryService.GetProduct(productId) });
         }
     }
 }

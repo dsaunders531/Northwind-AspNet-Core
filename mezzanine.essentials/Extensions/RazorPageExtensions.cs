@@ -18,14 +18,14 @@ namespace mezzanine.Extensions
         /// <returns></returns>
         public static string LoremIpsum(this RazorPage page, int minWords, int maxWords, int minSentences, int maxSentences, int numLines)
         {
-            var words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
+            string[] words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
 
-            var rand = new Random();
+            Random rand = new Random();
             int numSentences = rand.Next(maxSentences - minSentences)
                 + minSentences;
             int numWords = rand.Next(maxWords - minWords) + minWords;
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (int p = 0; p < numLines; p++)
             {
                 for (int s = 0; s < numSentences; s++)

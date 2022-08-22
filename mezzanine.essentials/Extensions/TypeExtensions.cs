@@ -27,7 +27,7 @@ namespace mezzanine.Extensions
                         {
                             result = js.Serialize(Activator.CreateInstance(type.GenericTypeArguments[0], true));
                             result = "[" + result + "]";
-                        }                        
+                        }
                     }
                     else
                     {
@@ -37,7 +37,7 @@ namespace mezzanine.Extensions
                 catch (Exception ex)
                 {
                     result = ex.Message;
-                }                
+                }
             }
 
             return result;
@@ -65,7 +65,7 @@ namespace mezzanine.Extensions
                 }
             }
 
-            return result.Replace(".",string.Empty);
+            return result.Replace(".", string.Empty);
         }
     }
 }

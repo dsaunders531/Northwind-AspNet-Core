@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
-using System.Runtime.Serialization;
 
 namespace mezzanine.Exceptions
 {
@@ -14,18 +13,18 @@ namespace mezzanine.Exceptions
 
         public ModelStateException(string message, ModelStateDictionary modelState) : base(message)
         {
-            this.Configure(modelState);
+            Configure(modelState);
         }
 
         public ModelStateException(string message, ModelStateDictionary modelState, Exception innerException) : base(message, innerException)
         {
-            this.Configure(modelState);
+            Configure(modelState);
         }
 
         private void Configure(ModelStateDictionary modelState)
         {
-            this.ErrorCount = modelState.ErrorCount;
-            this.ModelState = modelState;
+            ErrorCount = modelState.ErrorCount;
+            ModelState = modelState;
         }
     }
 }

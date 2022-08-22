@@ -8,7 +8,7 @@ namespace mezzanine.Extensions
     /// Extensions for Session.
     /// </summary>
     public static class SessionExtensions
-    {        
+    {
         /// <summary>
         /// Save an object in the session in Json Format.
         /// </summary>

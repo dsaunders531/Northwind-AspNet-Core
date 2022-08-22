@@ -8,7 +8,7 @@ namespace mezzanine
     /// <summary>
     /// Interface for a database client
     /// </summary>
-    public interface IDbClient: IDisposable
+    public interface IDbClient : IDisposable
     {
         T Fill<T>(DbCommand command);
         T Fill<T>(string strSql);

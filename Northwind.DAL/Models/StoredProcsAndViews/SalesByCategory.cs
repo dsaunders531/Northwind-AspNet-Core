@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Northwind.DAL.Models
+﻿namespace Northwind.DAL.Models
 {
     /// <summary>
     /// Model for the SalesByCategory stored procedure.

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using mezzanine.Utility;
+﻿using mezzanine.Utility;
 
 namespace mezzanine.Extensions
 {

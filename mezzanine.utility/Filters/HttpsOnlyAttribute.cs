@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace mezzanine.Filters
 {
@@ -17,7 +15,7 @@ namespace mezzanine.Filters
             if (context.HttpContext.Request.IsHttps == false)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
-            }            
+            }
         }
     }
 }

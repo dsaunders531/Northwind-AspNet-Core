@@ -260,10 +260,10 @@ namespace mezzanine.Extensions
             {
                 result = xs.Deserialize<T>(value);
             }
-            
+
             return result;
-        }     
-        
+        }
+
         /// <summary>
         /// Convert a string to an array of bytes
         /// </summary>
@@ -377,7 +377,7 @@ namespace mezzanine.Extensions
                 else
                 {
                     value = string.Format("<{0}>{1}</{0}>", enclosingElementName, value);
-                }                
+                }
             }
 
             return value;

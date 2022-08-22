@@ -16,7 +16,7 @@ namespace Northwind.BLL.Services
     /// <summary>
     /// Use the mezzanine configuration service to provide a strongly typed configuration in the application.
     /// </summary>
-    public sealed class AppConfigurationService: mezzanine.Services.AppConfigurationService, IAppConfiguration 
+    public sealed class AppConfigurationService : mezzanine.Services.AppConfigurationService, IAppConfiguration
     {
         public AppConfigurationModel AppConfiguration { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Northwind.BLL.Services
         { }
 
         public override void LoadJsonConfig()
-        {           
+        {
             base.LoadJsonConfig();
             string configPath = base.ContentRootPath + base.ConfigFileName;
 
@@ -36,7 +36,7 @@ namespace Northwind.BLL.Services
 
             using (JSONSerialiser js = new JSONSerialiser())
             {
-                this.AppConfiguration = js.Deserialize<AppConfigurationModel>(new Uri(configPath));
+                AppConfiguration = js.Deserialize<AppConfigurationModel>(new Uri(configPath));
             }
         }
     }

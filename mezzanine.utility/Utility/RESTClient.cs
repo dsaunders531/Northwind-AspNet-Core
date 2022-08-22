@@ -14,7 +14,7 @@ namespace mezzanine.Utility
 
         public RESTClient(string baseUrl)
         {
-            this.RestClient = new RestClient(baseUrl);                   
+            RestClient = new RestClient(baseUrl);
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace mezzanine.Utility
         /// <param name="jsonBody">An object which will be put in the body in json format.</param>
         /// <param name="jsonBodyPartial">A string representing a partial json object.</param>
         /// <returns>A RestResult object</returns>
-        public RestResult<OutputT> Execute<OutputT>(string resourceUrl, 
-                            Method method, 
-                            List<KeyValuePair<string, string>> queryParameters = null, 
+        public RestResult<OutputT> Execute<OutputT>(string resourceUrl,
+                            Method method,
+                            List<KeyValuePair<string, string>> queryParameters = null,
                             List<KeyValuePair<string, string>> routeParameters = null,
                             List<KeyValuePair<string, string>> headerParameters = null,
                             List<KeyValuePair<string, string>> cookies = null,
@@ -42,7 +42,7 @@ namespace mezzanine.Utility
 
             try
             {
-                RestResult initialResult = this.Execute(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
+                RestResult initialResult = Execute(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
 
                 using (Transposition transposition = new Transposition())
                 {
@@ -51,15 +51,15 @@ namespace mezzanine.Utility
                     {
                         result.Result = serializer.Deserialize<OutputT>(initialResult.Content);
                     }
-                }                
+                }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 result.Success = false;
                 result.Exception = e;
                 result.Message = e.Message;
             }
-            
+
             return result;
         }
 
@@ -73,10 +73,10 @@ namespace mezzanine.Utility
                             string jsonBodyPartial = "")
         {
             RestResult result = new RestResult();
-            
+
             try
             {
-                RestRequest request = this.CreateRequest(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
+                RestRequest request = CreateRequest(resourceUrl, method, queryParameters, routeParameters, headerParameters, cookies, jsonBody, jsonBodyPartial);
 
                 IRestResponse response = RestClient.Execute(request);
 
@@ -101,22 +101,22 @@ namespace mezzanine.Utility
                             List<KeyValuePair<string, string>> routeParameters,
                             List<KeyValuePair<string, string>> headerParameters,
                             List<KeyValuePair<string, string>> cookies,
-                            object jsonBody, 
+                            object jsonBody,
                             string jsonBodyPartial)
         {
             RestRequest request = new RestRequest(resourceUrl, method) { RequestFormat = DataFormat.Json };
 
             // add cookie values
-            request = this.AddCookies(request, cookies);
+            request = AddCookies(request, cookies);
 
             // add query parameters
-            request = this.AddQueryParameters(request, queryParameters);
+            request = AddQueryParameters(request, queryParameters);
 
             // add route parameters
-            request = this.AddRouteParameters(request, routeParameters);
+            request = AddRouteParameters(request, routeParameters);
 
             // add header parameters
-            request = this.AddHeaderParameters(request, headerParameters);
+            request = AddHeaderParameters(request, headerParameters);
 
             // add json body
             if (jsonBody != null)
@@ -200,7 +200,7 @@ namespace mezzanine.Utility
 
         public void Dispose()
         {
-            this.RestClient = null;
+            RestClient = null;
         }
     }
 }

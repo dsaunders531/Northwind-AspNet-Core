@@ -63,22 +63,22 @@ namespace mezzanine.Utility
                 versionAttr = a.GetCustomAttribute<AssemblyVersionAttribute>() ?? new AssemblyVersionAttribute("0.0.0.0");
                 companyAttr = a.GetCustomAttribute<AssemblyCompanyAttribute>() ?? new AssemblyCompanyAttribute("No company specified");
 
-                this._title = titleAttr.Title;
-                this._description = descAttr.Description;
-                this._copywrite = copyAttr.Copyright;
-                this._product = prodAttr.Product;
-                this._trademark = tradeAttr.Trademark;
-                this._culture = cultureAttr.Culture;
-                this._appCultureInfo = new CultureInfo(this._culture);
-                this._version = versionAttr.Version;
-                this._AppVersion = new Version(this._version);
-                this._company = companyAttr.Company; 
+                _title = titleAttr.Title;
+                _description = descAttr.Description;
+                _copywrite = copyAttr.Copyright;
+                _product = prodAttr.Product;
+                _trademark = tradeAttr.Trademark;
+                _culture = cultureAttr.Culture;
+                _appCultureInfo = new CultureInfo(_culture);
+                _version = versionAttr.Version;
+                _AppVersion = new Version(_version);
+                _company = companyAttr.Company;
             }
             catch (Exception ex)
             {
                 // Oh dear ...
-                this._title = "An error happened trying to get the application information.";
-                this._description = string.Format("{0}. {1}", ex.GetType().ToString(), ex.Message);
+                _title = "An error happened trying to get the application information.";
+                _description = string.Format("{0}. {1}", ex.GetType().ToString(), ex.Message);
             }
             finally
             {
@@ -99,7 +99,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._appCultureInfo;
+                return _appCultureInfo;
             }
         }
 
@@ -107,7 +107,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._title;
+                return _title;
             }
         }
 
@@ -115,7 +115,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._description;
+                return _description;
             }
         }
 
@@ -123,7 +123,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._product;
+                return _product;
             }
         }
 
@@ -131,7 +131,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._copywrite;
+                return _copywrite;
             }
         }
 
@@ -139,7 +139,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._trademark;
+                return _trademark;
             }
         }
 
@@ -147,7 +147,7 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._AppVersion;
+                return _AppVersion;
             }
         }
 
@@ -155,8 +155,8 @@ namespace mezzanine.Utility
         {
             get
             {
-                return this._company;
+                return _company;
             }
         }
     }
- }
+}

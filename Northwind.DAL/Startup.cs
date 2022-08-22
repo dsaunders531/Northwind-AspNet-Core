@@ -30,7 +30,7 @@ namespace Northwind.DAL
 
                 optionsBuilder = null;
 
-                return result;              
+                return result;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Northwind.DAL
             // Create and update the database automatically (like doing Update-Database)
             // https://stackoverflow.com/questions/42355481/auto-create-database-in-entity-framework-core
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {                
+            {
                 NorthwindContext applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<NorthwindContext>();
                 applicationDbContext.Database.Migrate();
             }

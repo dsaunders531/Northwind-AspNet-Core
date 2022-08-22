@@ -13,13 +13,13 @@ namespace Northwind.DAL.Repositories
         // Override the context so the DbSet tables are visible.
         private new NorthwindContext Context { get; set; }
 
-        public RegionRepository(NorthwindContext context) : base(context) { this.Context = context; }
+        public RegionRepository(NorthwindContext context) : base(context) { Context = context; }
 
         public override IQueryable<Region> FetchAll
         {
             get
             {
-                return this.Context.Region
+                return Context.Region
                         .Include(t => t.Territories)
                             .ThenInclude(e => e.EmployeeTerritories)
                                 .ThenInclude(m => m.Employee);
@@ -28,26 +28,26 @@ namespace Northwind.DAL.Repositories
 
         public override void Create(Region item)
         {
-            this.Context.Add(item);
+            Context.Add(item);
         }
 
         public override void Update(Region item)
         {
-            this.Context.AttachRange(item.Territories);
-            this.Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories));
-            this.Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories.Select(a => a.Employee)));
+            Context.AttachRange(item.Territories);
+            Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories));
+            Context.AttachRange(item.Territories.Select(e => e.EmployeeTerritories.Select(a => a.Employee)));
 
-            this.Context.Update(item);
+            Context.Update(item);
         }
 
         public override void Delete(Region item)
         {
-            this.Context.Remove(item);
+            Context.Remove(item);
         }
 
         public override Region Fetch(int id)
         {
-            return (from Region r in this.FetchAll where r.RegionId == id select r).FirstOrDefault();
+            return (from Region r in FetchAll where r.RegionId == id select r).FirstOrDefault();
         }
     }
 }

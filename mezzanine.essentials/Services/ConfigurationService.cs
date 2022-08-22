@@ -21,7 +21,7 @@ namespace mezzanine.Services
     /// The configuration service from which you can expose the application configuration to 
     /// different areas of your application by injection.
     /// </summary>
-    public class AppConfigurationService: IAppConfigurationService
+    public class AppConfigurationService : IAppConfigurationService
     {
         protected string ConfigFileName { get; set; } = "appsettings.json";
         protected IHostingEnvironment Env { get; private set; } = null;
@@ -30,13 +30,13 @@ namespace mezzanine.Services
 
         public AppConfigurationService(IHostingEnvironment env, string JSONConfigName)
         {
-            this.ConfigFileName = JSONConfigName;
-            this.Load(env);
+            ConfigFileName = JSONConfigName;
+            Load(env);
         }
 
         public AppConfigurationService(IHostingEnvironment env)
         {
-            this.Load(env);
+            Load(env);
         }
 
         private void Load(IHostingEnvironment env)
@@ -45,40 +45,40 @@ namespace mezzanine.Services
             // Note the configuration does not reload on change.
             // You will need to restart the app to get any config changes.
             // Its safer this way.
-            this.Env = env;
-            
-            this.Configuration = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile(this.ConfigFileName, false, false)
-                .Build();            
+            Env = env;
 
-            this.WebRootFileProvider = env.WebRootFileProvider;
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile(ConfigFileName, false, false)
+                .Build();
+
+            WebRootFileProvider = env.WebRootFileProvider;
 
             if (env.WebRootPath.EndsWith(Path.DirectorySeparatorChar) == false)
             {
-                this.WebRootPath = env.WebRootPath + Path.DirectorySeparatorChar;
+                WebRootPath = env.WebRootPath + Path.DirectorySeparatorChar;
             }
             else
             {
-                this.WebRootPath = env.WebRootPath;
+                WebRootPath = env.WebRootPath;
             }
 
-            this.ContentRootFileProvider = env.ContentRootFileProvider;
+            ContentRootFileProvider = env.ContentRootFileProvider;
 
             if (env.ContentRootPath.EndsWith(Path.DirectorySeparatorChar) == false)
             {
-                this.ContentRootPath = env.ContentRootPath + Path.DirectorySeparatorChar;
+                ContentRootPath = env.ContentRootPath + Path.DirectorySeparatorChar;
             }
             else
             {
-                this.ContentRootPath = env.ContentRootPath;
+                ContentRootPath = env.ContentRootPath;
             }
- 
-            this.IsDevelopment = env.IsDevelopment();
-            this.IsProduction = env.IsProduction();
-            this.IsStaging = env.IsStaging();
 
-            this.LoadJsonConfig();
+            IsDevelopment = env.IsDevelopment();
+            IsProduction = env.IsProduction();
+            IsStaging = env.IsStaging();
+
+            LoadJsonConfig();
         }
 
         /// <summary>

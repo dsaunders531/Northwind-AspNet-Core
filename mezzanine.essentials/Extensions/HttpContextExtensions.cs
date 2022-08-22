@@ -40,8 +40,8 @@ namespace mezzanine.Extensions
             IRequestCookieCollection cookies = me.Request?.Cookies;
 
             if (cookies != null)
-            {                
-                cookies.TryGetValue(key, out result);                
+            {
+                cookies.TryGetValue(key, out result);
             }
 
             return result;
@@ -60,7 +60,7 @@ namespace mezzanine.Extensions
             IRequestCookieCollection cookies = me.Request?.Cookies;
 
             if (cookies.TryGetValue(key, out string temp) == true)
-            {                
+            {
                 me.DeleteCookie(key);
             }
 

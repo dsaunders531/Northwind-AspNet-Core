@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Northwind.BLL.Services;
-using Northwind.BLL.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Northwind.Areas.api.Filters;
+using Northwind.BLL.Models;
+using Northwind.BLL.Services;
+using System.Collections.Generic;
 
 namespace Northwind.Areas.api.Controllers
 {
@@ -20,21 +16,21 @@ namespace Northwind.Areas.api.Controllers
 
         public InventoryController(RetailInventoryService retailInventory)
         {
-            this.RetailInventory = retailInventory;
+            RetailInventory = retailInventory;
         }
 
         [HttpGet("[action]")]
         [Produces("application/json")]
         public ActionResult<List<CategoryRowApiO>> Categories()
         {
-            return this.RetailInventory.GetAllCategories();
+            return RetailInventory.GetAllCategories();
         }
 
         [HttpGet("[action]")]
         [Produces("application/json")]
         public ActionResult<List<ProductApiO>> Products()
         {
-            return this.RetailInventory.GetAllProducts();
+            return RetailInventory.GetAllProducts();
         }
     }
 }

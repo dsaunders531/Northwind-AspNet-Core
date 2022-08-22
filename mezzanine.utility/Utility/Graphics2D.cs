@@ -12,7 +12,7 @@ namespace mezzanine.Utility
         landscape = 1,
         square = 2
     }
-   
+
     /// <summary>
     /// Class to create an Image from an existing Image with a specific size.
     /// The output image is the specified size centered in both axis relative to its original size.
@@ -38,7 +38,7 @@ namespace mezzanine.Utility
             Size scaleSize;
             Boolean scaleToMatchOutputHeight = false;
 
-            this.ValidateParameters(inputImage,  outputSize);
+            ValidateParameters(inputImage, outputSize);
 
             if (inputImage.Size == outputSize)
             {
@@ -48,10 +48,10 @@ namespace mezzanine.Utility
             else
             {
                 // Scale and crop the image
-                inputOrientation = this.ImageOrientation(inputImage.Size);
-                outputOrientation = this.ImageOrientation(outputSize);
-                inputWHrelation = this.WidthHeightRelation(inputImage.Size);
-                outputWHrelation = this.WidthHeightRelation(outputSize);
+                inputOrientation = ImageOrientation(inputImage.Size);
+                outputOrientation = ImageOrientation(outputSize);
+                inputWHrelation = WidthHeightRelation(inputImage.Size);
+                outputWHrelation = WidthHeightRelation(outputSize);
 
                 if (inputOrientation == Utility.ImageOrientation.square && outputOrientation == Utility.ImageOrientation.square)
                 {
@@ -72,7 +72,7 @@ namespace mezzanine.Utility
                     if (scaleToMatchOutputHeight == true)
                     {
                         // the hieght of the input image needs to match the output height
-                        scaleFactor = (Single)((Single)outputSize.Height / (Single)inputImage.Size.Height);
+                        scaleFactor = (Single)(outputSize.Height / (Single)inputImage.Size.Height);
 
                         // Create the scale size - this way maintains the width height relation with more precision.
                         scaleSize = new Size((int)(inputImage.Size.Width * scaleFactor), 0);
@@ -81,7 +81,7 @@ namespace mezzanine.Utility
                     else
                     {
                         // the width of the input image needs to match the output width
-                        scaleFactor = (Single)((Single)outputSize.Width / (Single)inputImage.Size.Width);
+                        scaleFactor = (Single)(outputSize.Width / (Single)inputImage.Size.Width);
 
                         scaleSize = new Size(0, (int)(inputImage.Size.Height * scaleFactor));
                         scaleSize.Width = outputSize.Width; //(int)((Single)scaleSize.Height * inputWHrelation);
@@ -104,7 +104,7 @@ namespace mezzanine.Utility
 
         public Image Scale(ref Image inputImage, int outputWidth, int outputHeight)
         {
-            return this.Scale(ref inputImage, new Size(outputWidth, outputHeight));
+            return Scale(ref inputImage, new Size(outputWidth, outputHeight));
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace mezzanine.Utility
             Image returnImg = null;
             Graphics DrawingSurface = null;
 
-            this.ValidateParameters(inputImage, outputSize);
+            ValidateParameters(inputImage, outputSize);
 
             if (outputSize.Width > inputImage.Width || outputSize.Height > inputImage.Height)
             {
@@ -131,12 +131,12 @@ namespace mezzanine.Utility
             // Get the crop points
             if (inputImage.Size.Height > outputSize.Height)
             {
-                ptCrop.Y = (int)(((inputImage.Size.Height - outputSize.Height) / 2)) * -1;
+                ptCrop.Y = ((inputImage.Size.Height - outputSize.Height) / 2) * -1;
             }
 
             if (inputImage.Size.Width > outputSize.Width)
             {
-                ptCrop.X = (int)(((inputImage.Size.Width - outputSize.Width) / 2)) * -1;
+                ptCrop.X = ((inputImage.Size.Width - outputSize.Width) / 2) * -1;
             }
 
             // Now create the output image.
@@ -156,18 +156,18 @@ namespace mezzanine.Utility
 
         public Image Crop(ref Image inputImage, int outputWidth, int outputHeight)
         {
-            return this.Crop(ref inputImage, new Size(outputWidth, outputHeight));
+            return Crop(ref inputImage, new Size(outputWidth, outputHeight));
         }
 
         public Image ScaleAndCrop(ref Image inputImage, Size outputSize)
         {
             Image intermediateImg = Scale(ref inputImage, outputSize);
-            return this.Crop(ref intermediateImg, outputSize);
+            return Crop(ref intermediateImg, outputSize);
         }
 
         public Image ScaleAndCrop(ref Image inputImage, int outputWidth, int outputHeight)
         {
-            return this.ScaleAndCrop(ref inputImage, new Size(outputWidth, outputHeight));
+            return ScaleAndCrop(ref inputImage, new Size(outputWidth, outputHeight));
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace mezzanine.Utility
             {
                 retVal = Utility.ImageOrientation.portrait;
             }
-            else if(imageSize.Height == imageSize.Width)
+            else if (imageSize.Height == imageSize.Width)
             {
                 retVal = Utility.ImageOrientation.square;
             }
@@ -214,7 +214,7 @@ namespace mezzanine.Utility
 
         public ImageOrientation ImageOrientation(int imageWidth, int imageHeight)
         {
-            return this.ImageOrientation(new Size(imageWidth, imageHeight));
+            return ImageOrientation(new Size(imageWidth, imageHeight));
         }
 
         /// <summary>
@@ -224,12 +224,12 @@ namespace mezzanine.Utility
         /// <returns></returns>
         public Single WidthHeightRelation(Size value)
         {
-            return (Single)((Single)value.Width / (Single)value.Height);
+            return (Single)(value.Width / (Single)value.Height);
         }
 
         public Single WidthHeightRelation(int imageWidth, int imageHeight)
         {
-            return this.WidthHeightRelation(new Size(imageWidth, imageHeight));
+            return WidthHeightRelation(new Size(imageWidth, imageHeight));
         }
     }
 }

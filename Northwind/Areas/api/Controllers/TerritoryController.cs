@@ -56,7 +56,7 @@ namespace Northwind.Areas.api.Controllers
         [Consumes("application/json")]
         public ActionResult<TerritoryRowApiO> Put([FromBody] TerritoryRowApiO apiRowModel)
         {
-            return base.BasePut(apiRowModel, t => t.RegionId == apiRowModel.RegionId 
+            return base.BasePut(apiRowModel, t => t.RegionId == apiRowModel.RegionId
                                             && t.TerritoryDescription == apiRowModel.TerritoryDescription);
         }
     }

@@ -79,9 +79,9 @@ namespace Northwind.DAL
                     foreach (string item in adminUser.Roles)
                     {
                         await userManager.AddToRoleAsync(newUser, item);
-                    }                    
+                    }
                 }
             }
         }
-    }   
+    }
 }

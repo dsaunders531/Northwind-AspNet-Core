@@ -12,11 +12,11 @@ namespace Northwind.Areas.api.Controllers
     [Area("api")]
     [Route("api/[controller]")]
     [ApiAuthorize(Roles = "Api")]
-    public class ProductController : GenericApiController<Product, ProductRowApiO, int>, 
-                                        IApiGetable<ProductRowApiO>, 
-                                        IApiPostable<ProductRowApiO, int>, 
+    public class ProductController : GenericApiController<Product, ProductRowApiO, int>,
+                                        IApiGetable<ProductRowApiO>,
+                                        IApiPostable<ProductRowApiO, int>,
                                         IApiPutable<ProductRowApiO>,
-                                        IApiPatchable<ProductRowApiO>, 
+                                        IApiPatchable<ProductRowApiO>,
                                         IApiDeleteable<int>
     {
         public ProductController(IGenericWorker<Product, ProductRowApiO, int> workerService) : base(workerService)
@@ -54,7 +54,7 @@ namespace Northwind.Areas.api.Controllers
 
         [HttpPut()]
         [ProducesResponseType(201)] // 201 = Created
-        [Consumes("application/json")]        
+        [Consumes("application/json")]
         public ActionResult<ProductRowApiO> Put([FromBody] ProductRowApiO apiRowModel)
         {
             return base.BasePut(apiRowModel, p => p.SupplierId == apiRowModel.SupplierId
