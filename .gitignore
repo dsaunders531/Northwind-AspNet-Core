@@ -28,3 +28,6 @@
 /Northwind.Tests/bin/Debug/netcoreapp3.1
 /tools.essentials/bin/Debug/netcoreapp3.1
 /tools.utility/bin/Debug/netcoreapp3.1
+/Northwind.React.UI/app.db
+/Northwind.React.UI/app.db-shm
+/Northwind.React.UI/app.db-wal

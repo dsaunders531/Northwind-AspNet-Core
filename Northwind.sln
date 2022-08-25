@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32630.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.DAL", "Northwind.DAL\Northwind.DAL.csproj", "{E40F375F-31A4-4074-B1D7-1FCC40B0865B}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tools.essentials", "tools.essentials\tools.essentials.csproj", "{11C73342-205E-49BC-BF65-B5E7D01731D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tools.utility", "tools.utility\tools.utility.csproj", "{30EAE71F-1329-438E-878E-3671F702DB47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.React.UI", "Northwind.React.UI\Northwind.React.UI.csproj", "{D14D8603-772A-4B0C-8934-B83C0BC735FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{30EAE71F-1329-438E-878E-3671F702DB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30EAE71F-1329-438E-878E-3671F702DB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30EAE71F-1329-438E-878E-3671F702DB47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D14D8603-772A-4B0C-8934-B83C0BC735FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D14D8603-772A-4B0C-8934-B83C0BC735FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D14D8603-772A-4B0C-8934-B83C0BC735FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D14D8603-772A-4B0C-8934-B83C0BC735FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
