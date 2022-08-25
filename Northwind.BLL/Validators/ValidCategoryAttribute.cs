@@ -1,11 +1,11 @@
-﻿using tools.EF;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Northwind.DAL;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using tools.EF;
 
 namespace Northwind.BLL.Validators
 {

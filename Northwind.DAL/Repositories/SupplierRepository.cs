@@ -1,7 +1,7 @@
-﻿using tools.EF;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Northwind.DAL.Models;
 using System.Linq;
+using tools.EF;
 
 namespace Northwind.DAL.Repositories
 {

@@ -1,7 +1,7 @@
-﻿using tools.Models;
-using RestSharp;
+﻿using RestSharp;
 using System;
 using System.Collections.Generic;
+using tools.Models;
 
 namespace tools.Utility
 {

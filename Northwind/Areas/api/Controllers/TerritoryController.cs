@@ -1,10 +1,10 @@
-﻿using tools.MVC;
-using tools.WorkerPattern;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Northwind.Areas.api.Filters;
 using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System.Collections.Generic;
+using tools.MVC;
+using tools.WorkerPattern;
 
 namespace Northwind.Areas.api.Controllers
 {

@@ -1,6 +1,6 @@
-﻿using tools.Utility;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
+using tools.Utility;
 
 namespace tools.Extensions
 {

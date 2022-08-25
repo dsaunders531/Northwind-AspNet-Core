@@ -1,7 +1,7 @@
-﻿using tools.Extensions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using tools.Extensions;
 
 namespace tools.Utility
 {

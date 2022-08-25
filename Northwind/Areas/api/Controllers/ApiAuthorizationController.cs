@@ -1,5 +1,4 @@
-﻿using tools.EF;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Northwind.Areas.api.Filters;
@@ -9,6 +8,7 @@ using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using tools.EF;
 
 namespace Northwind.Areas.api.Controllers
 {

@@ -1,8 +1,8 @@
-﻿using tools.Utility;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
 using System.Data.Common;
+using tools.Utility;
 
 namespace tools.Extensions
 {

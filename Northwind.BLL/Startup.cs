@@ -1,12 +1,12 @@
-﻿using tools.Services;
-using tools.WorkerPattern;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.BLL.Models;
 using Northwind.BLL.Services;
 using Northwind.BLL.Workers;
 using Northwind.DAL.Models;
+using tools.Services;
+using tools.WorkerPattern;
 
 namespace Northwind.BLL
 {

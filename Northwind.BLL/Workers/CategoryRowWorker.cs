@@ -1,12 +1,12 @@
-﻿using tools.EF;
-using tools.Exceptions;
-using tools.Utility;
-using tools.WorkerPattern;
-using Northwind.BLL.Models;
+﻿using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using tools.EF;
+using tools.Exceptions;
+using tools.Utility;
+using tools.WorkerPattern;
 
 namespace Northwind.BLL.Workers
 {

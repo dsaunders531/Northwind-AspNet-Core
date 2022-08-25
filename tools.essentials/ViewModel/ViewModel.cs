@@ -1,5 +1,5 @@
-﻿using tools.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using tools.Models;
 
 namespace tools.ViewModels
 {

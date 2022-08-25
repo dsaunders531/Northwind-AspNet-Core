@@ -1,7 +1,4 @@
-﻿using tools.Exceptions;
-using tools.Extensions;
-using tools.Utility;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Areas.api.Filters;
 using Northwind.BLL.Models;
@@ -9,6 +6,9 @@ using Northwind.BLL.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using tools.Exceptions;
+using tools.Extensions;
+using tools.Utility;
 
 namespace Northwind.Areas.api.Controllers
 {

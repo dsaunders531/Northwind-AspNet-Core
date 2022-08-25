@@ -1,6 +1,6 @@
-﻿using tools.EF;
-using Northwind.BLL.Workers;
+﻿using Northwind.BLL.Workers;
 using Northwind.DAL.Models;
+using tools.EF;
 
 namespace Northwind.BLL.Services
 {

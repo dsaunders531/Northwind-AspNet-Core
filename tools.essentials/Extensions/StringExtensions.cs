@@ -1,9 +1,9 @@
-﻿using tools.Utility;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using tools.Utility;
 
 namespace tools.Extensions
 {

@@ -1,5 +1,5 @@
-﻿using tools.ViewModels;
-using Northwind.BLL.Models;
+﻿using Northwind.BLL.Models;
+using tools.ViewModels;
 
 namespace Northwind.BLL.ViewModels
 {

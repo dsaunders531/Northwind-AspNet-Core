@@ -1,10 +1,10 @@
-﻿using tools.Extensions;
-using tools.Utility;
-using Northwind.DAL.Models;
+﻿using Northwind.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using tools.Extensions;
+using tools.Utility;
 
 namespace Northwind.DAL
 {

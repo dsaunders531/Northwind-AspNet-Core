@@ -39,7 +39,10 @@ namespace tools.Extensions
                     }
                     sb.Append(". ");
                 }
-                if (p < numLines - 1) sb.AppendLine();
+                if (p < numLines - 1)
+                {
+                    sb.AppendLine();
+                }
             }
             return sb.ToString();
         }

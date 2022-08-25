@@ -1,9 +1,9 @@
-﻿using tools.Models;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using tools.Models;
 
 namespace tools.Utility
 {

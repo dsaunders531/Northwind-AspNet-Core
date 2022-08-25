@@ -1,7 +1,7 @@
-﻿using tools.Utility;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Northwind.DAL.Models;
 using System;
+using tools.Utility;
 
 namespace Northwind.BLL.Services
 {

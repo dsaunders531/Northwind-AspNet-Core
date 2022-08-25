@@ -1,9 +1,9 @@
-﻿using tools.EF;
-using tools.WorkerPattern;
-using Northwind.BLL.Models;
+﻿using Northwind.BLL.Models;
 using Northwind.DAL.Models;
 using System;
 using System.Collections.Generic;
+using tools.EF;
+using tools.WorkerPattern;
 
 namespace Northwind.BLL.Workers
 {

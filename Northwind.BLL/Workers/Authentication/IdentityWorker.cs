@@ -1,5 +1,4 @@
-﻿using tools.Extensions;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Northwind.BLL.Services;
 using Northwind.BLL.ViewModels.Authentication;
 using Northwind.DAL.Models;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using tools.Extensions;
 
 namespace Northwind.BLL.Workers
 {

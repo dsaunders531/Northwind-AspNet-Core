@@ -1,12 +1,11 @@
-﻿using tools.EF;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using tools.EF;
 
 namespace Northwind.DAL
 {

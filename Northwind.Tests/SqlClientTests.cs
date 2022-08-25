@@ -1,6 +1,6 @@
-﻿using tools.Utility;
-using Northwind.BLL.Models;
+﻿using Northwind.BLL.Models;
 using System.Collections.Generic;
+using tools.Utility;
 using Xunit;
 
 namespace Northwind.Tests

@@ -1,8 +1,8 @@
-﻿using tools.Utility;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Northwind.DAL;
 using Northwind.DAL.Models;
 using System.Collections.Generic;
+using tools.Utility;
 using Xunit;
 
 namespace Northwind.Tests

@@ -1,9 +1,9 @@
-﻿using tools.EF;
-using tools.Exceptions;
-using tools.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using tools.EF;
+using tools.Exceptions;
+using tools.Utility;
 
 namespace tools.WorkerPattern
 {

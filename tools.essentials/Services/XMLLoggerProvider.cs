@@ -1,6 +1,6 @@
-﻿using tools.Utility;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
+using tools.Utility;
 
 namespace tools.Services
 {
