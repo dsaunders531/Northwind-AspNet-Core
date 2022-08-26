@@ -39,3 +39,5 @@
 /Northwind.Identity.UI/bin/Debug/net6.0
 /Northwind.Identity.UI/obj
 /tools.essentials/bin/Debug/net6.0
+/Northwind.Api.Tests/bin/Debug/net6.0
+/Northwind.Api.Tests/obj

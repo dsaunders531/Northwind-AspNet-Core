@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.React.UI", "North
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Identity.UI", "Northwind.Identity.UI\Northwind.Identity.UI.csproj", "{B7DE660D-EE77-4B5F-849B-5E2F2155CF42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Api.Tests", "Northwind.Api.Tests\Northwind.Api.Tests.csproj", "{A7F55C8A-4EAC-4238-9D27-921E81F53EC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B7DE660D-EE77-4B5F-849B-5E2F2155CF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7DE660D-EE77-4B5F-849B-5E2F2155CF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7DE660D-EE77-4B5F-849B-5E2F2155CF42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F55C8A-4EAC-4238-9D27-921E81F53EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F55C8A-4EAC-4238-9D27-921E81F53EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F55C8A-4EAC-4238-9D27-921E81F53EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F55C8A-4EAC-4238-9D27-921E81F53EC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

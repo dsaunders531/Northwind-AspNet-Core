@@ -39,6 +39,9 @@ app.UseRouting();
 // TODO - the startup seed data does not work?!
 // The old logins work with the previous database. Maybe some keys need to be copied.
 // In worst case - use an api to do things with identity. Implement here as client.
+// Is there an identity server step which needs to be carried out?
+// Also add the protectpersonaldata option.
+
 Startup.ConfigureIdentity(appConfig.AppConfiguration, app, true);
 Startup.ConfigureSpaIdentity(app);
 
