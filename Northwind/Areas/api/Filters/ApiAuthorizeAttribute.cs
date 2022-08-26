@@ -8,6 +8,7 @@ using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using tools.Extensions;
 
 namespace Northwind.Areas.api.Filters
@@ -25,18 +26,20 @@ namespace Northwind.Areas.api.Filters
 
         private bool IsAllowAnonymous(IList<IFilterMetadata> actionFilters)
         {
-            bool result = false;
+            return actionFilters.Select(s => s.GetType()).Contains(typeof(AllowAnonymousFilter));
 
-            foreach (IFilterMetadata item in actionFilters)
-            {
-                result = item.GetType() == typeof(AllowAnonymousFilter);
-                if (result == true)
-                {
-                    break;
-                }
-            }
+            //bool result = false;
 
-            return result;
+            //foreach (IFilterMetadata item in actionFilters)
+            //{
+            //    result = item.GetType() == typeof(AllowAnonymousFilter);
+            //    if (result == true)
+            //    {
+            //        break;
+            //    }
+            //}
+
+            //return result;
         }
 
         /// <summary>
@@ -94,9 +97,7 @@ namespace Northwind.Areas.api.Filters
                     {
                         filterContext.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
                     }
-                }
-
-                identityService = null;
+                }              
             }
         }
 

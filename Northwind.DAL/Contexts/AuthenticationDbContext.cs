@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Northwind.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +15,9 @@ namespace Northwind.DAL
     /// <summary>
     /// The authentication db context.
     /// </summary>
-    public class AuthenticationDbContext : IdentityDbContext<UserProfileModel>
+    public class AuthenticationDbContext : ApiAuthorizationDbContext<UserProfileModel>
     {
-        public AuthenticationDbContext(DbContextOptions options) : base(options) { }
+        public AuthenticationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +34,7 @@ namespace Northwind.DAL
         /// <returns></returns>
         public static async Task CreateDefaultRoles(IServiceProvider serviceProvider, AppConfigurationModel configurationModel)
         {
-            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>(); //serviceProvider.GetService<RoleManager<IdentityRole>>(); 
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             List<string> roles = configurationModel.SeedData.CreateDefaultRoles;
 
             foreach (string item in roles)
@@ -80,7 +82,9 @@ namespace Northwind.DAL
                         await userManager.AddToRoleAsync(newUser, item);
                     }
                 }
+                
+                await userManager.ConfirmEmailAsync(newUser, await userManager.GenerateEmailConfirmationTokenAsync(newUser));
             }
-        }
+        }        
     }
 }

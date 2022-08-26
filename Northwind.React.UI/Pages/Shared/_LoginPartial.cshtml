@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Northwind.React.UI.Models;
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@using Northwind.DAL.Models
+
+@inject SignInManager<UserProfileModel> SignInManager
+@inject UserManager<UserProfileModel> UserManager
 
 @{
     string? returnUrl = null;

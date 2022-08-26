@@ -13,13 +13,13 @@ namespace Northwind
 {
     public class Startup
     {
-        private IHostingEnvironment Environment { get; set; } = null;
+        private IWebHostEnvironment Environment { get; set; } = null;
         private Northwind.BLL.Services.AppConfigurationService ConfigurationService { get; set; }
         private AppConfigurationModel AppConfiguration { get => ConfigurationService.AppConfiguration; }
 
         public IConfiguration Configuration { get; private set; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
@@ -64,7 +64,7 @@ namespace Northwind
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             // Configure the custom logger.
             ConfigureLogger(loggerFactory);
@@ -72,7 +72,7 @@ namespace Northwind
             // Business Logic Configuration - this also configures database services & Identity services
             Northwind.BLL.Startup.Configure(AppConfiguration, app);
 
-            if (env.IsDevelopment())
+            if (this.ConfigurationService.IsDevelopment)
             {
                 //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();

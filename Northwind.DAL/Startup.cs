@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.DAL.Models;
 using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
 using tools.EF;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Northwind.DAL
 {
@@ -82,28 +84,66 @@ namespace Northwind.DAL
             SeedData.EnsurePopulated(app.ApplicationServices);
         }
 
-        public static void ConfigureIdentityServices(AppConfigurationModel appConfiguration, IServiceCollection services)
-        {
+        /// <summary>
+        /// Configure Identity Services
+        /// </summary>
+        /// <param name="appConfiguration">Where the connection string is.</param>
+        /// <param name="services">The service collection to put the identity services</param>
+        /// <param name="usingDefaultPages">If you are implementing your own (false default) or are using the ones in the rcl (true).</param>
+        public static void ConfigureIdentityServices(AppConfigurationModel appConfiguration, IServiceCollection services, bool usingDefaultPages = false)
+        {            
             services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(appConfiguration.ConnectionStrings.Authentication)); // The user database
-
+            
             services.AddSingleton<IRepository<ApiSessionModel, string>, ApiLoginRepository>(); // The api logins repository
 
-            // Setup the password validation requirements eg: Password1!            
-            services.AddIdentity<UserProfileModel, IdentityRole>(
-                    opts =>
-                    {
-                        opts.User.RequireUniqueEmail = true;
+            // TODO - add dataprotection option here and modify the authentication context.
+            System.Action<IdentityOptions> options = opts => {
+                opts.User.RequireUniqueEmail = true;
 
-                        opts.Password.RequiredLength = 9;
-                        opts.Password.RequireNonAlphanumeric = false;
-                        opts.Password.RequireLowercase = true;
-                        opts.Password.RequireUppercase = true;
-                        opts.Password.RequireDigit = true;
-                    }
-                ).AddEntityFrameworkStores<AuthenticationDbContext>(); // The model
+                opts.Password.RequiredLength = 9;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireDigit = true;
+
+                opts.SignIn.RequireConfirmedAccount = true;                
+            };
+
+            // Spa needs default identity for the routes etc.
+            if (usingDefaultPages)
+            {
+                services.AddDefaultIdentity<UserProfileModel>(options)                    
+                    .AddEntityFrameworkStores<AuthenticationDbContext>()
+                    .AddRoles<IdentityRole>()
+                    .AddRoleStore<RoleStore<IdentityRole, AuthenticationDbContext>>()
+                    .AddUserStore<UserStore<UserProfileModel, IdentityRole, AuthenticationDbContext>>()
+                    .AddRoleManager<RoleManager<IdentityRole>>()
+                    .AddUserManager<UserManager<UserProfileModel>>();                                                                               
+            }
+            else
+            {
+                // Setup the password validation requirements eg: Password1!            
+                services.AddIdentity<UserProfileModel, IdentityRole>(options)
+                    .AddEntityFrameworkStores<AuthenticationDbContext>();                       
+            }            
         }
 
-        public static void ConfigureIdentity(AppConfigurationModel appConfiguration, IApplicationBuilder app)
+        public static void ConfigureSpaIdentityServices(IServiceCollection services)
+        {
+            services.AddIdentityServer()
+                .AddApiAuthorization<UserProfileModel, AuthenticationDbContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+        }
+        /// <summary>
+        /// Configure Identity
+        /// </summary>
+        /// <param name="appConfiguration"></param>
+        /// <param name="app"></param>
+        /// <param name="createSeedUserAndRoles">Create the seed user and roles</param>
+        /// <param name="resetAdminPassword">Reset admin password to default</param>
+        public static void ConfigureIdentity(AppConfigurationModel appConfiguration, IApplicationBuilder app, bool createSeedUserAndRoles)
         {
             // Create and update the database automatically (like doing Update-Database)
             // https://stackoverflow.com/questions/42355481/auto-create-database-in-entity-framework-core
@@ -111,13 +151,22 @@ namespace Northwind.DAL
             {
                 AuthenticationDbContext authenticationDbContext = serviceScope.ServiceProvider.GetRequiredService<AuthenticationDbContext>();
                 authenticationDbContext.Database.Migrate();
+
+                // Seed data
+                if (createSeedUserAndRoles)
+                {
+                    AuthenticationDbContext.CreateDefaultRoles(serviceScope.ServiceProvider, appConfiguration).Wait();
+                    AuthenticationDbContext.CreateAdminAccount(serviceScope.ServiceProvider, appConfiguration).Wait();
+                }                
             }
-
-            // Seed data
-            AuthenticationDbContext.CreateDefaultRoles(app.ApplicationServices, appConfiguration).Wait();
-            AuthenticationDbContext.CreateAdminAccount(app.ApplicationServices, appConfiguration).Wait();
-
+                        
             app.UseAuthentication();
+        }
+
+        public static void ConfigureSpaIdentity(IApplicationBuilder app)
+        {
+            app.UseIdentityServer();
+            app.UseAuthorization();
         }
     }
 }

@@ -1,29 +1,25 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore;
-using Northwind.React.UI.Data;
-using Northwind.React.UI.Models;
+using Northwind.BLL.Services;
+using Northwind.DAL;
 
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+AppConfigurationService appConfig = AppConfigurationServiceSingleton.Create(builder.Environment);
 
-builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+Startup.ConfigureIdentityServices(appConfig.AppConfiguration, builder.Services, usingDefaultPages: true);
+Startup.ConfigureSpaIdentityServices(builder.Services);
 
-builder.Services.AddAuthentication()
-    .AddIdentityServerJwt();
+if (appConfig.IsDevelopment)
+{
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+}
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
+// |-------- END OF SERVICE CONFIG --------|
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,9 +36,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseIdentityServer();
-app.UseAuthorization();
+// TODO - the startup seed data does not work?!
+// The old logins work with the previous database. Maybe some keys need to be copied.
+// In worst case - use an api to do things with identity. Implement here as client.
+Startup.ConfigureIdentity(appConfig.AppConfiguration, app, true);
+Startup.ConfigureSpaIdentity(app);
 
 app.MapControllerRoute(
     name: "default",

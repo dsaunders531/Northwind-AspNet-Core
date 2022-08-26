@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Duncan Saunders</Authors>
     <Company>Duncan Saunders</Company>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
@@ -145,6 +145,13 @@
     <None Include="wwwroot\lib\jquery-validation\1.17.0\dist\localization\methods_nl.min.js" />
     <None Include="wwwroot\lib\jquery-validation\1.17.0\dist\localization\methods_pt.js" />
     <None Include="wwwroot\lib\jquery-validation\1.17.0\dist\localization\methods_pt.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

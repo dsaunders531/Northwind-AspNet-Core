@@ -27,7 +27,7 @@ namespace Northwind.BLL
             }
         }
 
-        public static void ConfigureServices(AppConfigurationModel appConfiguration, IServiceCollection services, IHostingEnvironment environment)
+        public static void ConfigureServices(AppConfigurationModel appConfiguration, IServiceCollection services, IWebHostEnvironment environment)
         {
             // Custom services
             // The configuration is split into 2 parts. 
@@ -64,7 +64,7 @@ namespace Northwind.BLL
             Northwind.DAL.Startup.Configure(app);
 
             // AspNetCore Identity
-            Northwind.DAL.Startup.ConfigureIdentity(appConfiguration, app);
+            Northwind.DAL.Startup.ConfigureIdentity(appConfiguration, app, true);
         }
     }
 }
