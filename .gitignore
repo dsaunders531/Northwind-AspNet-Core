@@ -31,3 +31,10 @@
 /Northwind.React.UI/app.db
 /Northwind.React.UI/app.db-shm
 /Northwind.React.UI/app.db-wal
+/Northwind/bin/Debug/net6.0
+/Northwind.BLL/bin/Debug/net6.0
+/Northwind.DAL/bin/Debug/net6.0
+/Northwind.Tests/bin/Debug/net6.0
+/tools.utility/bin/Debug/net6.0
+/Northwind.Identity.UI/bin/Debug/net6.0
+/Northwind.Identity.UI/obj
