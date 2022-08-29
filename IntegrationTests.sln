@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.IntegrationTests", "Northwind.IntegrationTests\Northwind.IntegrationTests.csproj", "{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mezzanine.utility", "mezzanine.utility\mezzanine.utility.csproj", "{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.BLL", "Northwind.BLL\Northwind.BLL.csproj", "{030DABE6-876D-4EA0-ABF2-4ACAD0712827}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Northwind.DAL", "Northwind.DAL\Northwind.DAL.csproj", "{51D45BB0-F5D0-418A-BA46-E9F0608ECA61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mezzanine.essentials", "mezzanine.essentials\mezzanine.essentials.csproj", "{4BAEC0E0-1489-4B69-9321-9E6998D96F34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tools.utility", "tools.utility\tools.utility.csproj", "{74DF0733-FDD6-4BC6-AB70-BAB3FAD20DBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tools.essentials", "tools.essentials\tools.essentials.csproj", "{F3150DDC-B356-4F77-BF3C-2B8AED78ABEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22ED6E6E-7AE2-4112-AE38-F19BB0D5DB1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{794D203F-8EF1-4330-AD7C-B53E00CDF6A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{030DABE6-876D-4EA0-ABF2-4ACAD0712827}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,10 +31,14 @@ Global
 		{51D45BB0-F5D0-418A-BA46-E9F0608ECA61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D45BB0-F5D0-418A-BA46-E9F0608ECA61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D45BB0-F5D0-418A-BA46-E9F0608ECA61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BAEC0E0-1489-4B69-9321-9E6998D96F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BAEC0E0-1489-4B69-9321-9E6998D96F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BAEC0E0-1489-4B69-9321-9E6998D96F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BAEC0E0-1489-4B69-9321-9E6998D96F34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DF0733-FDD6-4BC6-AB70-BAB3FAD20DBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DF0733-FDD6-4BC6-AB70-BAB3FAD20DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DF0733-FDD6-4BC6-AB70-BAB3FAD20DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DF0733-FDD6-4BC6-AB70-BAB3FAD20DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3150DDC-B356-4F77-BF3C-2B8AED78ABEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3150DDC-B356-4F77-BF3C-2B8AED78ABEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3150DDC-B356-4F77-BF3C-2B8AED78ABEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3150DDC-B356-4F77-BF3C-2B8AED78ABEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
