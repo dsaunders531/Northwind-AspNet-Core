@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\api\**" />
     <Compile Remove="TypeScripts\**" />
+    <Content Remove="Areas\api\**" />
     <Content Remove="TypeScripts\**" />
+    <EmbeddedResource Remove="Areas\api\**" />
     <EmbeddedResource Remove="TypeScripts\**" />
+    <None Remove="Areas\api\**" />
     <None Remove="TypeScripts\**" />
   </ItemGroup>
 
@@ -155,6 +159,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Api\Northwind.Api.csproj" />
     <ProjectReference Include="..\Northwind.BLL\Northwind.BLL.csproj" />
     <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
   </ItemGroup>
@@ -168,18 +173,6 @@
   -->
   
   <ItemGroup>
-    <Content Update="Areas\api\Views\Home\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\api\Views\Shared\_ApiDiscoveryLayout.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\api\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\api\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Areas\Auth\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -67,13 +67,13 @@ namespace Northwind.DAL
                 {
                     if (await roleManager.FindByNameAsync(item) == null)
                     {
-                        await roleManager.CreateAsync(new IdentityRole(item));
+                        await roleManager.CreateAsync(new IdentityRole(item));                        
                     }
                 }
 
                 UserProfileModel newUser = new UserProfileModel() { UserName = adminUser.Name, Email = adminUser.Email };
 
-                IdentityResult identityResult = await userManager.CreateAsync(newUser, adminUser.Password);
+                IdentityResult identityResult = await userManager.CreateAsync(newUser, adminUser.Password); 
 
                 if (identityResult.Succeeded == true)
                 {

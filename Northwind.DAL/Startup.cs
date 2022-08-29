@@ -8,6 +8,7 @@ using Northwind.DAL.Models.Authentication;
 using Northwind.DAL.Repositories;
 using tools.EF;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Northwind.DAL
 {
@@ -165,8 +166,8 @@ namespace Northwind.DAL
 
         public static void ConfigureSpaIdentity(IApplicationBuilder app)
         {
-            app.UseIdentityServer();
             app.UseAuthorization();
+            app.UseIdentityServer();            
         }
     }
 }

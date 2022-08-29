@@ -17,6 +17,8 @@ if (appConfig.IsDevelopment)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddMvc(o => o.EnableEndpointRouting = false);
+
 // |-------- END OF SERVICE CONFIG --------|
 
 WebApplication app = builder.Build();
@@ -45,9 +47,21 @@ app.UseRouting();
 Startup.ConfigureIdentity(appConfig.AppConfiguration, app, true);
 Startup.ConfigureSpaIdentity(app);
 
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
+            name: "areas",
+            template: "{area:exists}/{controller=Home}/{action=Index}");
+
+    routes.MapRoute(
+        name: "default",
+        template: "{controller=Home}/{action=Index}/{id?}");    
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.MapFallbackToFile("index.html"); ;

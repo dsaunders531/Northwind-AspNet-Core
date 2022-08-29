@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using tools.ViewModels;
 
-namespace Northwind.ViewModels
+namespace Northwind.DAL.Models.Framework
 {
     /// <summary>
     /// The error view model.

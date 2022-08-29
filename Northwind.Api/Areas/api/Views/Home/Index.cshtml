@@ -1,0 +1,234 @@
+﻿@model ApiControllersViewModel
+
+@*
+ List the discovery manager output.   
+*@
+
+@{
+    Model.PageMeta.PageTitle = "API";
+    Model.PageMeta.Description = "API";
+    Model.PageMeta.AddKeyword("Api");
+}
+
+@functions {
+    private string labelClass(ApiMethod apiMethod)
+    {
+        string result = "label-info";
+
+        switch (apiMethod)
+        {
+            case ApiMethod.GET:
+                result = "panel-info";
+                break;
+            case ApiMethod.POST:
+                result = "panel-default";
+                break;
+            case ApiMethod.PUT:
+                result = "panel-success";
+                break;
+            case ApiMethod.PATCH:
+                result = "panel-warning";
+                break;
+            case ApiMethod.DELETE:
+                result = "panel-danger";
+                break;
+            default:
+                result = "panel-default";
+                break;
+        }
+
+        return result;
+    }
+
+    private List<ApiActionParameterType> GetParameterGroups(List<ApiActionParameterModel> parameters)
+    {
+        List<ApiActionParameterType> result = new List<ApiActionParameterType>();
+
+        IEnumerable<IGrouping<ApiActionParameterType, ApiActionParameterModel>> linqGroup = from ApiActionParameterModel p in parameters.OrderBy(q => q.ParameterType)
+                                                                                            group p by p.ParameterType into groupedParameters
+                                                                                            orderby groupedParameters.Key
+                                                                                            select groupedParameters;
+
+        foreach (IGrouping<ApiActionParameterType, ApiActionParameterModel> item in linqGroup)
+        {
+            result.Add(item.Key);
+        }
+
+        return result;
+    }
+
+    private List<ApiActionParameterModel> GetParametersOfType(List<ApiActionParameterModel> fullListParameters, ApiActionParameterType actionParameterType)
+    {
+        return (from ApiActionParameterModel p in fullListParameters
+                where p.ParameterType == actionParameterType
+                select p).OrderBy(a => a.Name).ToList();
+
+    }
+
+    private string GetControllerId(ApiControllerModel controller)
+    {
+        return "controller_" + controller.Route.Replace("/", "_");
+
+    }
+
+    private string GetActionId(ApiControllerModel controller, ApiActionModel action)
+    {
+        return "action_" + controller.Route.Replace("/", "_") + "_" 
+                + action.Route.Replace("/", "_").Replace("{", string.Empty).Replace("}", string.Empty) 
+                + "_" + action.Method.ToString();
+
+    }
+}
+
+<h2>@Model.PageMeta.AppInfo.Product - Api</h2>
+<p>Details of the applications api endpoints are described below.</p>
+<p>You will need to <a asp-area="api" asp-controller="Home" asp-action="Authenticate">authenticate</a> to use the api.</p>
+<ul class="list-group">
+    @foreach (ApiControllerModel apiController in Model.Controllers)
+    {
+    <li id="@this.GetControllerId(apiController)" class="list-group-item well">
+        <span class="">
+            <a onclick="ApiDiscovery_ShowActions('@this.GetControllerId(apiController)')"><i class="fa fa-plus fa-lg"></i></a>
+            <a onclick="ApiDiscovery_HideActions('@this.GetControllerId(apiController)')"><i class="fa fa-minus fa-lg hidden"></i></a>
+        </span>
+        <strong style="font-size:x-large;"> /@apiController.Route</strong>
+
+        @foreach (ApiActionModel action in apiController.Actions)
+        {
+            <div id="@this.GetActionId(apiController, action)" class="panel @labelClass(action.Method) hidden">
+                <div class="panel-heading ">
+                    @if (string.IsNullOrEmpty(action.Route) == false)
+                    {
+                        @if (action.Route.Contains(apiController.Route))
+                        {
+                            <strong>/@action.Route</strong>
+                        }
+                        else
+                        {
+                            <strong>/@apiController.Route/@action.Route</strong>
+                        }
+                    }
+                    else
+                    {
+                        <strong>/@apiController.Route</strong>
+                    }
+                    <span class="pull-right">
+                        <span class="badge">@action.Method</span>
+                        <a onclick="ApiDiscovery_HideParameters('@this.GetActionId(apiController, action)')"><i class="fa fa-caret-up fa-lg hidden"></i></a>
+                        <a onclick="ApiDiscovery_ShowParameters('@this.GetActionId(apiController, action)')"><i class="fa fa-caret-down fa-lg"></i></a>
+                    </span>
+                </div>
+                <div class="panel-body hidden">
+                    @if (action.Parameters.Count > 0)
+                    {
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3>Parameters</h3>
+                            </div>
+                        </div>
+
+                        foreach (ApiActionParameterType groupItem in this.GetParameterGroups(action.Parameters))
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>@groupItem.ToString().ToTitleCase()</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>Value</h4>
+                                </div>
+                            </div>
+
+                            foreach (ApiActionParameterModel param in this.GetParametersOfType(action.Parameters, groupItem))
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @if (groupItem == ApiActionParameterType.jsonBody)
+                                        {
+                                            @param.Type.ToShortString()
+                                        }
+                                        else
+                                        {
+                                            @(param.Name + " (" + param.Type.ToShortString() + ")")
+                                        }
+
+                                        @if (param.IsNullable == true)
+                                        {
+                                            <span>[Optional]</span>
+                                        }
+                                    </div>
+
+                                    @if (groupItem == ApiActionParameterType.jsonBody)
+                                    {
+                                        @Html.Raw(param.DefaultValue.HTMLify("div", "col-sm-6 jsonExample"))
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-6">
+                                            @param.DefaultValue
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+
+                    <div class="Row">
+                        <div class="col-sm-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>Returns</h3>
+                            <p>Success response code is: <strong>@action.SucessResponseCode.ToStatusCodeMeaning()</strong></p>
+                        </div>
+                    </div>
+                    @if (action.ReturnBody != null)
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @action.ReturnType.ToShortString()
+                            </div>
+                            <div class="col-sm-6 jsonExample">
+                                @Html.Raw(action.ReturnBody.HTMLify())
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </li>
+    }
+</ul>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function ApiDiscovery_ShowActions(controllerId) {
+            $("#" + controllerId + " div").removeClass("hidden");
+            $("#" + controllerId + " .fa-plus").addClass("hidden");
+            $("#" + controllerId + " .fa-minus").removeClass("hidden");
+            $("#" + controllerId + " div .panel-body").addClass("hidden");
+        }
+
+        function ApiDiscovery_HideActions(controllerId) {
+            $("#" + controllerId + " div").addClass("hidden");
+            $("#" + controllerId + " .fa-plus").removeClass("hidden");
+            $("#" + controllerId + " .fa-minus").addClass("hidden");
+            $("#" + controllerId + " .fa-caret-down").removeClass("hidden");
+            $("#" + controllerId + " .fa-caret-up").addClass("hidden");
+        }
+
+        function ApiDiscovery_ShowParameters(actionId) {
+            $("#" + actionId + " .panel-body").removeClass("hidden");
+            $("#" + actionId + " .fa-caret-down").addClass("hidden");
+            $("#" + actionId + " .fa-caret-up").removeClass("hidden");
+        }
+
+        function ApiDiscovery_HideParameters(actionId) {
+            $("#" + actionId + " .panel-body").addClass("hidden");
+            $("#" + actionId + " .fa-caret-down").removeClass("hidden");
+            $("#" + actionId + " .fa-caret-up").addClass("hidden");
+        }
+    </script>
+}

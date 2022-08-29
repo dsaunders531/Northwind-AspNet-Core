@@ -1,0 +1,36 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Northwind.Api
+build_property.RootNamespace = Northwind.Api
+build_property.ProjectDir = C:\Git\Northwind-AspNet-Core\Northwind.Api\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Git\Northwind-AspNet-Core\Northwind.Api
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Git/Northwind-AspNet-Core/Northwind.Api/Areas/api/Views/Home/Authenticate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcYXBpXFZpZXdzXEhvbWVcQXV0aGVudGljYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/Northwind-AspNet-Core/Northwind.Api/Areas/api/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcYXBpXFZpZXdzXEhvbWVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/Northwind-AspNet-Core/Northwind.Api/Areas/api/Views/Shared/_ApiDiscoveryLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcYXBpXFZpZXdzXFNoYXJlZFxfQXBpRGlzY292ZXJ5TGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/Northwind-AspNet-Core/Northwind.Api/Areas/api/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcYXBpXFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/Northwind-AspNet-Core/Northwind.Api/Areas/api/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcYXBpXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

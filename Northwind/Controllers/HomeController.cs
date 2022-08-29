@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Northwind.ViewModels;
+using Northwind.DAL.Models.Framework;
 using System.Diagnostics;
 using tools.ViewModels;
 

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
 namespace Northwind.DAL.Models
-{
-    // TODO add encryption method.
-
+{   
     /// <summary>
     /// The custom IdentityUser model.
     /// </summary>
