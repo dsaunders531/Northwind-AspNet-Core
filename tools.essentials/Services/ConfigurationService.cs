@@ -46,11 +46,13 @@ namespace tools.Services
             // You will need to restart the app to get any config changes.
             // Its safer this way.
             this.Env = env;
-            
-            this.Configuration = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile(this.ConfigFileName, false, false)
-                .Build();            
+
+            //this.Configuration = new ConfigurationBuilder()
+            //    //.SetBasePath(env.ContentRootPath)
+            //    //.AddJsonFile(this.ConfigFileName, false, false)
+            //    //.Build();            
+
+            this.Configuration = new ConfigurationBuilder().AddJsonFile(this.ConfigFileName, false, false).Build();
 
             this.WebRootFileProvider = env.WebRootFileProvider;
 

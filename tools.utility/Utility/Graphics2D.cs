@@ -182,7 +182,7 @@ namespace tools.Utility
                 throw new ArgumentNullException(@"The image is not in the correct format or is null.");
             }
 
-            if (outputSize == null)
+            if (outputSize == default)
             {
                 throw new ArgumentNullException(@"The size argument cannot be null.");
             }

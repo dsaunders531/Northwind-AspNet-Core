@@ -1,5 +1,4 @@
-﻿using RestSharp;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace tools.Models
 {
@@ -10,14 +9,14 @@ namespace tools.Models
     {
         public RestResult()
         {
-            this.Headers = new List<Parameter>();
-            this.Cookies = new List<RestResponseCookie>();
+            //this.Headers = new List<Parameter>();
+            //this.Cookies = new List<RestResponseCookie>();
         }
 
         public int StatusCode { get; set; } = -1;
         public string Content { get; set; } = string.Empty;
-        public List<Parameter> Headers { get; set; }
-        public List<RestResponseCookie> Cookies { get; set; }
+        //public List<Parameter> Headers { get; set; }
+        //public List<RestResponseCookie> Cookies { get; set; }
     }
 
     /// <summary>
