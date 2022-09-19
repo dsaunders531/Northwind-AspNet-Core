@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Northwind.DAL.Models;
 using System.Data;
 using System.Data.Common;
-using mezzanine;
-using mezzanine.Utility;
-using mezzanine.Extensions;
+using tools;
+using tools.Utility;
+using tools.Extensions;
 using System.Data.SqlClient;
 
 namespace Northwind.DAL

@@ -77,5 +77,13 @@ namespace Northwind.DAL
                 }
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Identity");
+            
+            // at the end
+            base.OnModelCreating(modelBuilder);
+        }
     }   
 }

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Northwind.DAL;
-using mezzanine.EF;
+using tools.EF;
 using Northwind.DAL.Models;
 using Northwind.DAL.Repositories;
-using mezzanine.Filters;
+using tools.Filters;
 
 namespace Northwind.BLL.Validators
 {

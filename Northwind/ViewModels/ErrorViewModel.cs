@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Northwind.BLL.ViewModels;
-using mezzanine.ViewModels;
+using tools.ViewModels;
 
 namespace Northwind.ViewModels
 {

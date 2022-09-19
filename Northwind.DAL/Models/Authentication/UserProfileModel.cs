@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using mezzanine.Extensions;
-using mezzanine.Utility;
-using mezzanine;
+using tools.Extensions;
+using tools.Utility;
+using tools;
 
 namespace Northwind.DAL.Models
 {

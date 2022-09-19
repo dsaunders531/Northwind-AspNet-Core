@@ -1,4 +1,4 @@
-﻿using mezzanine.Utility;
+﻿using tools.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Northwind.DAL.Models;
 using System;
@@ -14,9 +14,9 @@ namespace Northwind.BLL.Services
     }
 
     /// <summary>
-    /// Use the mezzanine configuration service to provide a strongly typed configuration in the application.
+    /// Use the tools configuration service to provide a strongly typed configuration in the application.
     /// </summary>
-    public sealed class AppConfigurationService: mezzanine.Services.AppConfigurationService, IAppConfiguration 
+    public sealed class AppConfigurationService: tools.Services.AppConfigurationService, IAppConfiguration 
     {
         public AppConfigurationModel AppConfiguration { get; private set; }
 

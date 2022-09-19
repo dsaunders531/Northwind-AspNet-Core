@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mezzanine.utility\mezzanine.utility.csproj" />
+    <ProjectReference Include="..\tools.utility\tools.utility.csproj" />
     <ProjectReference Include="..\Northwind.DAL\Northwind.DAL.csproj" />
   </ItemGroup>
 
